@@ -26,7 +26,7 @@ class SignInViewController: UIViewController {
                                         textColor: .baseGrayTextColor(),
                                         textAlignment: .left)
     private var nextButton = UIButton.getLittleRoundButton(text: "ДАЛЕЕ",
-                                                           isEnabled: false)
+                                                           isEnabled: true)
     
     private var phoneTextField: MDCTextField = {
         let tf = MDCTextField()
@@ -46,23 +46,46 @@ class SignInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.setNavigationBarHidden(true, animated: false)
         //        navigationItem.setHidesBackButton(true, animated: false)
     }
+    
     
     //MARK: - Funcs
     private func configure() {
         phoneTextField.delegate = self
         phoneTextField.keyboardType = .numberPad
-        phoneTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        phoneTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .allEditingEvents)
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     private func setupUI() {
         phoneTextField.placeholderLabel.text = "+7 912 992 53 84"
         view.backgroundColor = .mainBackground()
+//        navigationController?.navigationBar.barTintColor = UIColor.green
+//        let navigationBar = navigationController?.navigationBar
+//        let navigationBarAppearence = UINavigationBarAppearance()
+//        navigationBarAppearence.shadowColor = .clear
+//        navigationBarAppearence.shadowImage = UIImage()
+//        navigationBar?.scrollEdgeAppearance = navigationBarAppearence
+        
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.isTranslucent = false
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     //MARK: - Objc funcs
-    @objc private func textFieldDidChange() {
+    @objc private func nextButtonTapped() {
+        print("tapped")
+        navigationController?.push(OTPViewController())
+    }
+    @objc private func textFieldDidChanged() {
         print("come")
         if let isEmpty = phoneTextField.text?.isEmpty {
             nextButton.isEnabled = !isEmpty

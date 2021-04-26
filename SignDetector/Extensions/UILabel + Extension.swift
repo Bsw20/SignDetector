@@ -12,12 +12,14 @@ extension UILabel {
     convenience init( text: String,
                       fontSize: CGFloat,
                       textColor: UIColor = .baseGrayTextColor(),
-                      textAlignment: NSTextAlignment = .center) {
+                      textAlignment: NSTextAlignment = .center,
+                      numberOfLines: Int = 1) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         self.textColor = textColor
         self.font = UIFont.sfUIMedium(with: fontSize)
         self.text = text
         self.textAlignment = textAlignment
+        self.numberOfLines = numberOfLines
     }
 }
