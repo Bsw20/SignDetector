@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,19 @@
 		30A6567726038A8900D6F81D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567626038A8900D6F81D /* MainViewController.swift */; };
 		30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567B26038A8D00D6F81D /* Assets.xcassets */; };
 		30A6567F26038A8D00D6F81D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567D26038A8D00D6F81D /* LaunchScreen.storyboard */; };
+		30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20452636B09800F97736 /* UIColor + Extension.swift */; };
+		30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20492636B13E00F97736 /* SignInViewController.swift */; };
+		30AB204F2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf in Resources */ = {isa = PBXBuildFile; fileRef = 30AB204E2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf */; };
+		30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20512636B40E00F97736 /* UIFont + Extension.swift */; };
+		30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20542636B4FD00F97736 /* UILabel + Extension.swift */; };
+		30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20572636B7AF00F97736 /* UIButton + Extension.swift */; };
+		30AB20722636C65100F97736 /* ofont.ru_SFUIDisplay.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 30AB20712636C65100F97736 /* ofont.ru_SFUIDisplay.ttf */; };
+		30AB20762636CC8A00F97736 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20752636CC8A00F97736 /* Globals.swift */; };
+		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SignDetector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +32,16 @@
 		30A6567B26038A8D00D6F81D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30A6567E26038A8D00D6F81D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		30A6568026038A8D00D6F81D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30AB1C52DCF9290157196F7B /* Pods-SignDetector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.debug.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.debug.xcconfig"; sourceTree = "<group>"; };
+		30AB20452636B09800F97736 /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
+		30AB20492636B13E00F97736 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		30AB204E2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sf-ui-display-medium-58646be638f96.otf"; sourceTree = "<group>"; };
+		30AB20512636B40E00F97736 /* UIFont + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont + Extension.swift"; sourceTree = "<group>"; };
+		30AB20542636B4FD00F97736 /* UILabel + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel + Extension.swift"; sourceTree = "<group>"; };
+		30AB20572636B7AF00F97736 /* UIButton + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + Extension.swift"; sourceTree = "<group>"; };
+		30AB20712636C65100F97736 /* ofont.ru_SFUIDisplay.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ofont.ru_SFUIDisplay.ttf; sourceTree = "<group>"; };
+		30AB20752636CC8A00F97736 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +49,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3074EA72262EF75900886D58 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				3074EA74262EF78D00886D58 /* SignIn&SignUp */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		3074EA74262EF78D00886D58 /* SignIn&SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				30AB20492636B13E00F97736 /* SignInViewController.swift */,
+			);
+			path = "SignIn&SignUp";
+			sourceTree = "<group>";
+		};
 		30A6566626038A8900D6F81D = {
 			isa = PBXGroup;
 			children = (
 				30A6567126038A8900D6F81D /* SignDetector */,
 				30A6567026038A8900D6F81D /* Products */,
+				C8446CEDBD04FD640022E781 /* Pods */,
+				72051B4FD4C67F954D3C32FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +93,55 @@
 		30A6567126038A8900D6F81D /* SignDetector */ = {
 			isa = PBXGroup;
 			children = (
+				30AB204D2636B30600F97736 /* Fonts */,
+				30AB20442636B06100F97736 /* Extensions */,
+				3074EA72262EF75900886D58 /* Modules */,
 				30A6567226038A8900D6F81D /* AppDelegate.swift */,
 				30A6567426038A8900D6F81D /* SceneDelegate.swift */,
 				30A6567626038A8900D6F81D /* MainViewController.swift */,
 				30A6567B26038A8D00D6F81D /* Assets.xcassets */,
 				30A6567D26038A8D00D6F81D /* LaunchScreen.storyboard */,
 				30A6568026038A8D00D6F81D /* Info.plist */,
+				30AB20752636CC8A00F97736 /* Globals.swift */,
 			);
 			path = SignDetector;
+			sourceTree = "<group>";
+		};
+		30AB20442636B06100F97736 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				30AB20452636B09800F97736 /* UIColor + Extension.swift */,
+				30AB20512636B40E00F97736 /* UIFont + Extension.swift */,
+				30AB20542636B4FD00F97736 /* UILabel + Extension.swift */,
+				30AB20572636B7AF00F97736 /* UIButton + Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		30AB204D2636B30600F97736 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				30AB20712636C65100F97736 /* ofont.ru_SFUIDisplay.ttf */,
+				30AB204E2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		72051B4FD4C67F954D3C32FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C8446CEDBD04FD640022E781 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				30AB1C52DCF9290157196F7B /* Pods-SignDetector.debug.xcconfig */,
+				738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +151,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 30A6568326038A8D00D6F81D /* Build configuration list for PBXNativeTarget "SignDetector" */;
 			buildPhases = (
+				32D93B3112FE55B6553E95AB /* [CP] Check Pods Manifest.lock */,
 				30A6566B26038A8900D6F81D /* Sources */,
 				30A6566C26038A8900D6F81D /* Frameworks */,
 				30A6566D26038A8900D6F81D /* Resources */,
+				28F498F5AC8B90945CD5F31A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -122,20 +204,70 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A6567F26038A8D00D6F81D /* LaunchScreen.storyboard in Resources */,
+				30AB20722636C65100F97736 /* ofont.ru_SFUIDisplay.ttf in Resources */,
+				30AB204F2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf in Resources */,
 				30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		28F498F5AC8B90945CD5F31A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SignDetector/Pods-SignDetector-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SignDetector/Pods-SignDetector-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SignDetector/Pods-SignDetector-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		32D93B3112FE55B6553E95AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SignDetector-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		30A6566B26038A8900D6F81D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
 				30A6567726038A8900D6F81D /* MainViewController.swift in Sources */,
+				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
+				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
+				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
+				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,
+				30AB20762636CC8A00F97736 /* Globals.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +403,7 @@
 		};
 		30A6568426038A8D00D6F81D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 30AB1C52DCF9290157196F7B /* Pods-SignDetector.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -290,6 +423,7 @@
 		};
 		30A6568526038A8D00D6F81D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
