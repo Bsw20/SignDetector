@@ -14,7 +14,8 @@ extension UILabel {
                       font: UIFont? = nil,
                       textColor: UIColor = .baseGrayTextColor(),
                       textAlignment: NSTextAlignment = .center,
-                      numberOfLines: Int = 1) {
+                      numberOfLines: Int = 1,
+                      backgroundColor: UIColor? = nil) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         self.textColor = textColor
@@ -26,5 +27,8 @@ extension UILabel {
         self.text = text
         self.textAlignment = textAlignment
         self.numberOfLines = numberOfLines
+        if let color = backgroundColor {
+            self.backgroundColor = color
+        }
     }
 }

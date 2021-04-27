@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FEC42638874D00E11394 /* PersonalCabinetViewController.swift */; };
+		3064FECA2638885100E11394 /* PersonalCabinetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FEC92638885100E11394 /* PersonalCabinetModel.swift */; };
+		3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FECC26388F1900E11394 /* MyProfileInfoTableViewCell.swift */; };
+		3064FED02638920F00E11394 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FECF2638920F00E11394 /* String + Extension.swift */; };
 		30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567226038A8900D6F81D /* AppDelegate.swift */; };
 		30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567426038A8900D6F81D /* SceneDelegate.swift */; };
 		30A6567726038A8900D6F81D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567626038A8900D6F81D /* MainViewController.swift */; };
@@ -34,6 +38,10 @@
 
 /* Begin PBXFileReference section */
 		20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SignDetector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3064FEC42638874D00E11394 /* PersonalCabinetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCabinetViewController.swift; sourceTree = "<group>"; };
+		3064FEC92638885100E11394 /* PersonalCabinetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCabinetModel.swift; sourceTree = "<group>"; };
+		3064FECC26388F1900E11394 /* MyProfileInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileInfoTableViewCell.swift; sourceTree = "<group>"; };
+		3064FECF2638920F00E11394 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,10 +82,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3064FEC22638868A00E11394 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				3064FEC32638871D00E11394 /* PersonalCabinetScene */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		3064FEC32638871D00E11394 /* PersonalCabinetScene */ = {
+			isa = PBXGroup;
+			children = (
+				3064FED22638923E00E11394 /* Models */,
+				3064FEC82638884100E11394 /* Views */,
+				3064FED3263892D000E11394 /* Controllers */,
+			);
+			path = PersonalCabinetScene;
+			sourceTree = "<group>";
+		};
+		3064FEC82638884100E11394 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3064FECC26388F1900E11394 /* MyProfileInfoTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3064FED22638923E00E11394 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3064FEC92638885100E11394 /* PersonalCabinetModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3064FED3263892D000E11394 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3064FEC42638874D00E11394 /* PersonalCabinetViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		3074EA72262EF75900886D58 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				3074EA74262EF78D00886D58 /* SignIn&SignUp */,
+				3064FEC22638868A00E11394 /* Main */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -136,6 +187,7 @@
 				30AB20882637595D00F97736 /* CALayer + Extension.swift */,
 				30AB208B26375C5300F97736 /* NavigationController + Extension.swift */,
 				30AB20982637FC5900F97736 /* UITextField + Extension.swift */,
+				3064FECF2638920F00E11394 /* String + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -305,18 +357,22 @@
 			files = (
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
+				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
+				3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */,
 				30A6567726038A8900D6F81D /* MainViewController.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
 				30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */,
 				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
+				3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */,
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,
+				3064FECA2638885100E11394 /* PersonalCabinetModel.swift in Sources */,
 				30AB2085263758E500F97736 /* OTPStackView.swift in Sources */,
 				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,
 				30AB20762636CC8A00F97736 /* Globals.swift in Sources */,
