@@ -27,9 +27,14 @@ class SignInViewController: UIViewController {
                                         textAlignment: .left)
     private var nextButton = UIButton.getLittleRoundButton(text: "ДАЛЕЕ",
                                                            isEnabled: true)
+    private var descriptionLabel =  UILabel(text: "Мы отправим вам SMS с кодом для авторизации",
+                                            fontSize: 16,
+                                            textColor: .baseGrayTextColor(),
+                                            textAlignment: .left,
+                                            numberOfLines: 2)
     
-    private var phoneTextField: MDCTextField = {
-        let tf = MDCTextField()
+    private var phoneTextField: MDCUnderlinedTextField = {
+        let tf = MDCUnderlinedTextField()
         tf.font = UIFont.sfUIMedium(with: 18)
 //        let tf = MDCOutlinedTextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +64,7 @@ class SignInViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     private func setupUI() {
-        phoneTextField.placeholderLabel.text = "+7 912 992 53 84"
+//        phoneTextField.placeholderLabel.text = "+7 912 992 53 84"
         view.backgroundColor = .mainBackground()
 //        navigationController?.navigationBar.barTintColor = UIColor.green
 //        let navigationBar = navigationController?.navigationBar
@@ -154,6 +159,8 @@ extension SignInViewController {
         view.addSubview(phoneTextField)
         view.addSubview(phoneNumberLabel)
         view.addSubview(nextButton)
+        view.addSubview(descriptionLabel)
+        
         signInLabel.snp.makeConstraints { (make) in
 //            make.centerX.centerY.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(screenSize.height * 0.2)
@@ -172,9 +179,16 @@ extension SignInViewController {
 //            make.height.equalTo(80)
         }
         
+        descriptionLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(phoneTextField.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(defaultLeadingOffset)
+            make.width.equalToSuperview().multipliedBy(0.7)
+            
+        }
+        
         nextButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(defaultLeadingOffset)
-            make.top.equalTo(phoneTextField.snp.bottom).offset(24)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(24)
             make.height.equalTo(screenSize.height * 0.06896)
             make.width.equalTo(screenSize.width * 0.29)
         }
