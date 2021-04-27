@@ -25,6 +25,10 @@
 		30AB2085263758E500F97736 /* OTPStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB2084263758E500F97736 /* OTPStackView.swift */; };
 		30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20882637595D00F97736 /* CALayer + Extension.swift */; };
 		30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB208B26375C5300F97736 /* NavigationController + Extension.swift */; };
+		30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB208E2637638E00F97736 /* PersonalDataViewController.swift */; };
+		30AB20922637F59200F97736 /* sf-ui-display-semibold-58646eddcae92.otf in Resources */ = {isa = PBXBuildFile; fileRef = 30AB20912637F59100F97736 /* sf-ui-display-semibold-58646eddcae92.otf */; };
+		30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20952637FB6B00F97736 /* TextFieldView.swift */; };
+		30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20982637FC5900F97736 /* UITextField + Extension.swift */; };
 		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +55,10 @@
 		30AB2084263758E500F97736 /* OTPStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPStackView.swift; sourceTree = "<group>"; };
 		30AB20882637595D00F97736 /* CALayer + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer + Extension.swift"; sourceTree = "<group>"; };
 		30AB208B26375C5300F97736 /* NavigationController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationController + Extension.swift"; sourceTree = "<group>"; };
+		30AB208E2637638E00F97736 /* PersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalDataViewController.swift; sourceTree = "<group>"; };
+		30AB20912637F59100F97736 /* sf-ui-display-semibold-58646eddcae92.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sf-ui-display-semibold-58646eddcae92.otf"; sourceTree = "<group>"; };
+		30AB20952637FB6B00F97736 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
+		30AB20982637FC5900F97736 /* UITextField + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + Extension.swift"; sourceTree = "<group>"; };
 		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,8 +113,8 @@
 			isa = PBXGroup;
 			children = (
 				30AB204D2636B30600F97736 /* Fonts */,
-				30AB20442636B06100F97736 /* Extensions */,
 				3074EA72262EF75900886D58 /* Modules */,
+				30AB20442636B06100F97736 /* Extensions */,
 				30A6567226038A8900D6F81D /* AppDelegate.swift */,
 				30A6567426038A8900D6F81D /* SceneDelegate.swift */,
 				30A6567626038A8900D6F81D /* MainViewController.swift */,
@@ -127,6 +135,7 @@
 				30AB20572636B7AF00F97736 /* UIButton + Extension.swift */,
 				30AB20882637595D00F97736 /* CALayer + Extension.swift */,
 				30AB208B26375C5300F97736 /* NavigationController + Extension.swift */,
+				30AB20982637FC5900F97736 /* UITextField + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -136,6 +145,7 @@
 			children = (
 				30AB20712636C65100F97736 /* ofont.ru_SFUIDisplay.ttf */,
 				30AB204E2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf */,
+				30AB20912637F59100F97736 /* sf-ui-display-semibold-58646eddcae92.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -145,6 +155,7 @@
 			children = (
 				30AB2080263758BE00F97736 /* OTPTextField.swift */,
 				30AB2084263758E500F97736 /* OTPStackView.swift */,
+				30AB20952637FB6B00F97736 /* TextFieldView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,6 +165,7 @@
 			children = (
 				30AB20492636B13E00F97736 /* SignInViewController.swift */,
 				30AB2078263756D600F97736 /* OTPViewController.swift */,
+				30AB208E2637638E00F97736 /* PersonalDataViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -236,6 +248,7 @@
 			files = (
 				30A6567F26038A8D00D6F81D /* LaunchScreen.storyboard in Resources */,
 				30AB20722636C65100F97736 /* ofont.ru_SFUIDisplay.ttf in Resources */,
+				30AB20922637F59200F97736 /* sf-ui-display-semibold-58646eddcae92.otf in Resources */,
 				30AB204F2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf in Resources */,
 				30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */,
 			);
@@ -292,12 +305,15 @@
 			files = (
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
+				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
 				30A6567726038A8900D6F81D /* MainViewController.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
+				30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */,
 				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
+				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,

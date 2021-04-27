@@ -18,9 +18,9 @@ class SignInViewController: UIViewController {
 
     //MARK: - Controls
     private var signInLabel = UILabel(text: "Вход",
-                                        fontSize: 32,
-                                        textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
-                                        textAlignment: .left)
+                                      font: UIFont.sfUISemibold(with: 32),
+                                      textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
+                                      textAlignment: .left)
     private var phoneNumberLabel = UILabel(text: "НОМЕР ТЕЛЕФОНА",
                                         fontSize: 12,
                                         textColor: .baseGrayTextColor(),
@@ -55,7 +55,7 @@ class SignInViewController: UIViewController {
     private func configure() {
         phoneTextField.delegate = self
         phoneTextField.keyboardType = .numberPad
-        phoneTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .allEditingEvents)
+        phoneTextField.addTarget(self, action: #selector(textFieldDidChanged), for: UIControl.Event.editingChanged)
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     private func setupUI() {

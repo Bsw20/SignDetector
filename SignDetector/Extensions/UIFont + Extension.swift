@@ -13,5 +13,10 @@ extension UIFont {
         //IF nil fatal error
         return UIFont.init(name: "SFUIDisplay-Regular", size: size)!
     }
+    
+    static func sfUISemibold(with size: CGFloat) -> UIFont {
+        //IF nil fatal error
+        return UIFont.init(name: "SFUIDisplay-Semibold", size: size)!
+    }
 }
 

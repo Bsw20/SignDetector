@@ -6,6 +6,7 @@
 	<array>
 		<string>sf-ui-display-medium-58646be638f96.otf</string>
 		<string>ofont.ru_SFUIDisplay.ttf</string>
+		<string>sf-ui-display-semibold-58646eddcae92.otf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

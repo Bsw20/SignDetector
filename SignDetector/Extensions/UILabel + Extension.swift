@@ -10,14 +10,19 @@ import UIKit
 
 extension UILabel {
     convenience init( text: String,
-                      fontSize: CGFloat,
+                      fontSize: CGFloat = 12,
+                      font: UIFont? = nil,
                       textColor: UIColor = .baseGrayTextColor(),
                       textAlignment: NSTextAlignment = .center,
                       numberOfLines: Int = 1) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         self.textColor = textColor
-        self.font = UIFont.sfUIMedium(with: fontSize)
+        if let font = font {
+            self.font = font
+        } else {
+            self.font = UIFont.sfUIMedium(with: fontSize)
+        }
         self.text = text
         self.textAlignment = textAlignment
         self.numberOfLines = numberOfLines

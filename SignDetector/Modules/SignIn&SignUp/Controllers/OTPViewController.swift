@@ -15,9 +15,9 @@ class OTPViewController: UIViewController {
     //MARK: - Controls
     private lazy var numbersView: OTPStackView = OTPStackView()
     private var signInLabel = UILabel(text: "Вход",
-                                        fontSize: 32,
-                                        textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
-                                        textAlignment: .left)
+                                      font: UIFont.sfUISemibold(with: 32),
+                                      textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
+                                      textAlignment: .center)
     private var smsCodeLabel = UILabel(text: "КОД ИЗ СМС",
                                         fontSize: 12,
                                         textColor: .baseGrayTextColor(),
@@ -56,6 +56,7 @@ class OTPViewController: UIViewController {
 extension OTPViewController: OTPDelegate {
     func animationWithCorrectCodeFinished() {
         print("auth finished")
+        navigationController?.push(PersonalDataViewController())
     }
     
     

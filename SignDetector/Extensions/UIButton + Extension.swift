@@ -13,7 +13,7 @@ extension UIButton {
                                      backgroundColor: UIColor = .baseOrange(), disabledBackgroundColor: UIColor = .baseOrangeWithOpacity(),
                                      textColor: UIColor = .white,
                                      image: UIImage? = nil,
-                                     font: UIFont? = UIFont.sfUIMedium(with: 14),
+                                     font: UIFont? = UIFont.sfUISemibold(with: 14),
                                      isEnabled: Bool = true) -> UIButton {
         let button = StateSensitiveButton(type: .system)
         button.setupColors(enabledColor: backgroundColor, disabledColor: disabledBackgroundColor)
