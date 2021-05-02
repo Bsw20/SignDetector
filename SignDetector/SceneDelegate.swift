@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.rootViewController = PersonalCabinetViewController()
 //        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
 //        window?.rootViewController = SettingsViewController()
-        window?.rootViewController = MainMapViewController()
+        window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
         window?.makeKeyAndVisible()
     }
 }

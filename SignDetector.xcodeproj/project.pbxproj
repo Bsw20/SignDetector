@@ -14,6 +14,8 @@
 		3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FED6263B0DFE00E11394 /* SettingsViewController.swift */; };
 		30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */; };
 		30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */; };
+		30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA3263F01AF006BBFD6 /* MapTitleView.swift */; };
+		30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */; };
 		30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567226038A8900D6F81D /* AppDelegate.swift */; };
 		30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567426038A8900D6F81D /* SceneDelegate.swift */; };
 		30A6567726038A8900D6F81D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567626038A8900D6F81D /* MainViewController.swift */; };
@@ -48,6 +50,8 @@
 		3064FED6263B0DFE00E11394 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
 		30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
+		30982FA3263F01AF006BBFD6 /* MapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTitleView.swift; sourceTree = "<group>"; };
+		30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModeView.swift; sourceTree = "<group>"; };
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,9 +165,19 @@
 		30982F88263EEFC0006BBFD6 /* MapScene */ = {
 			isa = PBXGroup;
 			children = (
+				30982FA2263F01A2006BBFD6 /* Views */,
 				30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */,
 			);
 			path = MapScene;
+			sourceTree = "<group>";
+		};
+		30982FA2263F01A2006BBFD6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				30982FA3263F01AF006BBFD6 /* MapTitleView.swift */,
+				30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		30A6566626038A8900D6F81D = {
@@ -399,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */,
+				30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */,
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
@@ -412,6 +427,7 @@
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
 				3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */,
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
+				30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */,
 				3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */,
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
