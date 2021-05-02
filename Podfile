@@ -8,5 +8,6 @@ target 'SignDetector' do
   # Pods for SignDetector
   pod 'SnapKit'
   pod 'MaterialComponents'
+  pod 'YandexMapsMobile', '4.0.0-full'
 
 end

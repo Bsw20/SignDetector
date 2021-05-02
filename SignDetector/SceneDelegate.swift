@@ -17,7 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 //        window?.rootViewController = UINavigationController(rootViewController: SignInViewController())
-        window?.rootViewController = PersonalCabinetViewController()
+//        window?.rootViewController = PersonalCabinetViewController()
+//        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
+//        window?.rootViewController = SettingsViewController()
+        window?.rootViewController = MainMapViewController()
         window?.makeKeyAndVisible()
     }
 }
