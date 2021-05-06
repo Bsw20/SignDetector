@@ -12,3 +12,6 @@ public struct Globals {
     public static let screenSize: CGRect = UIScreen.main.bounds
 }
 
+func onMainThread(delay: TimeInterval = 0, _ block: @escaping () -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) { block() }
+}

@@ -18,7 +18,6 @@
 		30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */; };
 		30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567226038A8900D6F81D /* AppDelegate.swift */; };
 		30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567426038A8900D6F81D /* SceneDelegate.swift */; };
-		30A6567726038A8900D6F81D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567626038A8900D6F81D /* MainViewController.swift */; };
 		30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567B26038A8D00D6F81D /* Assets.xcassets */; };
 		30A6567F26038A8D00D6F81D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567D26038A8D00D6F81D /* LaunchScreen.storyboard */; };
 		30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20452636B09800F97736 /* UIColor + Extension.swift */; };
@@ -38,6 +37,11 @@
 		30AB20922637F59200F97736 /* sf-ui-display-semibold-58646eddcae92.otf in Resources */ = {isa = PBXBuildFile; fileRef = 30AB20912637F59100F97736 /* sf-ui-display-semibold-58646eddcae92.otf */; };
 		30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20952637FB6B00F97736 /* TextFieldView.swift */; };
 		30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB20982637FC5900F97736 /* UITextField + Extension.swift */; };
+		30BE11172643FD6C006FC056 /* ServerAddressConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11162643FD6C006FC056 /* ServerAddressConstants.swift */; };
+		30BE111A2644004C006FC056 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11192644004C006FC056 /* AuthService.swift */; };
+		30BE111C26440088006FC056 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111B26440088006FC056 /* APIManager.swift */; };
+		30BE111E264405D0006FC056 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111D264405D0006FC056 /* APIError.swift */; };
+		30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */; };
 		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +59,6 @@
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		30A6567626038A8900D6F81D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		30A6567B26038A8D00D6F81D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30A6567E26038A8D00D6F81D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		30A6568026038A8D00D6F81D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -77,6 +80,11 @@
 		30AB20912637F59100F97736 /* sf-ui-display-semibold-58646eddcae92.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sf-ui-display-semibold-58646eddcae92.otf"; sourceTree = "<group>"; };
 		30AB20952637FB6B00F97736 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		30AB20982637FC5900F97736 /* UITextField + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + Extension.swift"; sourceTree = "<group>"; };
+		30BE11162643FD6C006FC056 /* ServerAddressConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddressConstants.swift; sourceTree = "<group>"; };
+		30BE11192644004C006FC056 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		30BE111B26440088006FC056 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		30BE111D264405D0006FC056 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingGlobalModels.swift; sourceTree = "<group>"; };
 		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -201,12 +209,12 @@
 		30A6567126038A8900D6F81D /* SignDetector */ = {
 			isa = PBXGroup;
 			children = (
+				30BE11152643FD4E006FC056 /* Networking */,
 				30AB204D2636B30600F97736 /* Fonts */,
 				3074EA72262EF75900886D58 /* Modules */,
 				30AB20442636B06100F97736 /* Extensions */,
 				30A6567226038A8900D6F81D /* AppDelegate.swift */,
 				30A6567426038A8900D6F81D /* SceneDelegate.swift */,
-				30A6567626038A8900D6F81D /* MainViewController.swift */,
 				30A6567B26038A8D00D6F81D /* Assets.xcassets */,
 				30A6567D26038A8D00D6F81D /* LaunchScreen.storyboard */,
 				30A6568026038A8D00D6F81D /* Info.plist */,
@@ -259,6 +267,26 @@
 				30AB208E2637638E00F97736 /* PersonalDataViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		30BE11152643FD4E006FC056 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				30BE11162643FD6C006FC056 /* ServerAddressConstants.swift */,
+				30BE11182643FE73006FC056 /* Services */,
+				30BE111D264405D0006FC056 /* APIError.swift */,
+				30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		30BE11182643FE73006FC056 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				30BE11192644004C006FC056 /* AuthService.swift */,
+				30BE111B26440088006FC056 /* APIManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		72051B4FD4C67F954D3C32FD /* Frameworks */ = {
@@ -414,12 +442,14 @@
 			files = (
 				30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */,
 				30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */,
+				30BE11172643FD6C006FC056 /* ServerAddressConstants.swift in Sources */,
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
+				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
+				30BE111C26440088006FC056 /* APIManager.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
 				3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */,
-				30A6567726038A8900D6F81D /* MainViewController.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
 				30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */,
@@ -433,11 +463,13 @@
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,
+				30BE111E264405D0006FC056 /* APIError.swift in Sources */,
 				3064FECA2638885100E11394 /* PersonalCabinetModel.swift in Sources */,
 				30AB2085263758E500F97736 /* OTPStackView.swift in Sources */,
 				30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */,
 				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,
 				30AB20762636CC8A00F97736 /* Globals.swift in Sources */,
+				30BE111A2644004C006FC056 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

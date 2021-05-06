@@ -10,8 +10,13 @@ import UIKit
 import SnapKit
 
 class OTPViewController: UIViewController {
-    
+    struct AuthModel {
+        var type: AuthType
+        var login: String
+    }
+    typealias AuthType = NetworkingGlobalModels.AuthType
     //MARK: - Variables
+    private var authModel: AuthModel
     //MARK: - Controls
     private lazy var numbersView: OTPStackView = OTPStackView()
     private var signInLabel = UILabel(text: "Вход",
@@ -30,6 +35,14 @@ class OTPViewController: UIViewController {
 
     
     //MARK: - Lifecycle
+    public init(authModel: AuthModel) {
+        self.authModel = authModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .mainBackground()
@@ -56,18 +69,35 @@ class OTPViewController: UIViewController {
 extension OTPViewController: OTPDelegate {
     func animationWithCorrectCodeFinished() {
         print("auth finished")
-        navigationController?.push(PersonalDataViewController())
+//        navigationController?.push(PersonalDataViewController())
+        switch authModel.type {
+        
+        case .registered:
+            navigationController?.setupAsBaseScreen(MainMapViewController(), animated: true)
+        case .notRegistered:
+            navigationController?.push(PersonalDataViewController(), completion: {
+                
+            })
+        }
     }
     
     
     func didChangeValidity(isValid: Bool) {
 //        numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: true)
         if isValid {
-            let isCorrectCode = numbersView.getOTP() == "111111"
-            if isCorrectCode {
-                numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: isCorrectCode)
-            } else {
-                numbersView.finishEnterAnimation(colorForAnimation: .red, isCorrectCode: isCorrectCode)
+            AuthService.shared.auth(model: .init(type: authModel.type, login: authModel.login, smsCode: numbersView.getOTP())) {[weak self] result in
+                print(result)
+                switch result {
+                
+                case .success():
+                    self?.numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: true)
+                case .failure(let error):
+                    if error.code == 500 {
+                        self?.numbersView.finishEnterAnimation(colorForAnimation: .red, isCorrectCode: false)
+                        return
+                    }
+                    UIApplication.showAlert(title: "Ошибка!", message: error.message)
+                }
             }
         }
 //        if isValid {

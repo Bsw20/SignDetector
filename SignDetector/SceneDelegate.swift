@@ -22,6 +22,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.rootViewController = SettingsViewController()
         window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
         window?.makeKeyAndVisible()
+        
+//        if APIManager.isAuthorized() {
+//            if APIManager.needToSetName() {
+//                window?.rootViewController = UINavigationController(rootViewController: PersonalDataViewController())
+//            } else {
+//                window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
+//            }
+//        } else {
+//            startSignIn()
+//        }
+    }
+    
+    func startSignIn() {
+        let signInVC = SignInViewController()
+        window?.rootViewController = UINavigationController(rootViewController: signInVC)
     }
 }
 
+
+extension SceneDelegate {
+    public static func shared() -> SceneDelegate {
+        
+        let sceneDelegate = UIApplication.shared.connectedScenes
+                .first!.delegate as! SceneDelegate
+        return sceneDelegate
+    }
+}

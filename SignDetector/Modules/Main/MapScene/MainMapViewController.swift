@@ -11,7 +11,21 @@ import YandexMapsMobile
 import SnapKit
 
 class MainMapViewController: UIViewController {
+    //MARK: - Variables
+    private var panGesture = UIPanGestureRecognizer()
     //MARK: - Controls
+    private var dragableView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+//        iv.backgroundColor = .clear
+        iv.backgroundColor = .red
+        
+        iv.isUserInteractionEnabled = true
+        iv.layer.cornerRadius = 6
+        iv.clipsToBounds = true
+        return iv
+    }()
+    
     private var mapView: YMKMapView = {
        let mapView = YMKMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +71,10 @@ class MainMapViewController: UIViewController {
     }
     
     private func configure() {
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action:#selector(draggedView(gesture:)))
+        dragableView.addGestureRecognizer(panGesture)
+        
         mapView.mapWindow.map.move(with:
             YMKCameraPosition(target: YMKPoint(latitude: 0, longitude: 0), zoom: 14, azimuth: 0, tilt: 0))
         
@@ -80,6 +98,48 @@ class MainMapViewController: UIViewController {
     
     @objc private func moreButtonTapped() {
         print("more button tapped")
+    }
+    
+    @objc private func draggedView(gesture:UIPanGestureRecognizer){
+        let location = gesture.location(in: self.view)
+        let draggedView = gesture.view
+        draggedView?.center = location
+        let topViewHeight = UIScreen.main.bounds.height * 0.074
+        let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
+        let defaultOffset = CGFloat(16)
+        
+        if gesture.state == .ended {
+            if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2 {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//                    self.dragableView.center.x = self.view.layer.frame.width - 40
+                    let newWidth = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573 / 2)
+                    self.dragableView.center.x =  newWidth - defaultOffset
+                    let newHeight = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2)
+                    self.dragableView.center.y = newHeight - defaultOffset
+                    
+                }, completion: nil)
+            }else if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY < self.view.layer.frame.height/2 {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                    
+                    self.dragableView.center.x = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573/2) - defaultOffset
+                    self.dragableView.center.y = topInset +  UIScreen.main.bounds.height * (0.235/2) + topViewHeight
+                }, completion: nil)
+
+                
+            }else if self.dragableView.frame.midX < self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2  {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                    
+                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+                    self.dragableView.center.y = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2) - defaultOffset
+                }, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                    
+                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight
+                }, completion: nil)
+            }
+        }
     }
 }
 
@@ -132,6 +192,7 @@ extension MainMapViewController: VideoModelViewDelegate {
 
 extension MainMapViewController {
     private func setupConstraints() {
+        let screenSize = UIScreen.main.bounds
         view.addSubview(mapView)
         view.addSubview(videoModeView)
         
@@ -143,6 +204,11 @@ extension MainMapViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.centerX.equalToSuperview()
         }
+        
+        let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
+        
+        view.addSubview(dragableView)
+        dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
         
         
         

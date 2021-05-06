@@ -88,16 +88,23 @@ class SignInViewController: UIViewController {
     //MARK: - Objc funcs
     @objc private func nextButtonTapped() {
         print("tapped")
-        navigationController?.push(OTPViewController())
-    }
-    @objc private func textFieldDidChanged() {
-        print("come")
-        if let isEmpty = phoneTextField.text?.isEmpty {
-            nextButton.isEnabled = !isEmpty
-            print("here")
+        if let text = phoneTextField.text {
+            AuthService.shared.sendSms(login: text) { [weak self] result in
+                switch result {
+                
+                case .success(let result):
+                    self?.navigationController?.push(OTPViewController(authModel: .init(type: result, login: text)))
+                case .failure(let error):
+                    UIApplication.showAlert(title: "Ошибка!", message: error.description)
+                }
+            }
         }
 
-        
+    }
+    @objc private func textFieldDidChanged() {
+        if let isEmpty = phoneTextField.text?.isEmpty {
+            nextButton.isEnabled = !isEmpty
+        }
     }
 }
 

@@ -41,10 +41,25 @@ class PersonalDataViewController: UIViewController {
     //MARK: - Funcs
     private func configure() {
         fioTextView.delegate = self
+        nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
     private func setupUI() {
         view.backgroundColor = .white
+    }
+    //MARK: - objc funcs
+    @objc private func nextButtonTapped() {
+        if(!fioTextView.isEmpty()) {
+            AuthService.shared.changeName(name: fioTextView.getText()) {[weak self] result in
+                switch result {
+                
+                case .success():
+                    self?.navigationController?.setupAsBaseScreen(MainMapViewController(), animated: true)
+                case .failure(let error):
+                    UIApplication.showAlert(title: "Ошибка!", message: error.message)
+                }
+            }
+        }
     }
 }
 

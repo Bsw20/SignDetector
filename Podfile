@@ -9,5 +9,8 @@ target 'SignDetector' do
   pod 'SnapKit'
   pod 'MaterialComponents'
   pod 'YandexMapsMobile', '4.0.0-full'
+  pod 'Alamofire'
+  pod 'Socket.IO-Client-Swift'
+  pod 'SwiftyBeaver'
 
 end
