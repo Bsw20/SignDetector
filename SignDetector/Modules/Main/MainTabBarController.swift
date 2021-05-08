@@ -15,7 +15,7 @@ class MainTabBarController: UITabBarController {
 //        tabBar.isTranslucent = false
         tabBar.tintColor = .mainBackground()
         viewControllers = [
-            generateNavigationController(rootViewController: MainMapViewController(), unselectedImage: UIImage(named: "MainMapUnselected")!, selectedImage: UIImage(named: "MainMapSelected")!),
+            generateNavigationController(rootViewController: MainMapViewController(), unselectedImage: UIImage(named: "MMM")!, selectedImage: UIImage(named: "MainMapSelected")!),
             generateNavigationController(rootViewController: SettingsViewController(),
                                          unselectedImage: UIImage(named: "SettingsVectorUnselected")!, selectedImage: UIImage(named: "SettingsVectorUnselected")!),
             generateNavigationController(rootViewController: PersonalCabinetViewController(), unselectedImage: UIImage(named: "ProfileInfoUnselected")!, selectedImage: UIImage(named: "ProfileInfoSelected")!)
