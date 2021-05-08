@@ -73,7 +73,7 @@ extension OTPViewController: OTPDelegate {
         switch authModel.type {
         
         case .registered:
-            navigationController?.setupAsBaseScreen(MainMapViewController(), animated: true)
+            navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
         case .notRegistered:
             navigationController?.push(PersonalDataViewController(), completion: {
                 

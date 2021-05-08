@@ -29,6 +29,7 @@ class VideoModeView: UIView {
     init() {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
+        modeSwitch.isOn = false
         configure()
         setupConstraints()
     }

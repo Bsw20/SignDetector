@@ -11,10 +11,14 @@ import UIKit
 struct ServerAddressConstants {
     //MARK: - Server Address
     static var MAIN_SERVER_ADDRESS = "http://92.63.105.87:8080"
+    static var SOCKET_ADDRESS = "ws://92.63.105.87:8080"
     
     //MARK: - Auth
     static var SENDSMS_ADDRESS = MAIN_SERVER_ADDRESS + "/smsSend"
     static var REGISTER_ADDRESS = MAIN_SERVER_ADDRESS + "/register"
     static var LOGIN_ADDRESS = MAIN_SERVER_ADDRESS + "/login"
     static var CHANGENAME_ADDRESS = MAIN_SERVER_ADDRESS + "/user/changeName"
+    
+    //MARK: - Main
+    static var GETUSERINFO_ADDRESS = MAIN_SERVER_ADDRESS + "/user/getProfile"
 }

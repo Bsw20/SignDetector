@@ -42,6 +42,10 @@
 		30BE111C26440088006FC056 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111B26440088006FC056 /* APIManager.swift */; };
 		30BE111E264405D0006FC056 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111D264405D0006FC056 /* APIError.swift */; };
 		30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */; };
+		30BE1122264489EF006FC056 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE1121264489EF006FC056 /* SocketManager.swift */; };
+		30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11232645A57D006FC056 /* MainTabBarController.swift */; };
+		30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11252645B246006FC056 /* GlobalConfig.swift */; };
+		30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11272646B3B1006FC056 /* UserAPIService.swift */; };
 		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
@@ -85,6 +89,10 @@
 		30BE111B26440088006FC056 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		30BE111D264405D0006FC056 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingGlobalModels.swift; sourceTree = "<group>"; };
+		30BE1121264489EF006FC056 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
+		30BE11232645A57D006FC056 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		30BE11252645B246006FC056 /* GlobalConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConfig.swift; sourceTree = "<group>"; };
+		30BE11272646B3B1006FC056 /* UserAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIService.swift; sourceTree = "<group>"; };
 		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +114,7 @@
 				30982F88263EEFC0006BBFD6 /* MapScene */,
 				3064FED5263B0DF000E11394 /* SettingsScene */,
 				3064FEC32638871D00E11394 /* PersonalCabinetScene */,
+				30BE11232645A57D006FC056 /* MainTabBarController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -148,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				3064FED6263B0DFE00E11394 /* SettingsViewController.swift */,
+				30BE11252645B246006FC056 /* GlobalConfig.swift */,
 			);
 			path = SettingsScene;
 			sourceTree = "<group>";
@@ -285,6 +295,8 @@
 			children = (
 				30BE11192644004C006FC056 /* AuthService.swift */,
 				30BE111B26440088006FC056 /* APIManager.swift */,
+				30BE1121264489EF006FC056 /* SocketManager.swift */,
+				30BE11272646B3B1006FC056 /* UserAPIService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -442,13 +454,17 @@
 			files = (
 				30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */,
 				30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */,
+				30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */,
 				30BE11172643FD6C006FC056 /* ServerAddressConstants.swift in Sources */,
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
+				30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */,
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
 				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
+				30BE1122264489EF006FC056 /* SocketManager.swift in Sources */,
 				30BE111C26440088006FC056 /* APIManager.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
+				30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */,
 				3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,

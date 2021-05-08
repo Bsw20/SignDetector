@@ -9,20 +9,29 @@ import Foundation
 import UIKit
 import YandexMapsMobile
 import SnapKit
+import AVFoundation
 
 class MainMapViewController: UIViewController {
     //MARK: - Variables
     private var panGesture = UIPanGestureRecognizer()
+    private var timer: Timer?
+    private var session: AVCaptureSession!
+    private var previewLayer: AVCaptureVideoPreviewLayer!
+    private var input: AVCaptureDeviceInput!
+    private var output: AVCapturePhotoOutput!
+    private var socket: Socket!
+    
     //MARK: - Controls
     private var dragableView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-//        iv.backgroundColor = .clear
-        iv.backgroundColor = .red
+        iv.backgroundColor = .clear
+//        iv.backgroundColor = .red
         
         iv.isUserInteractionEnabled = true
         iv.layer.cornerRadius = 6
         iv.clipsToBounds = true
+        iv.isHidden = true
         return iv
     }()
     
@@ -44,14 +53,50 @@ class MainMapViewController: UIViewController {
     //MARK: - Variables
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
         configure()
+        setupUI()
         setupConstraints()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupSession()
     }
     
     //MARK: - Funcs
+    private func setupSession() {
+        let screenSize = UIScreen.main.bounds
+        session = AVCaptureSession()
+        session.sessionPreset = AVCaptureSession.Preset.hd1280x720
+        guard let camera = AVCaptureDevice.default(for: AVMediaType.video) else { return }
+
+        do {
+            input = try AVCaptureDeviceInput(device: camera) } catch { return }
+            output = AVCapturePhotoOutput()
+//            let settings = AVCapturePhotoSettings()
+//            settings.livePhotoVideoCodecType = .jpeg
+//            output.capturePhoto(with: settings, delegate: s)
+//            output.preparedPhotoSettingsArray = [ AVVideoCodecKey: AVVideoCodecType.jpeg ]
+            
+            guard session.canAddInput(input)
+                    && session.canAddOutput(output) else { return }
+            
+            session.addInput(input)
+            session.addOutput(output)
+            
+            previewLayer = AVCaptureVideoPreviewLayer(session: session)
+            
+            previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            previewLayer.connection?.videoOrientation = .portrait
+            dragableView.layer.addSublayer(previewLayer!)
+            previewLayer.frame = CGRect(x: 0, y: 0, width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
+//            session.startRunning()
+    }
+
     private func setupUI() {
         navigationItem.titleView = titleView
+        view.backgroundColor = .white
         let rightButton = UIBarButtonItem(image: UIImage(named: "newMoreVector"),
                                           style: .plain, target: self,
                                           action: nil)
@@ -71,7 +116,8 @@ class MainMapViewController: UIViewController {
     }
     
     private func configure() {
-        
+        socket = Socket.shared
+        socket.customDelegate = self
         let panGesture = UIPanGestureRecognizer(target: self, action:#selector(draggedView(gesture:)))
         dragableView.addGestureRecognizer(panGesture)
         
@@ -91,6 +137,28 @@ class MainMapViewController: UIViewController {
         
         videoModeView.customDelegate = self
     }
+    
+    private func capturePhoto() {
+        let settings = AVCapturePhotoSettings()
+        let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first
+        let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,
+                                     kCVPixelBufferWidthKey as String: 160,
+                                     kCVPixelBufferHeightKey as String: 160,
+                                     ]
+        settings.previewPhotoFormat = previewFormat
+        self.output.capturePhoto(with: settings, delegate: self)
+//        guard let connection = output.connection(with: AVMediaType.video) else { return }
+//        connection.videoOrientation = .portrait
+//        output.captureStillImageAsynchronouslyFromConnection(connection) { (sampleBuffer, error) in
+//         guard sampleBuffer != nil && error == nil else { return }
+//
+//         let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
+//         guard let image = UIImage(data: imageData) else { return }
+//      }
+
+         //do stuff with image
+
+      }
     //MARK: - Objc func
     @objc private func filterButtonTapped() {
         print("filter button tapped")
@@ -107,6 +175,8 @@ class MainMapViewController: UIViewController {
         let topViewHeight = UIScreen.main.bounds.height * 0.074
         let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
         let defaultOffset = CGFloat(16)
+        let screenSize = UIScreen.main.bounds
+        let videoModeViewHeight = 0.0825 * screenSize.height
         
         if gesture.state == .ended {
             if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2 {
@@ -122,7 +192,7 @@ class MainMapViewController: UIViewController {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                     
                     self.dragableView.center.x = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573/2) - defaultOffset
-                    self.dragableView.center.y = topInset +  UIScreen.main.bounds.height * (0.235/2) + topViewHeight
+                    self.dragableView.center.y = topInset +  UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
                 }, completion: nil)
 
                 
@@ -136,10 +206,74 @@ class MainMapViewController: UIViewController {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                     
                     self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
-                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight
+                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
                 }, completion: nil)
             }
         }
+    }
+    
+    @objc private func timerCalled() {
+        print("TIMER CALLED \(timer?.timeInterval)")
+        capturePhoto()
+    }
+}
+
+//MARK: - Timer
+extension MainMapViewController {
+    func createTimer() {
+      if timer == nil {
+        let timer = Timer(timeInterval: 0.5,
+          target: self,
+          selector: #selector(timerCalled),
+          userInfo: nil,
+          repeats: true)
+        RunLoop.current.add(timer, forMode: .common)
+        timer.tolerance = 0.1
+        
+        self.timer = timer
+      }
+    }
+    
+    func cancelTimer() {
+      timer?.invalidate()
+        print("TIMER INVALIDATED")
+      timer = nil
+    }
+}
+
+//MARK: - SocketManagerDelegate
+extension MainMapViewController: SocketManagerDelegate {
+    func didConnect(socket: Socket) {
+        print("did connect ViewController")
+        createTimer()
+    }
+    
+    func didDisconnect(socket: Socket) {
+        print("did disconnect ViewController")
+    }
+    
+    func onMessageReceived(socket: Socket, message: String) {
+        print("did receive message")
+    }
+    
+    
+}
+
+//MARK: - AVCapturePhotoCaptureDelegate
+extension MainMapViewController: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        print("IMAGE CAPTURED")
+        guard socket != nil, let photoData = photo.fileDataRepresentation() else { return }
+        socket.sendImage(image: photoData) { result in
+            print("IMAGE SEND WITH SOCKET")
+        }
+//        socket.sendImage { <#Result<Void, Error>#> in
+//            <#code#>
+//        }
+//        if socket != nil {
+//            guard let
+//            socket.sendImage(completion: <#T##(Result<Void, Error>) -> Void#>)
+//        }
     }
 }
 
@@ -185,6 +319,15 @@ extension MainMapViewController: YMKUserLocationObjectListener {
 extension MainMapViewController: VideoModelViewDelegate {
     func modeDidChange(isOn: Bool) {
         print("Video mode isOn: \(isOn)")
+        guard session != nil else { return }
+        if isOn {
+            session.startRunning()
+            createTimer()
+        } else {
+            session.stopRunning()
+            cancelTimer()
+        }
+        dragableView.isHidden = !isOn
     }
     
     
@@ -197,7 +340,7 @@ extension MainMapViewController {
         view.addSubview(videoModeView)
         
         mapView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(view.safeAreaLayoutGuide.snp.edges)
         }
         
         videoModeView.snp.makeConstraints { (make) in
@@ -208,9 +351,7 @@ extension MainMapViewController {
         let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
         
         view.addSubview(dragableView)
-        dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
-        
-        
+        dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 + 0.0825 * screenSize.height , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
         
     }
 }

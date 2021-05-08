@@ -54,7 +54,7 @@ class PersonalDataViewController: UIViewController {
                 switch result {
                 
                 case .success():
-                    self?.navigationController?.setupAsBaseScreen(MainMapViewController(), animated: true)
+                    self?.navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
                 case .failure(let error):
                     UIApplication.showAlert(title: "Ошибка!", message: error.message)
                 }

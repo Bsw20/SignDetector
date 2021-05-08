@@ -54,6 +54,9 @@ class PersonalCabinetViewController: UIViewController {
         configure()
         setupUI()
         setupConstraints()
+        UserAPIService.shared.getUserInfo { result in
+            
+        }
         
     }
     

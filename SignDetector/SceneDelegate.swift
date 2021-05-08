@@ -20,18 +20,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.rootViewController = PersonalCabinetViewController()
 //        window?.rootViewController = UINavigationController(rootViewController: SettingsViewController())
 //        window?.rootViewController = SettingsViewController()
-        window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
+//        window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
+//        window?.rootViewController = MainTabBarController()
         window?.makeKeyAndVisible()
         
-//        if APIManager.isAuthorized() {
-//            if APIManager.needToSetName() {
-//                window?.rootViewController = UINavigationController(rootViewController: PersonalDataViewController())
-//            } else {
-//                window?.rootViewController = UINavigationController(rootViewController: MainMapViewController())
-//            }
-//        } else {
-//            startSignIn()
-//        }
+        if APIManager.isAuthorized() {
+            if APIManager.needToSetName() {
+                window?.rootViewController = UINavigationController(rootViewController: PersonalDataViewController())
+            } else {
+                window?.rootViewController = UINavigationController(rootViewController: MainTabBarController())
+            }
+        } else {
+            startSignIn()
+        }
     }
     
     func startSignIn() {
