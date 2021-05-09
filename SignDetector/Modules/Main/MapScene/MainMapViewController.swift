@@ -98,6 +98,10 @@ class MainMapViewController: UIViewController {
             previewLayer.connection?.videoOrientation = .portrait
             dragableView.layer.addSublayer(previewLayer!)
             previewLayer.frame = CGRect(x: 0, y: 0, width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
+        if APIManager.isCameraWorkOnStart() {
+            session.startRunning()
+            dragableView.isHidden = false
+        }
 //            session.startRunning()
     }
 
@@ -298,7 +302,10 @@ extension MainMapViewController: SocketManagerDelegate {
 extension MainMapViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         print("IMAGE CAPTURED")
+        print(socket == nil)
+        print(photo.fileDataRepresentation())
         guard socket != nil, let photoData = photo.fileDataRepresentation() else { return }
+        print("HERE")
         socket.sendImage(image: photoData) { result in
             print("IMAGE SEND WITH SOCKET")
         }

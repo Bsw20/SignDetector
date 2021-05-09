@@ -87,6 +87,7 @@ class SettingsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
+        topSwitch.isOn = APIManager.isCameraWorkOnStart()
         
 //        self.navigationController?.navigationBar.tintColor = .black
 //        self.navigationController?.navigationBar.isTranslucent = false
@@ -125,6 +126,7 @@ class SettingsViewController: UIViewController {
     
     @objc private func turnOnSwitchTapped() {
         print(topSwitch.isOn)
+        APIManager.setIsCameraWorkOnStart(shouldWork: topSwitch.isOn)
     }
     
     @objc private func turnoOffSwitchTapped() {

@@ -29,7 +29,6 @@ class PersonalCabinetViewController: UIViewController {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
-//        imageView.image = UIImage(named: "Component 1")
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 15
         return imageView
