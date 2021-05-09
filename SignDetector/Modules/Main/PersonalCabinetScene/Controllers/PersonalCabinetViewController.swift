@@ -11,23 +11,31 @@ import SnapKit
 
 class PersonalCabinetViewController: UIViewController {
     //MARK: - Variables
-    private var profileModel = PersonalCabinetModel(profileImage: nil,
-                                                    phoneNumber: "89858182278",
-                                                    fio: "Карпунькин Ярослав",
-                                                    detectedSignsCount: 15,
-                                                    time: 11,
-                                                    position: .manager)
+    private var profileModel = PersonalCabinetModel(phone: "",
+                                                    name: "",
+                                                    signsCount: 0,
+                                                    role: .user,
+                                                    id: "0")
     
-    //MARK: - Contols
+    //MARK: - Controls
+    private var activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.hidesWhenStopped = true
+        return view
+    }()
+    
     private var profileImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
-        imageView.image = UIImage(named: "Component 1")
+//        imageView.image = UIImage(named: "Component 1")
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 15
         return imageView
     }()
     
-    private var fioLabel = UILabel(text: "Константин Константинопольский",
+    private var fioLabel = UILabel(text: "Константин",
                                    font: UIFont.sfUIMedium(with: 24),
                                    textColor: .black,
                                    textAlignment: .center,
@@ -54,13 +62,16 @@ class PersonalCabinetViewController: UIViewController {
         configure()
         setupUI()
         setupConstraints()
-        UserAPIService.shared.getUserInfo { result in
-            
-        }
+        showActivityIndicator()
         
     }
     
     //MARK: - Funcs
+    private func showActivityIndicator() {
+        view.bringSubviewToFront(activityIndicatorView)
+        activityIndicatorView.startAnimating()
+    }
+    
     private func setupUI() {
         view.backgroundColor = .white
         tableView.tableFooterView = UIView(frame: .zero)
@@ -73,10 +84,29 @@ class PersonalCabinetViewController: UIViewController {
     }
     
     private func configure() {
-        jobPositionLabel.text = profileModel.position.description()
+        jobPositionLabel.text = profileModel.role.description()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MyProfileInfoTableViewCell.self, forCellReuseIdentifier: MyProfileInfoTableViewCell.reuseId)
+        UserAPIService.shared.getUserInfo { result in
+            switch result {
+            
+            case .success(let model):
+                onMainThread {[weak self] in
+                    guard let self = self else { return }
+                    self.profileModel = model
+                    self.fioLabel.text = model.name
+                    self.profileImageView.image = model.profileImage
+                    self.tableView.reloadData()
+                    self.activityIndicatorView.stopAnimating()
+                }
+            case .failure(_):
+                onMainThread {[weak self] in
+                    self?.activityIndicatorView.stopAnimating()
+                    UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить информацию о профиле, попробуйте позже.")
+                }
+            }
+        }
         
     }
     //MARK: - Objc funcs
@@ -97,11 +127,11 @@ extension PersonalCabinetViewController: UITableViewDelegate, UITableViewDataSou
         cell.configure(topText: "НОМЕР ТЕЛЕФОНА", bottomText: "8999999999")
         switch indexPath.row {
         case 0:
-            cell.configure(topText: "НОМЕР ТЕЛЕФОНА", bottomText: profileModel.phoneNumber)
+            cell.configure(topText: "НОМЕР ТЕЛЕФОНА", bottomText: profileModel.phone)
         case 1:
-            cell.configure(topText: "ЗНАКОВ ОБНАРУЖЕНО", bottomText: "\(profileModel.detectedSignsCount)")
+            cell.configure(topText: "ЗНАКОВ ОБНАРУЖЕНО", bottomText: "\(profileModel.signsCount)")
         case 2:
-            cell.configure(topText: "ВРЕМЯ РАБОТЫ", bottomText: "\(profileModel.time)")
+            cell.configure(topText: "ВРЕМЯ РАБОТЫ", bottomText: "00:00:00")
         default:
             break
         }
@@ -140,7 +170,7 @@ extension PersonalCabinetViewController {
         let jobLabelHeight = "1".sizeOfString(usingFont: UIFont.sfUISemibold(with: 18)).height
         
         jobPositionLabel.snp.makeConstraints { (make) in
-            let size = profileModel.position.description().sizeOfString(usingFont: UIFont.sfUISemibold(with: 18))
+            let size = JobPosition.user.description().sizeOfString(usingFont: UIFont.sfUISemibold(with: 18))
             make.width.equalTo(size.width + 40)
             make.height.equalTo(jobLabelHeight + 20)
             make.top.equalTo(fioLabel.snp.bottom).offset(21)
@@ -153,5 +183,11 @@ extension PersonalCabinetViewController {
             make.width.equalToSuperview().multipliedBy(0.874)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        view.addSubview(activityIndicatorView)
+        activityIndicatorView.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+        }
+        activityIndicatorView.startAnimating()
     }
 }

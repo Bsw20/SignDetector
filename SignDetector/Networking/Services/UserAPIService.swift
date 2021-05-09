@@ -21,7 +21,7 @@ struct UserAPIService {
             ]
         }
     }
-    public func getUserInfo(completion: @escaping (Result<Void, APIError>) -> Void) {
+    public func getUserInfo(completion: @escaping (Result<PersonalCabinetModel, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.GETUSERINFO_ADDRESS
             
@@ -35,15 +35,16 @@ struct UserAPIService {
                         
                         case .success(let data):
                             print(data)
-//                            if let message = (data as? [String: Any])?["message"] as? String {
-//                                if message == "registered" {
-//                                    completion(.success(.registered))
-//                                } else {
-//                                    completion(.success(.notRegistered))
-//                                }
-//                                return
-//                            }
-//                            completion(.failure(APIErrorFabrics.serverError(code: nil)))
+                            if let model = PersonalCabinetModel(data: data) {
+                                onMainThread {
+                                    completion(.success(model))
+                                }
+                                return
+                            }
+                            let error = APIErrorFabrics.serverError(code: nil)
+                            SwiftyBeaver.error(error.message)
+                            completion(.failure(error))
+                            
                         case .failure(let error):
                             SwiftyBeaver.error(error.localizedDescription)
                             completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
