@@ -21,6 +21,8 @@ class MainMapViewController: UIViewController {
     private var output: AVCapturePhotoOutput!
     private var socket: Socket!
     
+    
+    
     //MARK: - Controls
     private var dragableView: UIImageView = {
         let iv = UIImageView()
@@ -56,6 +58,11 @@ class MainMapViewController: UIViewController {
         configure()
         setupUI()
         setupConstraints()
+        let point = YMKPoint(latitude: 55.751244, longitude: 37.618423)
+        mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+//        let userLocationLayer = YMKMapKit.sharedInstance().createUserLocationLayer(with: mapView.mapWindow)
+//           userLocationLayer.setVisibleWithOn(true)
+//           userLocationLayer.isHeadingEnabled = true
 
     }
     
@@ -110,9 +117,18 @@ class MainMapViewController: UIViewController {
         let addPlace = UIAction(title: "Добавить участок") { _ in
           print("add place")
         }
+        let takePicture = UIAction(title: "Сделать фотографию") {[weak self] _ in
+            guard let self = self else { return }
+            print("TAKE A PICTURE")
+            let vc = UIImagePickerController()
+            vc.sourceType = .camera
+            vc.allowsEditing = false
+            vc.delegate = self
+            self.present(vc, animated: true)
+        }
         
 //        rightButton.showsMenuAsPrimaryAction = true
-        rightButton.menu = UIMenu(title: "", children: [addPlace])
+        rightButton.menu = UIMenu(title: "", children: [addPlace, takePicture])
     }
     
     private func configure() {
@@ -125,14 +141,19 @@ class MainMapViewController: UIViewController {
             YMKCameraPosition(target: YMKPoint(latitude: 0, longitude: 0), zoom: 14, azimuth: 0, tilt: 0))
         
         let scale = UIScreen.main.scale
+        
+//        let mapKit = YMKMapKit.sharedInstance()
+//        let userLocationLayer = mapKit.createUserLocationLayer(with: mapView.mapWindow)
+//        userLocationLayer.setVisibleWithOn(true)
+//        userLocationLayer.isHeadingEnabled = true
         let mapKit = YMKMapKit.sharedInstance()
         let userLocationLayer = mapKit.createUserLocationLayer(with: mapView.mapWindow)
 
         userLocationLayer.setVisibleWithOn(true)
         userLocationLayer.isHeadingEnabled = true
-        userLocationLayer.setAnchorWithAnchorNormal(
-            CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.5 * mapView.frame.size.height * scale),
-            anchorCourse: CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.83 * mapView.frame.size.height * scale))
+//        userLocationLayer.setAnchorWithAnchorNormal(
+//            CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.5 * mapView.frame.size.height * scale),
+//            anchorCourse: CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.83 * mapView.frame.size.height * scale))
         userLocationLayer.setObjectListenerWith(self)
         
         videoModeView.customDelegate = self
@@ -145,7 +166,7 @@ class MainMapViewController: UIViewController {
                                      kCVPixelBufferWidthKey as String: 160,
                                      kCVPixelBufferHeightKey as String: 160,
                                      ]
-        settings.previewPhotoFormat = previewFormat
+        settings.previewPhotoFormat = previewFormat as [String : Any]
         self.output.capturePhoto(with: settings, delegate: self)
 //        guard let connection = output.connection(with: AVMediaType.video) else { return }
 //        connection.videoOrientation = .portrait
@@ -241,6 +262,20 @@ extension MainMapViewController {
     }
 }
 
+//MARK: - UIImagePickerControllerDelegate
+extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            print("No image found")
+            return
+        }
+
+        print("SIIIIZE")
+        print(image.size)
+        dismiss(animated: true, completion: nil)
+    }
+}
+
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
     func didConnect(socket: Socket) {
@@ -283,7 +318,7 @@ extension MainMapViewController: YMKUserLocationObjectListener {
         view.arrow.setIconWith(UIImage(named:"UserArrow")!)
         
         let pinPlacemark = view.pin.useCompositeIcon()
-        
+
         pinPlacemark.setIconWithName("icon",
             image: UIImage(named:"Icon")!,
             style:YMKIconStyle(
@@ -294,25 +329,27 @@ extension MainMapViewController: YMKUserLocationObjectListener {
                 visible: true,
                 scale: 1.5,
                 tappableArea: nil))
-        
+
         pinPlacemark.setIconWithName(
             "pin",
-            image: UIImage(named:"SearchResult")!,
+            image: UIImage(named:"userLocationImage")!,
             style:YMKIconStyle(
                 anchor: CGPoint(x: 0.5, y: 0.5) as NSValue,
                 rotationType:YMKRotationType.rotate.rawValue as NSNumber,
                 zIndex: 1,
-                flat: true,
+                flat: false,
                 visible: true,
                 scale: 1,
                 tappableArea: nil))
 
-        view.accuracyCircle.fillColor = UIColor.blue
+        view.accuracyCircle.fillColor = #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 0.1)
     }
     
     func onObjectRemoved(with view: YMKUserLocationView) {}
     
-    func onObjectUpdated(with view: YMKUserLocationView, event: YMKObjectEvent) {}
+    func onObjectUpdated(with view: YMKUserLocationView, event: YMKObjectEvent) {
+        print("UPDATE")
+    }
 }
 
 //MARK: - VideoModelViewDelegate

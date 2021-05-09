@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if APIManager.needToSetName() {
                 window?.rootViewController = UINavigationController(rootViewController: PersonalDataViewController())
             } else {
-                window?.rootViewController = UINavigationController(rootViewController: MainTabBarController())
+                window?.rootViewController = MainTabBarController()
             }
         } else {
             startSignIn()
