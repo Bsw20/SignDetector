@@ -10,11 +10,13 @@ import UIKit
 import SocketIO
 import Combine
 import SwiftyBeaver
+import SwiftyJSON
 
 protocol SocketManagerDelegate: NSObjectProtocol {
     func didConnect(socket: Socket)
     func didDisconnect(socket: Socket)
     func onMessageReceived(socket: Socket, message: String)
+    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int)
     
 }
 final class Socket: ObservableObject {
@@ -52,6 +54,10 @@ final class Socket: ObservableObject {
 //                print("SEND FROM .connect")
 //            }
         }
+        onCluster1()
+        onCluster2()
+        onCluster3()
+        onCluster4()
 
         socket.connect()
     }
@@ -62,5 +68,79 @@ final class Socket: ObservableObject {
             print("SENDSEND")
             completion(.success(Void()))
         }
+    }
+    
+    public func sendCurrentCoordinates(radius: Double, lat: Double, long: Double, filter: [String] ) {
+        socket.emit("getSigns", ["radius" : radius, "lat": lat, "lon": long, "filter" : filter]) {
+            print(#function)
+        }
+    }
+    
+    private func dataToSigns(clusterNumber: Int, data: [Any]) {
+        let model = Socket.dataToSignsModel(firstData: data[0])
+        if let model = model {
+            customDelegate?.onSignsReceived(socket: self, model: model, clusterNumber: clusterNumber)
+        }
+        
+    }
+    public func onCluster1() {
+        socket.on("cluster1") {[weak self] data, _ in
+            self?.dataToSigns(clusterNumber: 1, data: data)
+        }
+    }
+    
+    public func onCluster2() {
+        socket.on("cluster2") { [weak self] data, _ in
+            self?.dataToSigns(clusterNumber: 2, data: data)
+        }
+    }
+    
+    public func onCluster3() {
+        socket.on("cluster3") { [weak self] data, _ in
+            self?.dataToSigns(clusterNumber: 3, data: data)
+        }
+    }
+    
+    public func onCluster4() {
+        socket.on("cluster4") { [weak self] data, _ in
+            self?.dataToSigns(clusterNumber: 4, data: data)
+        }
+    }
+}
+
+//MARK: - Mapping
+extension Socket {
+    static func dataToSignsModel(firstData: Any) -> ClusterModel? {
+        guard let data = firstData as? [String: Any] else {
+            SwiftyBeaver.error("Incorrect model, it must be json")
+            return nil
+        }
+        let json = JSON(data)
+        
+        guard let size = json["size"].int else {
+            return nil
+            
+        }
+        var model = ClusterModel(size: size,
+                                 signs: [])
+
+        guard let signs = json["signs"].array  else {
+            return model
+        }
+        var array = [SignModel]()
+        for jsonObject in signs {
+            var el = SignModel(correct: jsonObject["correct"].boolValue,
+                               lat: jsonObject["lat"].doubleValue,
+                               lon: jsonObject["lon"].doubleValue,
+                               type: jsonObject["type"].stringValue,
+                               uuid: jsonObject["uuid"].stringValue)
+           array.append(el)
+        }
+        model.signs = array
+//        let parseddata = try? JSONDecoder().decode([SignModel].self, from: Data(signs.utf8))
+//        if let parsedSigns = parseddata {
+//            model.signs = parsedSigns
+//        }
+        return model
     }
 }

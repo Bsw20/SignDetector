@@ -10,6 +10,7 @@ import UIKit
 import YandexMapsMobile
 import SnapKit
 import AVFoundation
+import CoreLocation
 
 class MainMapViewController: UIViewController {
     //MARK: - Variables
@@ -20,6 +21,9 @@ class MainMapViewController: UIViewController {
     private var input: AVCaptureDeviceInput!
     private var output: AVCapturePhotoOutput!
     private var socket: Socket!
+    var locationManager: CLLocationManager = CLLocationManager()
+    
+    private let addLocationPointImageView = UIImageView(image: #imageLiteral(resourceName: "AddNewLocationVector"))
     
     
     
@@ -60,6 +64,7 @@ class MainMapViewController: UIViewController {
         setupConstraints()
         let point = YMKPoint(latitude: 55.751244, longitude: 37.618423)
         mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+//        mapView.mapWindow.focusRect
 //        let userLocationLayer = YMKMapKit.sharedInstance().createUserLocationLayer(with: mapView.mapWindow)
 //           userLocationLayer.setVisibleWithOn(true)
 //           userLocationLayer.isHeadingEnabled = true
@@ -118,8 +123,15 @@ class MainMapViewController: UIViewController {
                                                             style: .plain, target: self,
                                                             action: #selector(filterButtonTapped))
         
-        let addPlace = UIAction(title: "Добавить участок") { _ in
+        let addPlace = UIAction(title: "Добавить участок") { [weak self]_ in
           print("add place")
+            guard let self = self else { return }
+        
+            self.view.addSubview(self.addLocationPointImageView)
+            self.addLocationPointImageView.snp.makeConstraints { make in
+                make.centerX.centerY.equalToSuperview()
+            }
+            
         }
         let takePicture = UIAction(title: "Сделать фотографию") {[weak self] _ in
             guard let self = self else { return }
@@ -136,13 +148,18 @@ class MainMapViewController: UIViewController {
     }
     
     private func configure() {
+        locationManager.delegate = self
+        locationManager.startUpdatingHeading()
+        
         socket = Socket.shared
         socket.customDelegate = self
         let panGesture = UIPanGestureRecognizer(target: self, action:#selector(draggedView(gesture:)))
         dragableView.addGestureRecognizer(panGesture)
-        
+        mapView.mapWindow.addSizeChangedListener(with: self)
+        mapView.mapWindow.map.addCameraListener(with: self)
+//        lat: 55.751244, long: 37.618423
         mapView.mapWindow.map.move(with:
-            YMKCameraPosition(target: YMKPoint(latitude: 0, longitude: 0), zoom: 14, azimuth: 0, tilt: 0))
+            YMKCameraPosition(target: YMKPoint(latitude: 55.751244, longitude: 37.618423), zoom: 14, azimuth: 0, tilt: 0))
         
         let scale = UIScreen.main.scale
         
@@ -172,17 +189,6 @@ class MainMapViewController: UIViewController {
                                      ]
         settings.previewPhotoFormat = previewFormat as [String : Any]
         self.output.capturePhoto(with: settings, delegate: self)
-//        guard let connection = output.connection(with: AVMediaType.video) else { return }
-//        connection.videoOrientation = .portrait
-//        output.captureStillImageAsynchronouslyFromConnection(connection) { (sampleBuffer, error) in
-//         guard sampleBuffer != nil && error == nil else { return }
-//
-//         let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
-//         guard let image = UIImage(data: imageData) else { return }
-//      }
-
-         //do stuff with image
-
       }
     //MARK: - Objc func
     @objc private func filterButtonTapped() {
@@ -242,6 +248,157 @@ class MainMapViewController: UIViewController {
         capturePhoto()
     }
 }
+//MARK: - Main map delegates
+extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListener, YMKMapCameraListener {
+    //        /** Degrees to Radian **/
+    class func degreeToRadian(angle:CLLocationDegrees) -> CGFloat {
+        return (  (CGFloat(angle)) / 180.0 * CGFloat(Double.pi)  )
+    }
+
+    //        /** Radians to Degrees **/
+    class func radianToDegree(radian:CGFloat) -> CLLocationDegrees {
+        return CLLocationDegrees(  radian * CGFloat(Double.pi) )
+    }
+
+    class func middlePointOfListMarkers(listCoords: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D {
+
+        var x = 0.0 as CGFloat
+        var y = 0.0 as CGFloat
+        var z = 0.0 as CGFloat
+
+        for coordinate in listCoords{
+            var lat:CGFloat = degreeToRadian(angle: coordinate.latitude)
+            var lon:CGFloat = degreeToRadian(angle: coordinate.longitude)
+            x = x + cos(lat) * cos(lon)
+            y = y + cos(lat) * sin(lon)
+            z = z + sin(lat)
+        }
+
+        x = x/CGFloat(listCoords.count)
+        y = y/CGFloat(listCoords.count)
+        z = z/CGFloat(listCoords.count)
+
+        var resultLon: CGFloat = atan2(y, x)
+        var resultHyp: CGFloat = sqrt(x*x+y*y)
+        var resultLat:CGFloat = atan2(z, resultHyp)
+
+        var newLat = radianToDegree(radian: resultLat)
+        var newLon = radianToDegree(radian: resultLon)
+        var result:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: newLat, longitude: newLon)
+
+        return result
+
+    }
+    
+    class func geographicMidpoint(betweenCoordinates coordinates: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D {
+
+        guard coordinates.count > 1 else {
+            return coordinates.first ?? // return the only coordinate
+                CLLocationCoordinate2D(latitude: 0, longitude: 0) // return null island if no coordinates were given
+        }
+
+        var x = Double(0)
+        var y = Double(0)
+        var z = Double(0)
+
+        for coordinate in coordinates {
+            var lat:CGFloat = MainMapViewController.degreeToRadian(angle: coordinate.latitude)
+            var lon:CGFloat = MainMapViewController.degreeToRadian(angle: coordinate.longitude)
+            
+            x += Double(cos(lat) * cos(lon))
+            y += Double(cos(lat) * sin(lon))
+            z += Double(sin(lat))
+        }
+
+        x /= Double(coordinates.count)
+        y /= Double(coordinates.count)
+        z /= Double(coordinates.count)
+
+        let lon = atan2(y, x)
+        let hyp = sqrt(x * x + y * y)
+        let lat = atan2(z, hyp)
+
+        return CLLocationCoordinate2D(latitude: MainMapViewController.radianToDegree(radian: CGFloat(lat)), longitude:  MainMapViewController.radianToDegree(radian: CGFloat(lon)))
+    }
+    
+    class func findCenterPoint(_lo1: CLLocationCoordinate2D, _loc2: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+        var lon1 = _lo1.longitude * M_PI / 180;
+        var lon2 = _loc2.longitude * M_PI / 180;
+
+        var lat1 = _lo1.latitude * M_PI / 180;
+        var lat2 = _loc2.latitude * M_PI / 180;
+
+        var dLon = lon2 - lon1;
+
+        var x = cos(lat2) * cos(dLon);
+        var y = cos(lat2) * sin(dLon);
+
+        var lat3 = atan2( sin(lat1) + sin(lat2), sqrt((cos(lat1) + x) * (cos(lat1) + x) + y * y) );
+        var lon3 = lon1 + atan2(y, cos(lat1) + x);
+        
+
+        return CLLocationCoordinate2D(latitude: lat3 * 180 / M_PI,
+                                      longitude: lon3 * 180 / M_PI)
+    }
+
+    
+    func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
+        print(#function)
+//        let centerPoint = YMKPoint(latitude: <#T##Double#>,
+//                                   longitude: <#T##Double#>)
+//        let map = mapView.mapWindow.map.visibleRegion.bottomLeft
+        
+        let map = mapView.mapWindow.map
+        print("\(map.visibleRegion.bottomLeft.latitude) \(map.visibleRegion.bottomLeft.longitude)")
+        
+        let topLeft = map.visibleRegion.topLeft
+        let bottomRight = map.visibleRegion.bottomRight
+        
+        let firstLocation = CLLocation(latitude: topLeft.latitude, longitude: topLeft.longitude)
+        let secondLocation = CLLocation(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
+        print(firstLocation.distance(from: secondLocation) / 2)
+        let radius = firstLocation.distance(from: secondLocation) / 2
+//        let middlePoint = MainMapViewController.middlePointOfListMarkers(listCoords: [
+//            CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude),
+//            CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
+//        ])
+//        let middlePoint = MainMapViewController.geographicMidpoint(betweenCoordinates: [
+//            CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude),
+//            CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
+//        ])
+        let middlePoint = MainMapViewController.findCenterPoint(_lo1: CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude), _loc2: CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude))
+//        middlePoint.latitude
+//        socket.sendImage(image: <#T##Data#>, completion: <#T##(Result<Void, Error>) -> Void#>)
+        if socket != nil {
+            print(".... \(topLeft.latitude) \(topLeft.longitude) \(bottomRight.latitude) \(bottomRight.longitude) \(middlePoint.latitude) \(middlePoint.longitude) \(radius)")
+            socket.sendCurrentCoordinates(radius: radius, lat: middlePoint.latitude, long: middlePoint.longitude, filter: [])
+        }
+        
+    }
+    
+    func onMapWindowSizeChanged(with mapWindow: YMKMapWindow, newWidth: Int, newHeight: Int) {
+        print(#function)
+    }
+    
+    func onStart(with map: YMKMap, finish finishCameraPosition: YMKCameraPosition) {
+        print(#function)
+    }
+    
+    func onCancel(with map: YMKMap, cameraPosition: YMKCameraPosition) {
+        print(#function)
+    }
+    
+    func onFinish(with map: YMKMap, cameraPosition: YMKCameraPosition) {
+        print(#function)
+    }
+}
+
+//MARK: - CLLocationManagerDelegate
+extension MainMapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+//        print(newHeading.magneticHeading)
+    }
+}
 
 //MARK: - Timer
 extension MainMapViewController {
@@ -282,9 +439,19 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
+    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
+        print(#function)
+        for sign in model.signs {
+            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+        }
+
+    }
+    
     func didConnect(socket: Socket) {
         print("did connect ViewController")
-        createTimer()
+//        createTimer()
+        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
     }
     
     func didDisconnect(socket: Socket) {
@@ -308,6 +475,7 @@ extension MainMapViewController: AVCapturePhotoCaptureDelegate {
         print("HERE")
         socket.sendImage(image: photoData) { result in
             print("IMAGE SEND WITH SOCKET")
+            print(self.locationManager.heading?.magneticHeading)
         }
 //        socket.sendImage { <#Result<Void, Error>#> in
 //            <#code#>

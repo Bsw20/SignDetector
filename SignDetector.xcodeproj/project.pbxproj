@@ -47,6 +47,8 @@
 		30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11252645B246006FC056 /* GlobalConfig.swift */; };
 		30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11272646B3B1006FC056 /* UserAPIService.swift */; };
 		30BE112A26485333006FC056 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE112926485333006FC056 /* ImagePicker.swift */; };
+		30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C039264C3CA300E3BCF6 /* SignModel.swift */; };
+		30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */; };
 		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +97,8 @@
 		30BE11252645B246006FC056 /* GlobalConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConfig.swift; sourceTree = "<group>"; };
 		30BE11272646B3B1006FC056 /* UserAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIService.swift; sourceTree = "<group>"; };
 		30BE112926485333006FC056 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		30D8C039264C3CA300E3BCF6 /* SignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignModel.swift; sourceTree = "<group>"; };
+		30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterModel.swift; sourceTree = "<group>"; };
 		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +189,7 @@
 		30982F88263EEFC0006BBFD6 /* MapScene */ = {
 			isa = PBXGroup;
 			children = (
+				30D8C038264C3C8E00E3BCF6 /* Models */,
 				30982FA2263F01A2006BBFD6 /* Views */,
 				30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */,
 			);
@@ -302,6 +307,15 @@
 				30BE11272646B3B1006FC056 /* UserAPIService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		30D8C038264C3C8E00E3BCF6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C039264C3CA300E3BCF6 /* SignModel.swift */,
+				30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		72051B4FD4C67F954D3C32FD /* Frameworks */ = {
@@ -465,6 +479,7 @@
 				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
 				30BE1122264489EF006FC056 /* SocketManager.swift in Sources */,
 				30BE111C26440088006FC056 /* APIManager.swift in Sources */,
+				30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
 				30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */,
@@ -479,6 +494,7 @@
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
 				30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */,
 				3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */,
+				30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */,
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,

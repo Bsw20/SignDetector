@@ -12,5 +12,6 @@ target 'SignDetector' do
   pod 'Alamofire'
   pod 'Socket.IO-Client-Swift'
   pod 'SwiftyBeaver'
+  pod 'SwiftyJSON'
 
 end
