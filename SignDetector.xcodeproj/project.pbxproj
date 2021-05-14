@@ -46,9 +46,14 @@
 		30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11232645A57D006FC056 /* MainTabBarController.swift */; };
 		30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11252645B246006FC056 /* GlobalConfig.swift */; };
 		30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11272646B3B1006FC056 /* UserAPIService.swift */; };
-		30BE112A26485333006FC056 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE112926485333006FC056 /* ImagePicker.swift */; };
 		30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C039264C3CA300E3BCF6 /* SignModel.swift */; };
 		30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */; };
+		30D8C03E264D6F1F00E3BCF6 /* NewLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C03D264D6F1F00E3BCF6 /* NewLocationView.swift */; };
+		30D8C040264D827600E3BCF6 /* YMKPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C03F264D827500E3BCF6 /* YMKPoint + Extension.swift */; };
+		30D8C042264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C041264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift */; };
+		30D8C045264E9CB000E3BCF6 /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C044264E9CB000E3BCF6 /* EditLocationViewController.swift */; };
+		30D8C049264EBB6900E3BCF6 /* ImagedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C048264EBB6900E3BCF6 /* ImagedButton.swift */; };
+		30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C04B264ECBCA00E3BCF6 /* EditingSignModel.swift */; };
 		BF64CA5F1434532D2665A228 /* Pods_SignDetector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20BEA6F3DE524B2926CCFB62 /* Pods_SignDetector.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,9 +101,14 @@
 		30BE11232645A57D006FC056 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		30BE11252645B246006FC056 /* GlobalConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConfig.swift; sourceTree = "<group>"; };
 		30BE11272646B3B1006FC056 /* UserAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIService.swift; sourceTree = "<group>"; };
-		30BE112926485333006FC056 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		30D8C039264C3CA300E3BCF6 /* SignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignModel.swift; sourceTree = "<group>"; };
 		30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterModel.swift; sourceTree = "<group>"; };
+		30D8C03D264D6F1F00E3BCF6 /* NewLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationView.swift; sourceTree = "<group>"; };
+		30D8C03F264D827500E3BCF6 /* YMKPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YMKPoint + Extension.swift"; sourceTree = "<group>"; };
+		30D8C041264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreLocationPoint + Extension.swift"; sourceTree = "<group>"; };
+		30D8C044264E9CB000E3BCF6 /* EditLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationViewController.swift; sourceTree = "<group>"; };
+		30D8C048264EBB6900E3BCF6 /* ImagedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagedButton.swift; sourceTree = "<group>"; };
+		30D8C04B264ECBCA00E3BCF6 /* EditingSignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingSignModel.swift; sourceTree = "<group>"; };
 		738761DD886E9BF96DFB658A /* Pods-SignDetector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignDetector.release.xcconfig"; path = "Target Support Files/Pods-SignDetector/Pods-SignDetector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				30BE11232645A57D006FC056 /* MainTabBarController.swift */,
+				30D8C043264E9C9C00E3BCF6 /* Edit&CreateScene */,
 				30982F88263EEFC0006BBFD6 /* MapScene */,
 				3064FED5263B0DF000E11394 /* SettingsScene */,
 				3064FEC32638871D00E11394 /* PersonalCabinetScene */,
@@ -201,7 +212,7 @@
 			children = (
 				30982FA3263F01AF006BBFD6 /* MapTitleView.swift */,
 				30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */,
-				30BE112926485333006FC056 /* ImagePicker.swift */,
+				30D8C03D264D6F1F00E3BCF6 /* NewLocationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -253,6 +264,8 @@
 				30AB20982637FC5900F97736 /* UITextField + Extension.swift */,
 				3064FECF2638920F00E11394 /* String + Extension.swift */,
 				30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */,
+				30D8C03F264D827500E3BCF6 /* YMKPoint + Extension.swift */,
+				30D8C041264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -316,6 +329,40 @@
 				30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		30D8C043264E9C9C00E3BCF6 /* Edit&CreateScene */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C04A264ECBAF00E3BCF6 /* Models */,
+				30D8C046264EBA8700E3BCF6 /* Views */,
+				30D8C047264EBA8D00E3BCF6 /* Controllers */,
+			);
+			name = "Edit&CreateScene";
+			sourceTree = "<group>";
+		};
+		30D8C046264EBA8700E3BCF6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C048264EBB6900E3BCF6 /* ImagedButton.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		30D8C047264EBA8D00E3BCF6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C044264E9CB000E3BCF6 /* EditLocationViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		30D8C04A264ECBAF00E3BCF6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C04B264ECBCA00E3BCF6 /* EditingSignModel.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		72051B4FD4C67F954D3C32FD /* Frameworks */ = {
@@ -478,16 +525,20 @@
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
 				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
 				30BE1122264489EF006FC056 /* SocketManager.swift in Sources */,
+				30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */,
+				30D8C049264EBB6900E3BCF6 /* ImagedButton.swift in Sources */,
 				30BE111C26440088006FC056 /* APIManager.swift in Sources */,
+				30D8C045264E9CB000E3BCF6 /* EditLocationViewController.swift in Sources */,
 				30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
+				30D8C042264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift in Sources */,
+				30D8C03E264D6F1F00E3BCF6 /* NewLocationView.swift in Sources */,
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
 				30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */,
 				3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
 				30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */,
-				30BE112A26485333006FC056 /* ImagePicker.swift in Sources */,
 				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
 				3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */,
@@ -497,6 +548,7 @@
 				30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */,
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
+				30D8C040264D827600E3BCF6 /* YMKPoint + Extension.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,
 				30BE111E264405D0006FC056 /* APIError.swift in Sources */,

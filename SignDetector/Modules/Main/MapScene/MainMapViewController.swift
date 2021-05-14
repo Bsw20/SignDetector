@@ -26,8 +26,18 @@ class MainMapViewController: UIViewController {
     private let addLocationPointImageView = UIImageView(image: #imageLiteral(resourceName: "AddNewLocationVector"))
     
     
+    var searchManager: YMKSearchManager?
+    var searchSession: YMKSearchSession?
+    
+    
     
     //MARK: - Controls
+    private var addLocationView: NewLocationView = {
+       let view = NewLocationView()
+        view.layer.cornerRadius = 25
+        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        return view
+    }()
     private var dragableView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -125,12 +135,7 @@ class MainMapViewController: UIViewController {
         
         let addPlace = UIAction(title: "Добавить участок") { [weak self]_ in
           print("add place")
-            guard let self = self else { return }
-        
-            self.view.addSubview(self.addLocationPointImageView)
-            self.addLocationPointImageView.snp.makeConstraints { make in
-                make.centerX.centerY.equalToSuperview()
-            }
+            self?.addLocationViewLayout()
             
         }
         let takePicture = UIAction(title: "Сделать фотографию") {[weak self] _ in
@@ -148,6 +153,7 @@ class MainMapViewController: UIViewController {
     }
     
     private func configure() {
+        addLocationView.customDelegate = self
         locationManager.delegate = self
         locationManager.startUpdatingHeading()
         
@@ -250,77 +256,6 @@ class MainMapViewController: UIViewController {
 }
 //MARK: - Main map delegates
 extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListener, YMKMapCameraListener {
-    //        /** Degrees to Radian **/
-    class func degreeToRadian(angle:CLLocationDegrees) -> CGFloat {
-        return (  (CGFloat(angle)) / 180.0 * CGFloat(Double.pi)  )
-    }
-
-    //        /** Radians to Degrees **/
-    class func radianToDegree(radian:CGFloat) -> CLLocationDegrees {
-        return CLLocationDegrees(  radian * CGFloat(Double.pi) )
-    }
-
-    class func middlePointOfListMarkers(listCoords: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D {
-
-        var x = 0.0 as CGFloat
-        var y = 0.0 as CGFloat
-        var z = 0.0 as CGFloat
-
-        for coordinate in listCoords{
-            var lat:CGFloat = degreeToRadian(angle: coordinate.latitude)
-            var lon:CGFloat = degreeToRadian(angle: coordinate.longitude)
-            x = x + cos(lat) * cos(lon)
-            y = y + cos(lat) * sin(lon)
-            z = z + sin(lat)
-        }
-
-        x = x/CGFloat(listCoords.count)
-        y = y/CGFloat(listCoords.count)
-        z = z/CGFloat(listCoords.count)
-
-        var resultLon: CGFloat = atan2(y, x)
-        var resultHyp: CGFloat = sqrt(x*x+y*y)
-        var resultLat:CGFloat = atan2(z, resultHyp)
-
-        var newLat = radianToDegree(radian: resultLat)
-        var newLon = radianToDegree(radian: resultLon)
-        var result:CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: newLat, longitude: newLon)
-
-        return result
-
-    }
-    
-    class func geographicMidpoint(betweenCoordinates coordinates: [CLLocationCoordinate2D]) -> CLLocationCoordinate2D {
-
-        guard coordinates.count > 1 else {
-            return coordinates.first ?? // return the only coordinate
-                CLLocationCoordinate2D(latitude: 0, longitude: 0) // return null island if no coordinates were given
-        }
-
-        var x = Double(0)
-        var y = Double(0)
-        var z = Double(0)
-
-        for coordinate in coordinates {
-            var lat:CGFloat = MainMapViewController.degreeToRadian(angle: coordinate.latitude)
-            var lon:CGFloat = MainMapViewController.degreeToRadian(angle: coordinate.longitude)
-            
-            x += Double(cos(lat) * cos(lon))
-            y += Double(cos(lat) * sin(lon))
-            z += Double(sin(lat))
-        }
-
-        x /= Double(coordinates.count)
-        y /= Double(coordinates.count)
-        z /= Double(coordinates.count)
-
-        let lon = atan2(y, x)
-        let hyp = sqrt(x * x + y * y)
-        let lat = atan2(z, hyp)
-
-        return CLLocationCoordinate2D(latitude: MainMapViewController.radianToDegree(radian: CGFloat(lat)), longitude:  MainMapViewController.radianToDegree(radian: CGFloat(lon)))
-    }
-    
     class func findCenterPoint(_lo1: CLLocationCoordinate2D, _loc2: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         var lon1 = _lo1.longitude * M_PI / 180;
         var lon2 = _loc2.longitude * M_PI / 180;
@@ -342,35 +277,40 @@ extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListen
     }
 
     
+    private func getMiddlePointIn(region visibleRegion: YMKVisibleRegion) -> CLLocationCoordinate2D  {
+        let topLeft = visibleRegion.topLeft
+        let bottomRight = visibleRegion.bottomRight
+        
+        let firstLocation = CLLocation(latitude: topLeft.latitude, longitude: topLeft.longitude)
+        let secondLocation = CLLocation(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
+        
+        let middlePoint = MainMapViewController.findCenterPoint(_lo1: CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude), _loc2: CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude))
+        
+        return middlePoint
+    }
+    
+    private func getRadiusIn(region visibleRegion: YMKVisibleRegion) -> Double {
+        let topLeft = visibleRegion.topLeft
+        let bottomRight = visibleRegion.bottomRight
+        
+        let firstLocation = CLLocation(latitude: topLeft.latitude, longitude: topLeft.longitude)
+        let secondLocation = CLLocation(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
+        
+        return firstLocation.distance(from: secondLocation) / 2
+    }
+    
     func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
         print(#function)
-//        let centerPoint = YMKPoint(latitude: <#T##Double#>,
-//                                   longitude: <#T##Double#>)
-//        let map = mapView.mapWindow.map.visibleRegion.bottomLeft
         
         let map = mapView.mapWindow.map
         print("\(map.visibleRegion.bottomLeft.latitude) \(map.visibleRegion.bottomLeft.longitude)")
         
-        let topLeft = map.visibleRegion.topLeft
-        let bottomRight = map.visibleRegion.bottomRight
-        
-        let firstLocation = CLLocation(latitude: topLeft.latitude, longitude: topLeft.longitude)
-        let secondLocation = CLLocation(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
-        print(firstLocation.distance(from: secondLocation) / 2)
-        let radius = firstLocation.distance(from: secondLocation) / 2
-//        let middlePoint = MainMapViewController.middlePointOfListMarkers(listCoords: [
-//            CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude),
-//            CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
-//        ])
-//        let middlePoint = MainMapViewController.geographicMidpoint(betweenCoordinates: [
-//            CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude),
-//            CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude)
-//        ])
-        let middlePoint = MainMapViewController.findCenterPoint(_lo1: CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: topLeft.longitude), _loc2: CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: bottomRight.longitude))
-//        middlePoint.latitude
-//        socket.sendImage(image: <#T##Data#>, completion: <#T##(Result<Void, Error>) -> Void#>)
+        let radius = getRadiusIn(region: map.visibleRegion)
+
+        let middlePoint = getMiddlePointIn(region: map.visibleRegion)
+
         if socket != nil {
-            print(".... \(topLeft.latitude) \(topLeft.longitude) \(bottomRight.latitude) \(bottomRight.longitude) \(middlePoint.latitude) \(middlePoint.longitude) \(radius)")
+//            print(".... \(topLeft.latitude) \(topLeft.longitude) \(bottomRight.latitude) \(bottomRight.longitude) \(middlePoint.latitude) \(middlePoint.longitude) \(radius)")
             socket.sendCurrentCoordinates(radius: radius, lat: middlePoint.latitude, long: middlePoint.longitude, filter: [])
         }
         
@@ -442,8 +382,8 @@ extension MainMapViewController: SocketManagerDelegate {
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
         print(#function)
         for sign in model.signs {
-            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
-            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+//            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+//            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
         }
 
     }
@@ -544,8 +484,69 @@ extension MainMapViewController: VideoModelViewDelegate {
     
     
 }
+//MARK: - NewLocationViewDelegate
+extension MainMapViewController: NewLocationViewDelegate {
+    func approveButtonTapped() {
+        print("approveButtonTapped")
+        let middlePoint = getMiddlePointIn(region: mapView.mapWindow.map.visibleRegion).toYMKPoint()
+        print("\(middlePoint.latitude) \(middlePoint.longitude)")
+        let mapKit = YMKMapKit.sharedInstance()
+        searchManager = YMKSearch.sharedInstance().createSearchManager(with: .online)
+        
+        searchSession = searchManager!.submit(with: middlePoint, zoom: nil, searchOptions: YMKSearchOptions()) { result, error in
+            if let error = error {
+                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+                return
+            }
+            if let name = result?.collection.children.first?.obj?.name {
+                print("jfkalsjdflk\(name)")
+                onMainThread {[weak self] in
+                    let vc = EditLocationViewController(viewType: .create(model: .init(address: name, latitude: middlePoint.latitude, longitude: middlePoint.longitude)))
+                    vc.hidesBottomBarWhenPushed = true
+//                    vc.hide
+                    self?.navigationController?.push(vc, animated: true)
+                }
+            } else {
+                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+            }
+//            let res = result?.collection.children.first?.obj?.name
 
+//            result?.collection.
+            print(error)
+//        mapView.mapWindow.map.
+        }
+    }
+    
+    func cancelButtonTapped() {
+        defaultLayout()
+    }
+    
+    
+}
+//MARK: - Constraints
 extension MainMapViewController {
+    private func defaultLayout() {
+        videoModeView.isHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        addLocationView.removeFromSuperview()
+        addLocationPointImageView.removeFromSuperview()
+    }
+    private func addLocationViewLayout() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.videoModeView.isHidden = true
+    
+        self.view.addSubview(self.addLocationView)
+        self.addLocationView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+        }
+        self.view.addSubview(self.addLocationPointImageView)
+        self.addLocationPointImageView.snp.makeConstraints {[weak self] make in
+            guard let self = self else { return }
+            make.centerX.equalToSuperview()
+            print(self.addLocationPointImageView.frame.height)
+            make.centerY.equalToSuperview().inset(self.addLocationPointImageView.frame.height / 2)
+        }
+    }
     private func setupConstraints() {
         let screenSize = UIScreen.main.bounds
         view.addSubview(mapView)
