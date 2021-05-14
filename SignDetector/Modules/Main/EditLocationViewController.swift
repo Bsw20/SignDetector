@@ -114,11 +114,8 @@ class EditLocationViewController: UIViewController {
 //MARK: - ImagedButtonDelegate
 extension EditLocationViewController: ImagedButtonDelegate {
     func buttonTapped(button: ImagedButton) {
-        if button == addressButton {
-            print("ADDRESS BUTTON")
-        }
         if button == signTypeButton {
-            print("SIGN TYPE BUTTON")
+            navigationController?.push(SelectSignsViewController())
         }
     }
 }

@@ -33,6 +33,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             startSignIn()
         }
+        
+        LocalManager.shared.signs
     }
     
     func startSignIn() {
