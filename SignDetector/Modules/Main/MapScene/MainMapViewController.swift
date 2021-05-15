@@ -32,6 +32,12 @@ class MainMapViewController: UIViewController {
     
     
     //MARK: - Controls
+    //MARK: Clusters
+    private var firstClusterView = SignsClusterView()
+    private var secondClusterView = SignsClusterView()
+    private var thirdClusterView = SignsClusterView()
+    private var fourthClusterView = SignsClusterView()
+    
     private var addLocationView: NewLocationView = {
        let view = NewLocationView()
         view.layer.cornerRadius = 25
@@ -434,16 +440,16 @@ extension MainMapViewController: YMKUserLocationObjectListener {
         
         let pinPlacemark = view.pin.useCompositeIcon()
 
-        pinPlacemark.setIconWithName("icon",
-            image: UIImage(named:"Icon")!,
-            style:YMKIconStyle(
-                anchor: CGPoint(x: 0, y: 0) as NSValue,
-                rotationType:YMKRotationType.rotate.rawValue as NSNumber,
-                zIndex: 0,
-                flat: true,
-                visible: true,
-                scale: 1.5,
-                tappableArea: nil))
+//        pinPlacemark.setIconWithName("icon",
+//            image: UIImage(named:"Icon")!,
+//            style:YMKIconStyle(
+//                anchor: CGPoint(x: 0, y: 0) as NSValue,
+//                rotationType:YMKRotationType.rotate.rawValue as NSNumber,
+//                zIndex: 0,
+//                flat: true,
+//                visible: true,
+//                scale: 1.5,
+//                tappableArea: nil))
 
         pinPlacemark.setIconWithName(
             "pin",
@@ -565,6 +571,41 @@ extension MainMapViewController {
         
         view.addSubview(dragableView)
         dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 + 0.0825 * screenSize.height , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
+        
+        view.addSubview(firstClusterView)
+        view.addSubview(secondClusterView)
+        view.addSubview(thirdClusterView)
+        view.addSubview(fourthClusterView)
+        
+        let defaultWidthOffset = screenSize.width * 0.25
+        let defaultHeightOffset = screenSize.height * 0.15
+        firstClusterView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(defaultWidthOffset)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(defaultHeightOffset)
+        }
+        
+        secondClusterView.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(defaultWidthOffset)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(defaultHeightOffset)
+        }
+        
+        thirdClusterView.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(defaultWidthOffset)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(defaultHeightOffset)
+        }
+        
+        fourthClusterView.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(defaultWidthOffset)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(defaultHeightOffset)
+        }
+//        print("DLFJI")
+//        print(screenSize.height)
+//        print(view.safeAreaLayoutGuide.layoutFrame.width)
+//        print("lfkjsd")
+//        print(view.safeAreaLayoutGuide.layoutFrame.height)
+//        firstClusterView.snp.makeConstraints { make in
+//            <#code#>
+//        }
         
     }
 }

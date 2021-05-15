@@ -18,7 +18,8 @@ class SelectSignCell: UITableViewCell {
     private var rightImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = #colorLiteral(red: 0.8901960784, green: 0.8941176471, blue: 0.9098039216, alpha: 1)
+//        imageView.backgroundColor = #colorLiteral(red: 0.8901960784, green: 0.8941176471, blue: 0.9098039216, alpha: 1)
+        imageView.backgroundColor = .white
         imageView.layer.cornerRadius = 9
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill

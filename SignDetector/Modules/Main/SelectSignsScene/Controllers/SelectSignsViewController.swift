@@ -75,7 +75,7 @@ extension SelectSignsViewController: UITableViewDelegate, UITableViewDataSource 
         guard let model = model else {
             fatalError("Неверное количество знаков")
         }
-        cell.configure(text: model.name, image: #imageLiteral(resourceName: "1_1"))
+        cell.configure(text: model.name, image: UIImage(named: model.imageName!))
         return cell
     }
     
