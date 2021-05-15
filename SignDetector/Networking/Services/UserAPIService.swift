@@ -21,6 +21,49 @@ struct UserAPIService {
             ]
         }
     }
+    
+    struct AddSignModel {
+        var lat: Double
+        var lon: Double
+        var name: String
+        var address: String
+        
+        public var representation: [String: Any] {
+            var rep: [String: Any] = ["lat": lat]
+            rep["lon"] = lon
+            rep["name"] = name
+            rep["address"] = address
+            return rep
+        }
+    }
+    
+    public func addSign(model: AddSignModel, completion: @escaping (Result<Void, APIError>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.ADDSIGN_ADDRESS
+            
+            AF.request(url,
+                       method: .post,
+                       parameters: model.representation,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData(completionHandler: { (response) in
+                    
+                    switch response.result {
+                    case .success(let _):
+                        onMainThread {
+                            completion(.success(Void()))
+                        }
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        onMainThread {
+                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                        }
+                    }
+                })
+        }
+    }
+    
     public func getUserInfo(completion: @escaping (Result<PersonalCabinetModel, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.GETUSERINFO_ADDRESS

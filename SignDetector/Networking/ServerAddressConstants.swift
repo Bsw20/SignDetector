@@ -21,4 +21,5 @@ struct ServerAddressConstants {
     
     //MARK: - Main
     static var GETUSERINFO_ADDRESS = MAIN_SERVER_ADDRESS + "/user/getProfile"
+    static var ADDSIGN_ADDRESS = MAIN_SERVER_ADDRESS + "/sign/addSign"
 }

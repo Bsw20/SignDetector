@@ -15,6 +15,7 @@ protocol EditLocationViewControllerDelegate: NSObjectProtocol {
 class EditLocationViewController: UIViewController {
     enum ViewType {
         case create(model: EditingSignModel)
+        case edit(model: EditingSignModel)
     }
     //MARK: - Variables
     weak var customDelegate: EditLocationViewControllerDelegate?
@@ -87,6 +88,14 @@ class EditLocationViewController: UIViewController {
             topLabel.text = "Новый участок"
             addressButton.configure(text: model.address)
             signTypeButton.configure(text: "Выберите тип знака")
+        case .edit(model: let model):
+            self.model = model
+            topLabel.text = "Редактировать участок"
+            addressButton.configure(text: model.address)
+            if let signName = model.signName {
+                signTypeButton.configure(text: LocalManager.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
+            }
+            
         }
         super.init(nibName: nil, bundle: nil)
     }
@@ -113,7 +122,21 @@ class EditLocationViewController: UIViewController {
             UIApplication.showAlert(title: "Ошибка!", message: "Выберите тип знака")
             return
         }
-        
+        UserAPIService.shared.addSign(model: .init(lat: model.latitude, lon: model.longitude, name: model.signName!, address: model.address)) { result in
+            switch result {
+            
+            case .success():
+                onMainThread {[weak self] in
+                    guard let self = self else { return }
+                    self.customDelegate?.signWasSaved(signId: self.model.uuid)
+                    self.navigationController?.popViewController(animated: true)
+                }
+            case .failure(_):
+                onMainThread {[weak self] in
+                    UIApplication.showAlert(title: "Ошибка!", message: "Не получилось добавить знак, попробуйте позже.")
+                }
+            }
+        }
     }
 }
 //MARK: - ImagedButtonDelegate
