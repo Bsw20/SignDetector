@@ -202,6 +202,21 @@ class MainMapViewController: UIViewController {
         settings.previewPhotoFormat = previewFormat as [String : Any]
         self.output.capturePhoto(with: settings, delegate: self)
       }
+    
+    private func getClusterViewWith(index: Int) -> SignsClusterView {
+        switch index {
+        case 1:
+            return firstClusterView
+        case 2:
+            return secondClusterView
+        case 3:
+            return thirdClusterView
+        case 4:
+            return fourthClusterView
+        default:
+            fatalError("Unknown view")
+        }
+    }
     //MARK: - Objc func
     @objc private func filterButtonTapped() {
         print("filter button tapped")
@@ -255,6 +270,8 @@ class MainMapViewController: UIViewController {
         }
     }
     
+    
+    
     @objc private func timerCalled() {
         print("TIMER CALLED \(timer?.timeInterval)")
         capturePhoto()
@@ -306,8 +323,8 @@ extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListen
     }
     
     func onCameraPositionChanged(with map: YMKMap, cameraPosition: YMKCameraPosition, cameraUpdateReason: YMKCameraUpdateReason, finished: Bool) {
+        guard finished else { return}
         print(#function)
-        
         let map = mapView.mapWindow.map
         print("\(map.visibleRegion.bottomLeft.latitude) \(map.visibleRegion.bottomLeft.longitude)")
         
@@ -387,10 +404,19 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 extension MainMapViewController: SocketManagerDelegate {
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
         print(#function)
-        for sign in model.signs {
-//            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
-//            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
-        }
+//        let mapObjects = mapView.mapWindow.map.mapObjects
+        getClusterViewWith(index: clusterNumber).configure(count: model.size)
+//        mapObjects.clear()
+//        for searchResult in response.collection.children {
+//            if let point = searchResult.obj?.geometry.first?.point {
+//                let placemark = mapObjects.addPlacemark(with: point)
+//                placemark.setIconWith(UIImage(named: "SearchResult")!)
+//            }
+//        }
+//        for sign in model.signs {
+////            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+////            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+//        }
 
     }
     
