@@ -14,10 +14,12 @@ class SignsClusterView: UIView {
                                       font: UIFont.sfUISemibold(with: 16),
                                         textColor: .baseOrange(),
                                         textAlignment: .center)
-    init() {
+    init(isHidden: Bool) {
         super.init(frame: .zero)
+        self.isHidden = isHidden
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .lightGray
+//        isOpaque = false
         setupConstraints()
         configure(count: 255009)
     }

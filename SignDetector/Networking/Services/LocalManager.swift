@@ -28,10 +28,7 @@ class LocalManager {
     public static var shared = LocalManager()
     
     public func getSignByIndex(index: Int) -> LocalManagerSignModel? {
-        if keys == nil || localSigns == nil {
-            let jsonData = readLocalFile(forName: "signsNames")!
-            parse(jsonData: jsonData)
-        }
+        initData()
         if index > keys!.count - 1 {
             return nil
         }
@@ -39,6 +36,23 @@ class LocalManager {
         return .init(name: signs[key]!,
                      imageName: key)
             
+    }
+    
+    public func getIndexBy(name: String) -> Int {
+        initData()
+        return keys!.firstIndex(of: name) ?? 0
+    }
+    
+    public func getSignNameBy(id: String) -> String? {
+        initData()
+        return localSigns![id]
+    }
+    
+    private func initData() {
+        if keys == nil || localSigns == nil {
+            let jsonData = readLocalFile(forName: "signsNames")!
+            parse(jsonData: jsonData)
+        }
     }
     
     private func readLocalFile(forName name: String) -> Data? {

@@ -62,7 +62,11 @@ extension SelectSignCell {
         signNameLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
             make.centerY.equalToSuperview()
-            make.right.equalTo(rightImageView.snp.left)
+//            make.right.equalTo(rightImageView.snp.left)
         }
+        
+        NSLayoutConstraint.activate([
+            signNameLabel.trailingAnchor.constraint(equalTo: rightImageView.leadingAnchor, constant: -5)
+        ])
     }
 }

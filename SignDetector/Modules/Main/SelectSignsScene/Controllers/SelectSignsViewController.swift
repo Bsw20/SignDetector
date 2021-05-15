@@ -8,8 +8,19 @@
 import Foundation
 import UIKit
 
+protocol SelectSignsViewControllerDelegate: NSObjectProtocol {
+    func applyButtonTapped(signName: String)
+}
+
 class SelectSignsViewController: UIViewController {
+    enum ViewModel {
+        case create
+        case edit(signName: String)
+    }
     
+    //MARK: - Variables
+    weak var customDelegate: SelectSignsViewControllerDelegate?
+    private var signName: String
     //MARK: - Controls
     private var applyButton = UIButton.getLittleRoundButton(text: "ПРИМЕНИТЬ",
                                                            isEnabled: true)
@@ -17,7 +28,7 @@ class SelectSignsViewController: UIViewController {
     private var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.allowsMultipleSelection = true
+        tableView.allowsMultipleSelection = false
         tableView.backgroundColor = .white
         return tableView
     }()
@@ -26,11 +37,27 @@ class SelectSignsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
+        tableView.selectRow(at: IndexPath(row: LocalManager.shared.getIndexBy(name: signName), section: 0), animated: true, scrollPosition: .top)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    init(viewModel: ViewModel) {
+        switch viewModel {
+        
+        case .create:
+            self.signName = LocalManager.shared.getSignByIndex(index: 0)!.name
+        case .edit(signName: let signName):
+            self.signName = signName
+        }
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -39,6 +66,7 @@ class SelectSignsViewController: UIViewController {
         setupUI()
         setupConstraints()
     }
+    
     
     //MARK: - Funcs
     private func configure() {
@@ -51,12 +79,16 @@ class SelectSignsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
+//        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.sfUISemibold(with: 20)]
+        navigationItem.title = "Тип знака"
     }
     
     //MARK: - objc funcs
     @objc private func applyButtonTapped() {
         print("APPLY BUTTON TAPPED")
-        print(tableView.indexPathsForSelectedRows?.count)
+//        print(tableView.indexPathsForSelectedRows?.count)
+        customDelegate?.applyButtonTapped(signName: LocalManager.shared.getSignByIndex(index: tableView.indexPathForSelectedRow?.row ?? 0)!.imageName!)
+        navigationController?.popViewController(animated: true)
     }
 }
 

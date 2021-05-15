@@ -13,6 +13,8 @@
 		3064FED02638920F00E11394 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FECF2638920F00E11394 /* String + Extension.swift */; };
 		3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FED6263B0DFE00E11394 /* SettingsViewController.swift */; };
 		3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */; };
+		309385402650256F00B8D6C8 /* YMKCustomPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */; };
+		30938542265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */; };
 		30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */; };
 		30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */; };
 		30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA3263F01AF006BBFD6 /* MapTitleView.swift */; };
@@ -70,6 +72,8 @@
 		3064FECF2638920F00E11394 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		3064FED6263B0DFE00E11394 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignsClusterView.swift; sourceTree = "<group>"; };
+		3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YMKCustomPoint.swift; sourceTree = "<group>"; };
+		30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YMKVisibleRegion + Extension.swift"; sourceTree = "<group>"; };
 		30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
 		30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		30982FA3263F01AF006BBFD6 /* MapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTitleView.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 				30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */,
 				30D8C03D264D6F1F00E3BCF6 /* NewLocationView.swift */,
 				3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */,
+				3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 				30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */,
 				30D8C03F264D827500E3BCF6 /* YMKPoint + Extension.swift */,
 				30D8C041264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift */,
+				30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -580,6 +586,7 @@
 				30D8C04E264EDB9E00E3BCF6 /* LocalManager.swift in Sources */,
 				3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
+				30938542265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift in Sources */,
 				30AB20462636B09800F97736 /* UIColor + Extension.swift in Sources */,
 				30AB208F2637638E00F97736 /* PersonalDataViewController.swift in Sources */,
 				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
@@ -593,6 +600,7 @@
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
 				30D8C040264D827600E3BCF6 /* YMKPoint + Extension.swift in Sources */,
+				309385402650256F00B8D6C8 /* YMKCustomPoint.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,
 				30BE111E264405D0006FC056 /* APIError.swift in Sources */,

@@ -109,14 +109,30 @@ class EditLocationViewController: UIViewController {
     //MARK: - objc funcs
     @objc private func saveButtonTapped() {
         print(#function)
+        guard model.signName != nil else {
+            UIApplication.showAlert(title: "Ошибка!", message: "Выберите тип знака")
+            return
+        }
+        
     }
 }
 //MARK: - ImagedButtonDelegate
 extension EditLocationViewController: ImagedButtonDelegate {
     func buttonTapped(button: ImagedButton) {
         if button == signTypeButton {
-            navigationController?.push(SelectSignsViewController())
+            let vc = SelectSignsViewController(viewModel: model.signName == nil ? .create : .edit(signName: model.signName!))
+            vc.customDelegate = self
+            navigationController?.push(vc)
         }
+    }
+}
+
+//MARK: - SelectSignsViewControllerDelegate
+extension EditLocationViewController: SelectSignsViewControllerDelegate {
+    func applyButtonTapped(signName: String) {
+        self.model.signName = signName
+//        let model = LocalManager.shared.getSignByIndex(index: indexPath.item)
+        signTypeButton.configure(text: LocalManager.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
     }
 }
 //MARK: - Constraintts

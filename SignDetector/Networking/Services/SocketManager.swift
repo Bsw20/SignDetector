@@ -11,6 +11,7 @@ import SocketIO
 import Combine
 import SwiftyBeaver
 import SwiftyJSON
+import YandexMapsMobile
 
 protocol SocketManagerDelegate: NSObjectProtocol {
     func didConnect(socket: Socket)
@@ -70,8 +71,25 @@ final class Socket: ObservableObject {
         }
     }
     
-    public func sendCurrentCoordinates(radius: Double, lat: Double, long: Double, filter: [String] ) {
-        socket.emit("getSigns", ["radius" : radius, "lat": lat, "lon": long, "filter" : filter]) {
+    public func sendCurrentCoordinates(center: YMKPoint, topRight: YMKPoint, topLeft: YMKPoint, bottomRight: YMKPoint, bottomLeft: YMKPoint, filter: [String] ) {
+        socket.emit("getSigns", [
+                        "leftDown" : [
+                            "lat": bottomLeft.latitude,
+                            "lon": bottomLeft.longitude
+                        ],
+                        "leftUp" : [
+                            "lat": topLeft.latitude,
+                            "lon": topLeft.longitude
+                        ],
+                        "rightDown" : [
+                            "lat": bottomRight.latitude,
+                            "lon": bottomRight.longitude
+                        ],
+                        "rightUp" : [
+                            "lat": topRight.latitude,
+                            "lon": topRight.longitude
+                        ],
+                        "lat": center.latitude, "lon": center.longitude, "filter" : filter]) {
             print(#function)
         }
     }

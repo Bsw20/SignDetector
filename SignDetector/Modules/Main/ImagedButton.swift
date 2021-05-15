@@ -19,7 +19,8 @@ class ImagedButton: UIButton {
     //MARK: - Controls
     private var leftLabel = UILabel(text: "",
                                         fontSize: 18,
-                                        textColor: #colorLiteral(red: 0.2431372549, green: 0.262745098, blue: 0.3294117647, alpha: 1))
+                                        textColor: #colorLiteral(red: 0.2431372549, green: 0.262745098, blue: 0.3294117647, alpha: 1),
+                                        textAlignment: .left)
     
     private var rightImageView: UIImageView = {
         let iv = UIImageView()
@@ -49,16 +50,17 @@ class ImagedButton: UIButton {
     }
     
     //MARK: - funcs
-    public func configure(text: String, image: UIImage? = nil) {
+    public func configure(text: String?, image: UIImage? = nil) {
         onMainThread {[weak self] in
             guard let self = self else { return }
             self.layer.cornerRadius = 10
             if let image = image {
                 self.rightImageView.image = image
             }
-            self.leftLabel.text = text
+            if let text = text {
+                self.leftLabel.text = text
+            }
         }
-        
     }
     
     //MARK: - Objc funcs
@@ -84,6 +86,9 @@ extension ImagedButton {
         leftLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(14)
+            make.right.equalTo(rightImageView.snp.left).inset(5)
         }
+        
+        
     }
 }

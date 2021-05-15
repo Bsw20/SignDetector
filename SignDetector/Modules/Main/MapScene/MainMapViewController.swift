@@ -26,17 +26,19 @@ class MainMapViewController: UIViewController {
     private let addLocationPointImageView = UIImageView(image: #imageLiteral(resourceName: "AddNewLocationVector"))
     
     
-    var searchManager: YMKSearchManager?
-    var searchSession: YMKSearchSession?
+    private var searchManager: YMKSearchManager?
+    private var searchSession: YMKSearchSession?
+    
+    private var pointsDict: [YMKPoint : (Int, YMKPlacemarkMapObject)] = [:]
     
     
     
     //MARK: - Controls
     //MARK: Clusters
-    private var firstClusterView = SignsClusterView()
-    private var secondClusterView = SignsClusterView()
-    private var thirdClusterView = SignsClusterView()
-    private var fourthClusterView = SignsClusterView()
+    private var firstClusterView = SignsClusterView(isHidden: true)
+    private var secondClusterView = SignsClusterView(isHidden: true)
+    private var thirdClusterView = SignsClusterView(isHidden: true)
+    private var fourthClusterView = SignsClusterView(isHidden: true)
     
     private var addLocationView: NewLocationView = {
        let view = NewLocationView()
@@ -48,8 +50,6 @@ class MainMapViewController: UIViewController {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.backgroundColor = .clear
-//        iv.backgroundColor = .red
-        
         iv.isUserInteractionEnabled = true
         iv.layer.cornerRadius = 6
         iv.clipsToBounds = true
@@ -78,8 +78,12 @@ class MainMapViewController: UIViewController {
         configure()
         setupUI()
         setupConstraints()
-        let point = YMKPoint(latitude: 55.751244, longitude: 37.618423)
-        mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+//        let point = YMKPoint(latitude: 55.751244, longitude: 37.618423)
+//        point.
+//        let point = YMKCustomPoint(
+        
+//        let p = YMKPoint(
+//        mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
 //        mapView.mapWindow.focusRect
 //        let userLocationLayer = YMKMapKit.sharedInstance().createUserLocationLayer(with: mapView.mapWindow)
 //           userLocationLayer.setVisibleWithOn(true)
@@ -94,6 +98,8 @@ class MainMapViewController: UIViewController {
     
     //MARK: - Funcs
     private func setupSession() {
+        let r = mapView.mapWindow.map.visibleRegion
+//        YMKRect.init(min: r.topLeft, max: r.bottomRight)
         let screenSize = UIScreen.main.bounds
         session = AVCaptureSession()
         session.sessionPreset = AVCaptureSession.Preset.hd1280x720
@@ -159,6 +165,8 @@ class MainMapViewController: UIViewController {
     }
     
     private func configure() {
+//        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
+//        mapView.mapWindow.map.visibleRegion.con
         addLocationView.customDelegate = self
         locationManager.delegate = self
         locationManager.startUpdatingHeading()
@@ -169,6 +177,7 @@ class MainMapViewController: UIViewController {
         dragableView.addGestureRecognizer(panGesture)
         mapView.mapWindow.addSizeChangedListener(with: self)
         mapView.mapWindow.map.addCameraListener(with: self)
+        mapView.mapWindow.map.mapObjects.addTapListener(with: self)
 //        lat: 55.751244, long: 37.618423
         mapView.mapWindow.map.move(with:
             YMKCameraPosition(target: YMKPoint(latitude: 55.751244, longitude: 37.618423), zoom: 14, azimuth: 0, tilt: 0))
@@ -277,6 +286,17 @@ class MainMapViewController: UIViewController {
         capturePhoto()
     }
 }
+
+//MARK: - Map object tap listener
+extension MainMapViewController: YMKMapObjectTapListener {
+    func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+        
+        print(#function)
+        return true
+    }
+    
+    
+}
 //MARK: - Main map delegates
 extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListener, YMKMapCameraListener {
     class func findCenterPoint(_lo1: CLLocationCoordinate2D, _loc2: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
@@ -331,10 +351,10 @@ extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListen
         let radius = getRadiusIn(region: map.visibleRegion)
 
         let middlePoint = getMiddlePointIn(region: map.visibleRegion)
-
+        let visibleRegion = map.visibleRegion
         if socket != nil {
 //            print(".... \(topLeft.latitude) \(topLeft.longitude) \(bottomRight.latitude) \(bottomRight.longitude) \(middlePoint.latitude) \(middlePoint.longitude) \(radius)")
-            socket.sendCurrentCoordinates(radius: radius, lat: middlePoint.latitude, long: middlePoint.longitude, filter: [])
+            socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target, topRight: visibleRegion.topRight, topLeft: visibleRegion.topLeft, bottomRight: visibleRegion.bottomRight, bottomLeft: visibleRegion.bottomLeft, filter: [])
         }
         
     }
@@ -402,10 +422,56 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
+    private func getSortedKeys() {
+//        let keys = pointsDict.keys.sorted { firstPoint, secondPoint in
+//            <#code#>
+//        }
+    }
+    private func deletePointsIn(clusterNumber: Int) {
+//        let mapObjects = mapView.mapWindow.map.mapObjects
+//        mapObjects.remove(with: YMKPlacemarkMapObject())
+//        let keys = pointsDict.keys.sorted { firstPoint, secondPoint in
+//            <#code#>
+//        }
+        pointsDict.keys.forEach {[weak self] key in
+            guard let self = self else { return }
+            guard let tup = pointsDict[key] else { return }
+            if tup.0 == clusterNumber {
+                mapView.mapWindow.map.mapObjects.remove(with: tup.1)
+                pointsDict.removeValue(forKey: key)
+                print("DELETED POINT IN")
+            }
+        }
+//        mapObjects.
+    }
+    private func deletePointsInInvisibleRegion() {
+        pointsDict.keys.forEach { [weak self] key in
+            guard let self = self else { return}
+            guard let tup = pointsDict[key] else { return }
+            if !mapView.mapWindow.map.visibleRegion.contains(key) {
+                mapView.mapWindow.map.mapObjects.remove(with: tup.1)
+                pointsDict.removeValue(forKey: key)
+                print("DELETE FROM INVISIBLE AREA")
+            }
+        }
+    }
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
         print(#function)
-//        let mapObjects = mapView.mapWindow.map.mapObjects
-        getClusterViewWith(index: clusterNumber).configure(count: model.size)
+        let mapObjects = mapView.mapWindow.map.mapObjects
+//        mapObjects.clear()
+        let cv = getClusterViewWith(index: clusterNumber)
+        cv.configure(count: model.size)
+        cv.isHidden = model.size < 100
+        deletePointsIn(clusterNumber: clusterNumber)
+        deletePointsInInvisibleRegion()
+        
+        guard model.signs.count > 0 else { return }
+        for sign in model.signs {
+            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+//            pointsDict[point] = (clu)
+            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+            pointsDict[point] = (clusterNumber, obj)
+        }
 //        mapObjects.clear()
 //        for searchResult in response.collection.children {
 //            if let point = searchResult.obj?.geometry.first?.point {
@@ -423,7 +489,14 @@ extension MainMapViewController: SocketManagerDelegate {
     func didConnect(socket: Socket) {
         print("did connect ViewController")
 //        createTimer()
-        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
+//        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
+//        mapView.mapWindow.map.loca
+        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
+                                      topRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+                                      topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+                                      bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+                                      bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+                                      filter: [])
     }
     
     func didDisconnect(socket: Socket) {
@@ -520,8 +593,9 @@ extension MainMapViewController: VideoModelViewDelegate {
 extension MainMapViewController: NewLocationViewDelegate {
     func approveButtonTapped() {
         print("approveButtonTapped")
-        let middlePoint = getMiddlePointIn(region: mapView.mapWindow.map.visibleRegion).toYMKPoint()
+        let middlePoint = mapView.mapWindow.map.cameraPosition.target
         print("\(middlePoint.latitude) \(middlePoint.longitude)")
+//        print("\(.latitude) \(mapView.mapWindow.map.cameraPosition.target.longitude)")
         let mapKit = YMKMapKit.sharedInstance()
         searchManager = YMKSearch.sharedInstance().createSearchManager(with: .online)
         
