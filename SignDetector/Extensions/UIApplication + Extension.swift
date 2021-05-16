@@ -26,7 +26,10 @@ extension UIApplication {
             completion()
         }
         alertController.addAction(okAction)
-        UIApplication.getTopViewController()?.present(alertController, animated: true, completion: nil)
+        onMainThread {
+            UIApplication.getTopViewController()?.present(alertController, animated: true, completion: nil)
+        }
+        
     }
     
 }

@@ -414,10 +414,50 @@ extension MainMapViewController {
 
 //MARK: - UIImagePickerControllerDelegate
 extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private func makeAddressSearch(point: YMKPoint, zoom: NSNumber?, searchOptions: YMKSearchOptions,  completion: @escaping YMKSearchSessionResponseHandler) {
+        if searchManager == nil {
+            let mapKit = YMKMapKit.sharedInstance()
+            searchManager = YMKSearch.sharedInstance().createSearchManager(with: .online)
+        }
+        searchSession = searchManager?.submit(with: point, zoom: zoom, searchOptions: searchOptions, responseHandler: completion)
+    }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.originalImage] as? UIImage else {
+        guard let image = info[.originalImage] as? UIImage, let data = image.pngData(),
+              let latitude = locationManager.location?.coordinate.latitude,
+              let longitude = locationManager.location?.coordinate.longitude else {
+            dismiss(animated: true, completion: nil)
             print("No image found")
             return
+        }
+        makeAddressSearch(point: YMKPoint(latitude: latitude, longitude: longitude), zoom: nil, searchOptions: YMKSearchOptions()) { [weak self]result, error in
+            guard let self = self else { return }
+            if let error = error {
+                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+                return
+            }
+            if let name = result?.collection.children.first?.obj?.name {
+                print("jfkalsjdflk\(name)")
+                UserAPIService.shared.sendImageWithSign(model: .init(fileData: data,
+                                                                     latitude: latitude,
+                                                                     longitude: longitude,
+                                                                     address: name,
+                                                                     direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
+                    switch result {
+                    
+                    case .success():
+                        break
+                    case .failure(_):
+                        onMainThread {
+                            UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить фотографию, попробуйте позже")
+                        }
+
+                    }
+                    
+                }
+            } else {
+
+                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+            }
         }
 
         print("SIIIIZE")
@@ -475,7 +515,7 @@ extension MainMapViewController: SocketManagerDelegate {
         for sign in model.signs {
             let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
 //            pointsDict[point] = (clu)
-            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
+            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: sign.type)!)
             pointsDict[point] = (clusterNumber, obj)
         }
 //        mapObjects.clear()
@@ -615,6 +655,7 @@ extension MainMapViewController: NewLocationViewDelegate {
                 onMainThread {[weak self] in
                     let vc = EditLocationViewController(viewType: .create(model: .init(address: name, latitude: middlePoint.latitude, longitude: middlePoint.longitude)))
                     vc.hidesBottomBarWhenPushed = true
+                    vc.customDelegate = self
 //                    vc.hide
                     self?.navigationController?.push(vc, animated: true)
                 }
@@ -639,8 +680,15 @@ extension MainMapViewController: FilteringViewControllerDelegate {
     func applyButtonTapped(selectedSigns: [String]) {
         signsForFilter = selectedSigns
     }
-    
-    
+}
+
+//MARK: - EditLocationViewControllerDelegate
+extension MainMapViewController: EditLocationViewControllerDelegate {
+    func signWasSaved(signId: String) {
+        onMainThread {[weak self] in
+            self?.defaultLayout()
+        }
+    }
 }
 //MARK: - Constraints
 extension MainMapViewController {

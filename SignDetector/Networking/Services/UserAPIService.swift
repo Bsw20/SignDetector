@@ -23,6 +23,7 @@ struct UserAPIService {
     }
     
     struct AddSignModel {
+        var uuid: String
         var lat: Double
         var lon: Double
         var name: String
@@ -33,7 +34,50 @@ struct UserAPIService {
             rep["lon"] = lon
             rep["name"] = name
             rep["address"] = address
+            rep["uuid"] = uuid
             return rep
+        }
+    }
+    
+    struct SendImageModel {
+        var fileData: Data
+        var latitude: Double
+        var longitude: Double
+        var address: String
+        var direction: Double
+        
+        public var representation: [String: Any] {
+            var rep: [String: Any] = ["filedata": fileData]
+            rep["lon"] = longitude
+            rep["lat"] = latitude
+            rep["address"] = address
+            rep["direction"] = direction
+            return rep
+        }
+    }
+    public func sendImageWithSign(model: SendImageModel, completion: @escaping (Result<Void, APIError>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.ADD_IMAGE_WITH_SIGN_ADDRESS
+            AF.request(url,
+                       method: .post,
+                       parameters: model.representation,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData(completionHandler: { (response) in
+                    
+                    switch response.result {
+                    case .success(let _):
+                        onMainThread {
+                            completion(.success(Void()))
+                        }
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        onMainThread {
+                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                        }
+                    }
+                })
         }
     }
     
@@ -47,11 +91,12 @@ struct UserAPIService {
                        encoding: JSONEncoding.default,
                        headers: headers)
                 .validate(statusCode: 200..<300)
-                .responseData(completionHandler: { (response) in
+                .responseJSON(completionHandler: { (response) in
                     
                     switch response.result {
-                    case .success(let _):
+                    case .success(let data):
                         onMainThread {
+                            print(data)
                             completion(.success(Void()))
                         }
                     case .failure(let error):

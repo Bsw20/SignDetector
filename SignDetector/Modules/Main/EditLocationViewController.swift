@@ -122,7 +122,7 @@ class EditLocationViewController: UIViewController {
             UIApplication.showAlert(title: "Ошибка!", message: "Выберите тип знака")
             return
         }
-        UserAPIService.shared.addSign(model: .init(lat: model.latitude, lon: model.longitude, name: model.signName!, address: model.address)) { result in
+        UserAPIService.shared.addSign(model: .init(uuid: model.uuid,lat: model.latitude, lon: model.longitude, name: model.signName!, address: model.address)) { result in
             switch result {
             
             case .success():
