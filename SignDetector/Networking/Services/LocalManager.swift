@@ -13,7 +13,9 @@ class LocalManager {
         var name: String
         var imageName: String?
     }
-    public init(){}
+    public init(){
+        initData()
+    }
     
     private var keys: [String]?
     private var localSigns: [String: String]?
@@ -27,6 +29,10 @@ class LocalManager {
     }
     public static var shared = LocalManager()
     
+    public func getKeys() -> [String] {
+        initData()
+        return keys!
+    }
     public func getSignByIndex(index: Int) -> LocalManagerSignModel? {
         initData()
         if index > keys!.count - 1 {

@@ -15,6 +15,8 @@
 		3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */; };
 		309385402650256F00B8D6C8 /* YMKCustomPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */; };
 		30938542265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */; };
+		30938545265112C700B8D6C8 /* FilteringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30938544265112C700B8D6C8 /* FilteringViewController.swift */; };
+		3093854B26511C0E00B8D6C8 /* FilterSignsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093854A26511C0E00B8D6C8 /* FilterSignsCell.swift */; };
 		30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */; };
 		30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */; };
 		30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA3263F01AF006BBFD6 /* MapTitleView.swift */; };
@@ -74,6 +76,8 @@
 		3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignsClusterView.swift; sourceTree = "<group>"; };
 		3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YMKCustomPoint.swift; sourceTree = "<group>"; };
 		30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YMKVisibleRegion + Extension.swift"; sourceTree = "<group>"; };
+		30938544265112C700B8D6C8 /* FilteringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringViewController.swift; sourceTree = "<group>"; };
+		3093854A26511C0E00B8D6C8 /* FilterSignsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSignsCell.swift; sourceTree = "<group>"; };
 		30982F85263DAC17006BBFD6 /* UIApplication + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication + Extension.swift"; sourceTree = "<group>"; };
 		30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		30982FA3263F01AF006BBFD6 /* MapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTitleView.swift; sourceTree = "<group>"; };
@@ -144,8 +148,9 @@
 				30BE11232645A57D006FC056 /* MainTabBarController.swift */,
 				30D8C043264E9C9C00E3BCF6 /* Edit&CreateScene */,
 				30982F88263EEFC0006BBFD6 /* MapScene */,
-				3064FED5263B0DF000E11394 /* SettingsScene */,
 				3064FEC32638871D00E11394 /* PersonalCabinetScene */,
+				30938543265112B300B8D6C8 /* FilteringScene */,
+				3064FED5263B0DF000E11394 /* SettingsScene */,
 				30D8C053264EE26E00E3BCF6 /* SelectSignsScene */,
 			);
 			path = Main;
@@ -210,6 +215,31 @@
 				30AB207C2637587F00F97736 /* Controllers */,
 			);
 			path = "SignIn&SignUp";
+			sourceTree = "<group>";
+		};
+		30938543265112B300B8D6C8 /* FilteringScene */ = {
+			isa = PBXGroup;
+			children = (
+				309385472651186C00B8D6C8 /* Views */,
+				309385462651185F00B8D6C8 /* Controllers */,
+			);
+			path = FilteringScene;
+			sourceTree = "<group>";
+		};
+		309385462651185F00B8D6C8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				30938544265112C700B8D6C8 /* FilteringViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		309385472651186C00B8D6C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3093854A26511C0E00B8D6C8 /* FilterSignsCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		30982F88263EEFC0006BBFD6 /* MapScene */ = {
@@ -604,7 +634,9 @@
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,
 				30AB20892637595D00F97736 /* CALayer + Extension.swift in Sources */,
 				30BE111E264405D0006FC056 /* APIError.swift in Sources */,
+				30938545265112C700B8D6C8 /* FilteringViewController.swift in Sources */,
 				3064FECA2638885100E11394 /* PersonalCabinetModel.swift in Sources */,
+				3093854B26511C0E00B8D6C8 /* FilterSignsCell.swift in Sources */,
 				30AB2085263758E500F97736 /* OTPStackView.swift in Sources */,
 				30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */,
 				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,

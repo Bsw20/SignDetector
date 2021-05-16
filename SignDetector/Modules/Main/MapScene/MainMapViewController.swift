@@ -32,6 +32,9 @@ class MainMapViewController: UIViewController {
     private var pointsDict: [YMKPoint : (Int, YMKPlacemarkMapObject)] = [:]
     
     
+    private var signsForFilter: [String] = []
+    
+    
     
     //MARK: - Controls
     //MARK: Clusters
@@ -229,6 +232,9 @@ class MainMapViewController: UIViewController {
     //MARK: - Objc func
     @objc private func filterButtonTapped() {
         print("filter button tapped")
+        let vc = FilteringViewController(signsForFilter: signsForFilter)
+        vc.customDelegate = self
+        navigationController?.push(vc, animated: true)
     }
     
     @objc private func moreButtonTapped() {
@@ -354,7 +360,7 @@ extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListen
         let visibleRegion = map.visibleRegion
         if socket != nil {
 //            print(".... \(topLeft.latitude) \(topLeft.longitude) \(bottomRight.latitude) \(bottomRight.longitude) \(middlePoint.latitude) \(middlePoint.longitude) \(radius)")
-            socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target, topRight: visibleRegion.topRight, topLeft: visibleRegion.topLeft, bottomRight: visibleRegion.bottomRight, bottomLeft: visibleRegion.bottomLeft, filter: [])
+            socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target, topRight: visibleRegion.topRight, topLeft: visibleRegion.topLeft, bottomRight: visibleRegion.bottomRight, bottomLeft: visibleRegion.bottomLeft, filter: signsForFilter)
         }
         
     }
@@ -496,7 +502,7 @@ extension MainMapViewController: SocketManagerDelegate {
                                       topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
                                       bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
                                       bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-                                      filter: [])
+                                      filter: signsForFilter)
     }
     
     func didDisconnect(socket: Socket) {
@@ -625,6 +631,13 @@ extension MainMapViewController: NewLocationViewDelegate {
     
     func cancelButtonTapped() {
         defaultLayout()
+    }
+}
+
+//MARK: - Filtering delegate
+extension MainMapViewController: FilteringViewControllerDelegate {
+    func applyButtonTapped(selectedSigns: [String]) {
+        signsForFilter = selectedSigns
     }
     
     
