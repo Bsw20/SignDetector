@@ -48,8 +48,7 @@ extension MapTitleView {
         bottomLabel.snp.makeConstraints { (make) in
             make.top.equalTo(topLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
-        
-        
     }
 }

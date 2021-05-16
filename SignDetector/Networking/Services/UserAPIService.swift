@@ -22,6 +22,15 @@ struct UserAPIService {
         }
     }
     
+    
+    private var bodyFormDataHeaders: HTTPHeaders {
+        get {
+            return ["Content-Type":"multipart form data",
+                    "Authorization" : APIManager.getToken()
+            ]
+        }
+    }
+    
     struct AddSignModel {
         var uuid: String
         var lat: Double
@@ -58,26 +67,32 @@ struct UserAPIService {
     public func sendImageWithSign(model: SendImageModel, completion: @escaping (Result<Void, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.ADD_IMAGE_WITH_SIGN_ADDRESS
-            AF.request(url,
-                       method: .post,
-                       parameters: model.representation,
-                       encoding: JSONEncoding.default,
-                       headers: headers)
-                .validate(statusCode: 200..<300)
-                .responseData(completionHandler: { (response) in
-                    
-                    switch response.result {
-                    case .success(let _):
-                        onMainThread {
-                            completion(.success(Void()))
-                        }
-                    case .failure(let error):
-                        SwiftyBeaver.error(error.localizedDescription)
-                        onMainThread {
-                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
-                        }
+            AF.upload(multipartFormData: { (multipartFormData) in
+                multipartFormData.append(model.fileData, withName: "filedata")
+                multipartFormData.append(("\(model.longitude)").data(using: .utf8, allowLossyConversion: false)!, withName: "lon")
+                multipartFormData.append(("\(model.latitude)").data(using: .utf8, allowLossyConversion: false)!, withName: "lat")
+                multipartFormData.append(model.address.data(using: .utf8, allowLossyConversion: false)!, withName: "address")
+                multipartFormData.append(("\(model.direction)").data(using: .utf8, allowLossyConversion: false)!, withName: "direction")
+multipartFormData.append("India".data(using: .utf8, allowLossyConversion: false)!, withName: "location")
+
+            }, to: url, method: .post)
+            .validate(statusCode: 200..<300)
+            .responseJSON { (result) in
+                #warning("RECODE")
+                switch result.result {
+                
+                case .success(let data):
+                    onMainThread {
+                        completion(.success(Void()))
                     }
-                })
+                case .failure(let error):
+                    SwiftyBeaver.error(error.localizedDescription)
+                    onMainThread {
+                        completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                    }
+                }
+
+            }
         }
     }
     
@@ -137,7 +152,7 @@ struct UserAPIService {
                             SwiftyBeaver.error(error.localizedDescription)
                             completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
                         }
-                    }
+                }
         }
     }
 }

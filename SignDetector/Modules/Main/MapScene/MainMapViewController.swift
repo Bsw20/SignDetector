@@ -14,6 +14,12 @@ import CoreLocation
 
 class MainMapViewController: UIViewController {
     //MARK: - Variables
+    struct SlideUpViewConstants {
+        static var shared = SlideUpViewConstants()
+        var isHidden: Bool = true
+        var shownY: CGFloat = UIScreen.main.bounds.height - (150 + 49 + 70)
+        var hiddenY: CGFloat = UIScreen.main.bounds.height
+    }
     private var panGesture = UIPanGestureRecognizer()
     private var timer: Timer?
     private var session: AVCaptureSession!
@@ -29,7 +35,7 @@ class MainMapViewController: UIViewController {
     private var searchManager: YMKSearchManager?
     private var searchSession: YMKSearchSession?
     
-    private var pointsDict: [YMKPoint : (Int, YMKPlacemarkMapObject)] = [:]
+    private var pointsDict: [YMKPoint : (Int, YMKPlacemarkMapObject, SignModel)] = [:]
     
     
     private var signsForFilter: [String] = []
@@ -42,6 +48,9 @@ class MainMapViewController: UIViewController {
     private var secondClusterView = SignsClusterView(isHidden: true)
     private var thirdClusterView = SignsClusterView(isHidden: true)
     private var fourthClusterView = SignsClusterView(isHidden: true)
+    
+    //MARK: Other
+    private var editSlideUpView: EditSignView = EditSignView()
     
     private var addLocationView: NewLocationView = {
        let view = NewLocationView()
@@ -100,6 +109,33 @@ class MainMapViewController: UIViewController {
     }
     
     //MARK: - Funcs
+    private func showSlideUpView() {
+        if !editSlideUpView.isShown {
+            
+            UIView.animate(withDuration: 0.1) {[weak self] in
+                guard let self = self else { return }
+//                self.slideUpView.frame.origin.y = 0
+                self.editSlideUpView.frame.origin.y = self.editSlideUpView.shownY
+//                self.slideUpView.transform = CGAffineTransform(translationX:0, y:0)
+            } completion: { (res) in
+                self.editSlideUpView.isShown = true
+            }
+
+        } else {
+        }
+    }
+    
+    private func hideSlideUpView() {
+        if editSlideUpView.isShown {
+            UIView.animate(withDuration: 0.35) {
+                self.editSlideUpView.frame.origin.y = self.editSlideUpView.hiddenY
+//                self.slideUpView.transform = CGAffineTransform(translationX:0, y: UIScreen.main.bounds.height)
+            } completion: { (res) in
+                self.editSlideUpView.isShown = false
+            }
+        }
+    }
+    
     private func setupSession() {
         let r = mapView.mapWindow.map.visibleRegion
 //        YMKRect.init(min: r.topLeft, max: r.bottomRight)
@@ -169,7 +205,8 @@ class MainMapViewController: UIViewController {
     
     private func configure() {
 //        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
-//        mapView.mapWindow.map.visibleRegion.con
+//        mapView.mapWindow.map.visibleRegion.co
+        editSlideUpView.customDelegate = self
         addLocationView.customDelegate = self
         locationManager.delegate = self
         locationManager.startUpdatingHeading()
@@ -296,9 +333,26 @@ class MainMapViewController: UIViewController {
 //MARK: - Map object tap listener
 extension MainMapViewController: YMKMapObjectTapListener {
     func onMapObjectTap(with mapObject: YMKMapObject, point: YMKPoint) -> Bool {
+//        guard let model = pointsDict[point] else {
+//            print("NO MODEL")
+//            hideSlideUpView()
+//            return false
+//        }
         
+        for el in pointsDict.keys {
+            if pointsDict[el]?.1 == mapObject {
+                if let model = pointsDict[el] {
+                    editSlideUpView.configure(signModel: model.2)
+                    showSlideUpView()
+                    return true
+                }
+            }
+        }
+        
+        print("NO MODEL")
+        hideSlideUpView()
         print(#function)
-        return true
+        return false
     }
     
     
@@ -516,7 +570,7 @@ extension MainMapViewController: SocketManagerDelegate {
             let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
 //            pointsDict[point] = (clu)
             let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: sign.type)!)
-            pointsDict[point] = (clusterNumber, obj)
+            pointsDict[point] = (clusterNumber, obj, sign)
         }
 //        mapObjects.clear()
 //        for searchResult in response.collection.children {
@@ -537,11 +591,18 @@ extension MainMapViewController: SocketManagerDelegate {
 //        createTimer()
 //        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
 //        mapView.mapWindow.map.loca
+//        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
+//                                      topRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      filter: signsForFilter)
+        let vr = mapView.mapWindow.map.visibleRegion
         socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
-                                      topRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-                                      topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-                                      bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-                                      bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+                                      topRight: vr.topRight,
+                                      topLeft: vr.topLeft,
+                                      bottomRight: vr.bottomRight,
+                                      bottomLeft: vr.bottomLeft,
                                       filter: signsForFilter)
     }
     
@@ -690,13 +751,43 @@ extension MainMapViewController: EditLocationViewControllerDelegate {
         }
     }
 }
+
+//MARK: - EditSignViewDelegate
+extension MainMapViewController: EditSignViewDelegate {
+    func editButtonTapped(view: EditSignView, model: SignModel?) {
+        print(#function)
+        guard let model = model else { return}
+        let vc = EditLocationViewController(viewType: .edit(model: .init(uuid: model.uuid,
+                                                                         address: "ТУТ БУДЕТ АДРЕСС",
+                                                                         latitude: model.lat,
+                                                                         longitude: model.lon,
+                                                                         signName: model.type)))
+        vc.customDelegate = self
+        vc.hidesBottomBarWhenPushed = true
+        onMainThread {
+            self.navigationController?.push(vc)
+        }
+    }
+    
+    
+    func closeButtonTapped(view: EditSignView) {
+        hideSlideUpView()
+    }
+    
+    
+}
 //MARK: - Constraints
 extension MainMapViewController {
     private func defaultLayout() {
-        videoModeView.isHidden = false
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        addLocationView.removeFromSuperview()
-        addLocationPointImageView.removeFromSuperview()
+
+        onMainThread {[weak self] in
+            guard let self = self else { return }
+            self.videoModeView.isHidden = false
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            self.addLocationView.removeFromSuperview()
+            self.addLocationPointImageView.removeFromSuperview()
+        }
+
     }
     private func addLocationViewLayout() {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
@@ -759,6 +850,14 @@ extension MainMapViewController {
             make.right.equalToSuperview().inset(defaultWidthOffset)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(defaultHeightOffset)
         }
+        
+        view.addSubview(editSlideUpView)
+        let tabBarHeight: CGFloat = 49
+        print(CGFloat((self.tabBarController?.tabBar.frame.size.height)!))
+        print(screenSize.height)
+        print(view.frame.height)
+        let slideUpViewHeight: CGFloat = 150
+        editSlideUpView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: slideUpViewHeight)
 //        print("DLFJI")
 //        print(screenSize.height)
 //        print(view.safeAreaLayoutGuide.layoutFrame.width)
