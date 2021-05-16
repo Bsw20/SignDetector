@@ -853,9 +853,6 @@ extension MainMapViewController {
         
         view.addSubview(editSlideUpView)
         let tabBarHeight: CGFloat = 49
-        print(CGFloat((self.tabBarController?.tabBar.frame.size.height)!))
-        print(screenSize.height)
-        print(view.frame.height)
         let slideUpViewHeight: CGFloat = 150
         editSlideUpView.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: slideUpViewHeight)
 //        print("DLFJI")

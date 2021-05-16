@@ -66,33 +66,83 @@ struct UserAPIService {
     }
     public func sendImageWithSign(model: SendImageModel, completion: @escaping (Result<Void, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
-            let url = ServerAddressConstants.ADD_IMAGE_WITH_SIGN_ADDRESS
-            AF.upload(multipartFormData: { (multipartFormData) in
-                multipartFormData.append(model.fileData, withName: "filedata")
-                multipartFormData.append(("\(model.longitude)").data(using: .utf8, allowLossyConversion: false)!, withName: "lon")
-                multipartFormData.append(("\(model.latitude)").data(using: .utf8, allowLossyConversion: false)!, withName: "lat")
-                multipartFormData.append(model.address.data(using: .utf8, allowLossyConversion: false)!, withName: "address")
-                multipartFormData.append(("\(model.direction)").data(using: .utf8, allowLossyConversion: false)!, withName: "direction")
-multipartFormData.append("India".data(using: .utf8, allowLossyConversion: false)!, withName: "location")
-
-            }, to: url, method: .post)
+            let url = ServerAddressConstants.UPLOAD_IMAGE_ADDRESS
+            let headers: HTTPHeaders = [
+                "Content-type": "multipart/form-data",
+                "Authorization" : APIManager.getToken()
+                    ]
+            AF.upload(multipartFormData: { (multiPart) in
+                multiPart.append(model.fileData, withName: "filedata", fileName: "image.png", mimeType: "image/jpeg")
+            }, to: url, headers: headers)
             .validate(statusCode: 200..<300)
             .responseJSON { (result) in
-                #warning("RECODE")
+
                 switch result.result {
                 
                 case .success(let data):
-                    onMainThread {
-                        completion(.success(Void()))
+                    print(data)
+                    if let data = data as? [String:String], let fileId = data["id"] {
+                        print(fileId)
+                        uploadSignInfo(model: .init(fileId: fileId,
+                                                    latitude: model.latitude,
+                                                    longitude: model.longitude,
+                                                    address: model.address,
+                                                    direction: model.direction)) { result in
+                            completion(result)
+                        }
                     }
+                    let error = APIErrorFabrics.serverError(code: nil)
+                    SwiftyBeaver.error(error.message)
+                    completion(.failure(error))
                 case .failure(let error):
                     SwiftyBeaver.error(error.localizedDescription)
-                    onMainThread {
-                        completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
-                    }
+                    completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
                 }
 
             }
+        }
+    }
+    
+    struct SignInfoModel {
+        var fileId: String
+        var latitude: Double
+        var longitude: Double
+        var address: String
+        var direction: Double
+        
+        public var representation: [String: Any] {
+            var rep: [String: Any] = ["id": fileId]
+            rep["lon"] = longitude
+            rep["lat"] = latitude
+            rep["address"] = address
+            rep["direction"] = direction
+            return rep
+        }
+    }
+    private func uploadSignInfo(model: SignInfoModel, completion: @escaping (Result<Void, APIError>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.ADD_SIGN_WITH_PHOTO_ADDRESS
+            AF.request(url,
+                       method: .post,
+                       parameters: model.representation,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseJSON(completionHandler: { (response) in
+                    
+                    switch response.result {
+                    case .success(let data):
+                        onMainThread {
+                            print(data)
+                            completion(.success(Void()))
+                        }
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        onMainThread {
+                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                        }
+                    }
+                })
         }
     }
     

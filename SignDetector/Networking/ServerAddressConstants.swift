@@ -22,5 +22,7 @@ struct ServerAddressConstants {
     //MARK: - Main
     static let GETUSERINFO_ADDRESS = MAIN_SERVER_ADDRESS + "/user/getProfile"
     static let ADDSIGN_ADDRESS = MAIN_SERVER_ADDRESS + "/sign/addSign"
-    static let ADD_IMAGE_WITH_SIGN_ADDRESS = MAIN_SERVER_ADDRESS + "/file/upload"
+    static let UPLOAD_IMAGE_ADDRESS = MAIN_SERVER_ADDRESS + "/file/upload"
+    static let ADD_SIGN_WITH_PHOTO_ADDRESS = MAIN_SERVER_ADDRESS + "/sign/addInfo"
+    
 }
