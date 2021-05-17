@@ -13,5 +13,6 @@ target 'SignDetector' do
   pod 'Socket.IO-Client-Swift'
   pod 'SwiftyBeaver'
   pod 'SwiftyJSON'
+  pod "Connectivity"
 
 end

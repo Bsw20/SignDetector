@@ -23,13 +23,6 @@ struct UserAPIService {
     }
     
     
-    private var bodyFormDataHeaders: HTTPHeaders {
-        get {
-            return ["Content-Type":"multipart form data",
-                    "Authorization" : APIManager.getToken()
-            ]
-        }
-    }
     
     struct AddSignModel {
         var uuid: String
