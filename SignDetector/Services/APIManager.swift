@@ -27,12 +27,12 @@ struct APIManager {
     static func needToSetName() -> Bool {
         return (UserDefaults.standard.bool(forKey: "needToSetName") as? Bool) ?? true
     }
-    
-    
+
+
     static func setNeedToSetNameStatus(status: Bool) {
         UserDefaults.standard.set(status, forKey: "needToSetName")
     }
-    
+
     private static let cameraWorkOnStartKey = "isCameraWorkOnStart"
     
     static func isCameraWorkOnStart() -> Bool {

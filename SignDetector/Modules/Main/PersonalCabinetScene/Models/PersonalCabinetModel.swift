@@ -63,7 +63,7 @@ class PersonalCabinetModel {
         let lblNameInitialize = UILabel()
         lblNameInitialize.frame.size = CGSize(width: 100.0, height: 100.0)
         lblNameInitialize.textColor = .black
-        lblNameInitialize.text = String((name.first)!)
+        lblNameInitialize.text = name.first == nil ? "" : String(name.first!)
         lblNameInitialize.textAlignment = NSTextAlignment.center
         lblNameInitialize.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
         lblNameInitialize.layer.cornerRadius = 50.0

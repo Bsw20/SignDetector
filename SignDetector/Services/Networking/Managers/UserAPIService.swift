@@ -190,4 +190,32 @@ struct UserAPIService {
                 }
         }
     }
+    
+    public func deleteUser(login: String, completion: @escaping (Result<Void, APIError>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.MAIN_SERVER_ADDRESS + "/deleteUser"
+            
+            AF.request(url,
+                       method: .post,
+                       parameters: ["login" : login],
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseJSON(completionHandler: { (response) in
+                    
+                    switch response.result {
+                    case .success(let data):
+                        onMainThread {
+                            APIManager.logOut()
+                            SwiftyBeaver.info("User \(login) deleted")
+                        }
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        onMainThread {
+                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                        }
+                    }
+                })
+        }
+    }
 }

@@ -31,6 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         connectivity.isPollingEnabled = true
         connectivity.framework = .network
         connectivity.startNotifier()
+//        UserAPIService.shared.deleteUser(login: "89858182278") { result in
+//            
+//        }
         return true
     }
     

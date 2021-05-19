@@ -42,20 +42,29 @@ class PersonalDataViewController: UIViewController {
     private func configure() {
         fioTextView.delegate = self
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        navigationItem.hidesBackButton = true
+//        navigationItem.leftBarButtonItem =  UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.close, target: self, action: #selector(backButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
     }
     
     private func setupUI() {
         view.backgroundColor = .white
+        fioTextView.textField.textContentType = .username
     }
     //MARK: - objc funcs
+    @objc private func backButtonTapped() {
+        APIManager.logOut()
+    }
     @objc private func nextButtonTapped() {
         if(!fioTextView.isEmpty()) {
             AuthService.shared.changeName(name: fioTextView.getText()) {[weak self] result in
                 switch result {
                 
                 case .success():
+                    APIManager.setNeedToSetNameStatus(status: false)
                     self?.navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
                 case .failure(let error):
+                    APIManager.setNeedToSetNameStatus(status: true)
                     UIApplication.showAlert(title: "Ошибка!", message: error.message)
                 }
             }

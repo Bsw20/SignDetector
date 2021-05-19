@@ -104,15 +104,9 @@ struct AuthService {
                      switch response.result {
                     
                     case .success(let data):
-                        if let token = (data as? [String: Any])?["token"] as? String {
+                        if let token = (data as? [String: Any])?["token"] as? String, let hasName = (data as? [String: Any])?["hasName"] as? Bool{
                             APIManager.setToken(token: token)
-                            switch model.type {
-                            
-                            case .registered:
-                                APIManager.setNeedToSetNameStatus(status: false)
-                            case .notRegistered:
-                                APIManager.setNeedToSetNameStatus(status: true)
-                            }
+                            APIManager.setNeedToSetNameStatus(status: !hasName)
                             completion(.success(Void()))
                             return
                         }

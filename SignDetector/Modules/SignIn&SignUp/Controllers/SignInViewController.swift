@@ -81,6 +81,7 @@ class SignInViewController: UIViewController {
         phoneTextField.keyboardType = .numberPad
         phoneTextField.addTarget(self, action: #selector(textFieldDidChanged), for: UIControl.Event.editingChanged)
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        phoneTextField.textContentType = .username
     }
     private func setupUI() {
 //        phoneTextField.placeholderLabel.text = "+7 912 992 53 84"

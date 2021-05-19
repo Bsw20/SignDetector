@@ -78,7 +78,7 @@ class OTPStackView: UIStackView {
         textField.layer.borderColor = inactiveFieldBorderColor.cgColor
         textField.keyboardType = .numberPad
         textField.autocorrectionType = .yes
-        textField.textContentType = .oneTimeCode
+        textField.textContentType = .username
         textField.tintColor = .clear
     }
     

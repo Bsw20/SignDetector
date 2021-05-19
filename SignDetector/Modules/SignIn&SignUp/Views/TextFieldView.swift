@@ -15,7 +15,7 @@ protocol TextFieldViewDelegate: AnyObject {
 
 class TextFieldView: UIView {
     
-    private var textField: UITextField
+    var textField: UITextField
     
     weak var delegate: TextFieldViewDelegate?
     

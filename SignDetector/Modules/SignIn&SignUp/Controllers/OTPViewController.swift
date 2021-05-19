@@ -82,7 +82,13 @@ extension OTPViewController: OTPDelegate {
         switch authModel.type {
         
         case .registered:
-            navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+            if APIManager.needToSetName() {
+                navigationController?.push(PersonalDataViewController(), completion: {
+                    
+                })
+            } else {
+                navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+            }
         case .notRegistered:
             navigationController?.push(PersonalDataViewController(), completion: {
                 
@@ -109,42 +115,6 @@ extension OTPViewController: OTPDelegate {
                 }
             }
         }
-//        if isValid {
-//            switch authType {
-//
-//            case .signIn(data: var data):
-//                data.smsCode = numbersView.getOTP()
-//                authService.signIn(signInModel: data) { (result) in
-//                    switch result {
-//                    case .success():
-//                        print("----------------")
-//                        print(result)
-//                        self.authDelegate?.authFinished()
-//                    case .failure(_):
-//                        break
-//                    }
-//                }
-//
-//            case .signUp(data: var data):
-////                ["token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImlhdCI6MTYxMjA5NjQ2NH0.sfXLi1rDR-uGqnUSvH6zVaVtLTwOm8EMs7S_glAWwaQ"]
-////                let isCorrectCode = numbersView.getOTP() == "111111"
-////                if isCorrectCode {
-////                    numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: isCorrectCode)
-////                } else {
-////                    numbersView.finishEnterAnimation(colorForAnimation: .red, isCorrectCode: isCorrectCode)
-////                }
-//                data.smsCode = numbersView.getOTP()
-//                authService.signUp(signUpModel: data) { (result) in
-//                    switch result {
-//
-//                    case .success():
-//                        self.numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: true)
-//                    case .failure(_):
-//                        self.numbersView.finishEnterAnimation(colorForAnimation: .green, isCorrectCode: false)
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
