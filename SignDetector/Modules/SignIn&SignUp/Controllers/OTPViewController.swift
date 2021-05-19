@@ -87,7 +87,8 @@ extension OTPViewController: OTPDelegate {
                     
                 })
             } else {
-                navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+//                navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+                SceneDelegate.shared().setRootController(controller: MainTabBarController())
             }
         case .notRegistered:
             navigationController?.push(PersonalDataViewController(), completion: {

@@ -62,7 +62,8 @@ class PersonalDataViewController: UIViewController {
                 
                 case .success():
                     APIManager.setNeedToSetNameStatus(status: false)
-                    self?.navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+//                    self?.navigationController?.setupAsBaseScreen(MainTabBarController(), animated: true)
+                    SceneDelegate.shared().setRootController(controller: MainTabBarController())
                 case .failure(let error):
                     APIManager.setNeedToSetNameStatus(status: true)
                     UIApplication.showAlert(title: "Ошибка!", message: error.message)

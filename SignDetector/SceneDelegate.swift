@@ -41,6 +41,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let signInVC = SignInViewController()
         window?.rootViewController = UINavigationController(rootViewController: signInVC)
     }
+    
+    func setRootController(controller: UIViewController) {
+        window?.rootViewController = controller
+    }
 }
 
 
