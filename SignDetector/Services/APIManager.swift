@@ -49,4 +49,33 @@ struct APIManager {
         SceneDelegate.shared().startSignIn()
         SwiftyBeaver.info("User log out")
     }
+    
+    private static let showConfirmedSignsKey = "showConfirmedSignsKey"
+    
+    static var showConfirmedSignsOnMap: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: showConfirmedSignsKey) == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: showConfirmedSignsKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: showConfirmedSignsKey)
+        }
+    }
+    
+    private static let showUnconfirmedSignsKey = "showUnconfirmedSignsKey"
+    
+    static var showUnconfirmedSignsOnMap: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: showUnconfirmedSignsKey) == nil {
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: showUnconfirmedSignsKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: showUnconfirmedSignsKey)
+        }
+    }
+    
 }

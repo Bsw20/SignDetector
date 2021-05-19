@@ -110,6 +110,8 @@ class SettingsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         turnOnVideoSwitch.isOn = APIManager.isCameraWorkOnStart()
+        confirmedSignsSwitch.isOn = APIManager.showConfirmedSignsOnMap
+        unconfirmedSignsSwitch.isOn = APIManager.showUnconfirmedSignsOnMap
         
 //        self.navigationController?.navigationBar.tintColor = .black
 //        self.navigationController?.navigationBar.isTranslucent = false
@@ -155,11 +157,13 @@ class SettingsViewController: UIViewController {
     @objc private func confirmedSignsSwitchTapped() {
         print(#function)
         print(confirmedSignsSwitch.isOn)
+        APIManager.showConfirmedSignsOnMap = confirmedSignsSwitch.isOn
     }
     
     @objc private func unconfirmedSignsSwitchTapped() {
         print(#function)
         print(unconfirmedSignsSwitch.isOn)
+        APIManager.showUnconfirmedSignsOnMap = unconfirmedSignsSwitch.isOn
     }
 }
 
