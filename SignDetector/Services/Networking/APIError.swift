@@ -12,6 +12,10 @@ struct APIErrorFabrics {
     static func serverError(code: Int?) -> APIError{
         return APIError(message: "Ошибка сервера.", code: code)
     }
+    
+    static func coreDataError() -> APIError {
+        return APIError(message: "Ошибка CoreData.")
+    }
 }
 
 class APIError: Error {

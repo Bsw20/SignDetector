@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import MaterialComponents
 import SnapKit
+import PhoneNumberKit
 
 class SignInViewController: UIViewController {
     //MARK: - Variables
@@ -26,19 +27,37 @@ class SignInViewController: UIViewController {
                                         textColor: .baseGrayTextColor(),
                                         textAlignment: .left)
     private var nextButton = UIButton.getLittleRoundButton(text: "ДАЛЕЕ",
-                                                           isEnabled: true)
+                                                           isEnabled: false)
     private var descriptionLabel =  UILabel(text: "Мы отправим вам SMS с кодом для авторизации",
                                             fontSize: 16,
                                             textColor: .baseGrayTextColor(),
                                             textAlignment: .left,
                                             numberOfLines: 2)
     
-    private var phoneTextField: MDCUnderlinedTextField = {
-        let tf = MDCUnderlinedTextField()
-        tf.font = UIFont.sfUIMedium(with: 18)
-//        let tf = MDCOutlinedTextField()
+    
+//    private var phoneTextField: MDCUnderlinedTextField = {
+//        let tf = MDCUnderlinedTextField()
+////        let tf = MDCOutlinedTextField()
+//        tf.font = UIFont.sfUIMedium(with: 18)
+//        tf.translatesAutoresizingMaskIntoConstraints = false
+//        return tf
+//    }()
+    private var phoneTextField: PhoneNumberTextField = {
+        let tf = PhoneNumberTextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
+        tf.placeholder = "+7 985 758-22-87"
+        tf.numberPlaceholderColor = .red
+        tf.tintColor = .baseGrayTextColor()
+        tf.textColor = .baseGrayTextColor()
+        tf.font = UIFont.sfUIMedium(with: 18)
         return tf
+    }()
+    
+    private var underlineView: UIView = {
+       let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .black
+        return view
     }()
     
     //MARK: - Lifecycle
@@ -88,12 +107,14 @@ class SignInViewController: UIViewController {
     //MARK: - Objc funcs
     @objc private func nextButtonTapped() {
         print("tapped")
+        print(getCurrentPhoneNumber(phoneNumber: phoneTextField.text!))
         if let text = phoneTextField.text {
             AuthService.shared.sendSms(login: text) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 
                 case .success(let result):
-                    self?.navigationController?.push(OTPViewController(authModel: .init(type: result, login: text)))
+                    self.navigationController?.push(OTPViewController(authModel: .init(type: result, login: self.getCurrentPhoneNumber(phoneNumber: text))))
                 case .failure(let error):
                     UIApplication.showAlert(title: "Ошибка!", message: error.description)
                 }
@@ -102,18 +123,25 @@ class SignInViewController: UIViewController {
 
     }
     @objc private func textFieldDidChanged() {
-        if let isEmpty = phoneTextField.text?.isEmpty {
-            nextButton.isEnabled = !isEmpty
+        guard let text = phoneTextField.text else { return }
+        if text.isEmpty  || getCurrentPhoneNumber(phoneNumber: text).count < maxPhoneCount {
+            nextButton.isEnabled = false
+            return
         }
+        nextButton.isEnabled = true
     }
 }
 
 //MARK: - TextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
+    private func getCurrentPhoneNumber(phoneNumber: String) -> String {
+        let range = NSString(string: phoneNumber).range(of: phoneNumber)
+        return regex.stringByReplacingMatches(in: phoneNumber, options: [], range: range, withTemplate: "")
+    }
     private func formatPhoneNumber(phoneNumber: String, shouldRemoveLastDigit: Bool) -> String {
         guard !(shouldRemoveLastDigit && phoneNumber.count <= 2) else { return "+" }
-        let range = NSString(string: phoneNumber).range(of: phoneNumber)
-        var number = regex.stringByReplacingMatches(in: phoneNumber, options: [], range: range, withTemplate: "")
+//        let range = NSString(string: phoneNumber).range(of: phoneNumber)
+        var number = getCurrentPhoneNumber(phoneNumber: phoneNumber)
 
         if number.count > maxPhoneCount {
             let maxIndex = number.index(number.startIndex, offsetBy: maxPhoneCount)
@@ -138,6 +166,7 @@ extension SignInViewController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        print("SHOULD CHANGE")
         let newLength = (textField.text ?? "").count + string.count - range.length
         if textField == phoneTextField {
             var changeString: String = string
@@ -146,8 +175,10 @@ extension SignInViewController: UITextFieldDelegate {
             }
             let fullString = (textField.text ?? "") + changeString
             textField.text = formatPhoneNumber(phoneNumber: fullString, shouldRemoveLastDigit: range.length == 1)
+            textFieldDidChanged()
             return false
         }
+        textFieldDidChanged()
         return false
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -179,6 +210,7 @@ extension SignInViewController {
             make.left.equalToSuperview().offset(defaultLeadingOffset)
         }
         
+        view.addSubview(underlineView)
         phoneTextField.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(defaultLeadingOffset)
             make.top.equalTo(phoneNumberLabel.snp.bottom).offset(12)
@@ -186,8 +218,15 @@ extension SignInViewController {
 //            make.height.equalTo(80)
         }
         
+        underlineView.snp.makeConstraints { make in
+            make.width.equalTo(phoneTextField)
+            make.top.equalTo(phoneTextField.snp.bottom).offset(3)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(2)
+        }
+        
         descriptionLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(phoneTextField.snp.bottom).offset(24)
+            make.top.equalTo(underlineView.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(defaultLeadingOffset)
             make.width.equalToSuperview().multipliedBy(0.7)
             

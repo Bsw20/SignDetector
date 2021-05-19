@@ -14,5 +14,6 @@ target 'SignDetector' do
   pod 'SwiftyBeaver'
   pod 'SwiftyJSON'
   pod "Connectivity"
+  pod 'PhoneNumberKit', '~> 3.3'
 
 end

@@ -121,7 +121,6 @@ class MainMapViewController: UIViewController {
                 self.editSlideUpView.isShown = true
             }
 
-        } else {
         }
     }
     
@@ -483,35 +482,53 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
             print("No image found")
             return
         }
-        makeAddressSearch(point: YMKPoint(latitude: latitude, longitude: longitude), zoom: nil, searchOptions: YMKSearchOptions()) { [weak self]result, error in
-            guard let self = self else { return }
-            if let error = error {
-                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
-                return
-            }
-            if let name = result?.collection.children.first?.obj?.name {
-                print("jfkalsjdflk\(name)")
-                UserAPIService.shared.sendImageWithSign(model: .init(fileData: data,
-                                                                     latitude: latitude,
-                                                                     longitude: longitude,
-                                                                     address: name,
-                                                                     direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
-                    switch result {
-                    
-                    case .success():
-                        break
-                    case .failure(_):
-                        onMainThread {
-                            UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить фотографию, попробуйте позже")
-                        }
-
+        DispatchQueue.global(qos: .userInitiated).async {
+            UserAPIService.shared.sendImageWithSign(model: .init(fileData: data,
+                                                                 latitude: latitude,
+                                                                 longitude: longitude,
+                                                                 direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
+                switch result {
+                
+                case .success():
+                    break
+                case .failure(_):
+                    onMainThread {
+                        UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить фотографию, попробуйте позже")
                     }
-                    
-                }
-            } else {
 
-                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+                }
+                
             }
+//        makeAddressSearch(point: YMKPoint(latitude: latitude, longitude: longitude), zoom: nil, searchOptions: YMKSearchOptions()) { [weak self]result, error in
+//            guard let self = self else { return }
+//            if let error = error {
+//                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+//                return
+//            }
+//            if let name = result?.collection.children.first?.obj?.name {
+//                print("jfkalsjdflk\(name)")
+//
+//                UserAPIService.shared.sendImageWithSign(model: .init(fileData: data,
+//                                                                     latitude: latitude,
+//                                                                     longitude: longitude,
+//                                                                     address: name,
+//                                                                     direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
+//                    switch result {
+//
+//                    case .success():
+//                        break
+//                    case .failure(_):
+//                        onMainThread {
+//                            UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить фотографию, попробуйте позже")
+//                        }
+//
+//                    }
+//
+//                }
+//            } else {
+//
+//                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
+//            }
         }
 
         print("SIIIIZE")
@@ -569,7 +586,7 @@ extension MainMapViewController: SocketManagerDelegate {
         for sign in model.signs {
             let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
 //            pointsDict[point] = (clu)
-            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: sign.type)!)
+            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: sign.type) ?? UIImage())
             pointsDict[point] = (clusterNumber, obj, sign)
         }
 //        mapObjects.clear()
@@ -623,12 +640,23 @@ extension MainMapViewController: AVCapturePhotoCaptureDelegate {
         print("IMAGE CAPTURED")
         print(socket == nil)
         print(photo.fileDataRepresentation())
-        guard socket != nil, let photoData = photo.fileDataRepresentation() else { return }
+        guard socket != nil, let photoData = photo.fileDataRepresentation(),
+              let latitude = locationManager.location?.coordinate.latitude,
+              let longitude = locationManager.location?.coordinate.longitude else { return }
         print("HERE")
-        socket.sendImage(image: photoData) { result in
-            print("IMAGE SEND WITH SOCKET")
-            print(self.locationManager.heading?.magneticHeading)
+        if isConnectedToInternet() {
+            socket.sendImage(image: photoData) { result in
+                print("IMAGE SEND WITH SOCKET")
+                print(self.locationManager.heading?.magneticHeading)
+            }
+        } else {
+            print("add sign model")
+            CoreDataManager.shared.addSignModel(fileData: photoData,
+                                                latitude: latitude,
+                                                longitude: longitude,
+                                                direction: locationManager.heading?.magneticHeading ?? 0)
         }
+
 //        socket.sendImage { <#Result<Void, Error>#> in
 //            <#code#>
 //        }

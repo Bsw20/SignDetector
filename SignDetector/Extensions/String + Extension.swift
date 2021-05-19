@@ -22,4 +22,11 @@ extension String {
         return CGSize(width: size.width, height: ceil(size.height))
     }
     
+    func replace(_ index: Int, _ newChar: Character) -> String {
+        var chars = Array(self)     // gets an array of characters
+        chars[index] = newChar
+        let modifiedString = String(chars)
+        return modifiedString
+    }
+    
 }

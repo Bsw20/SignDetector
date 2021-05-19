@@ -109,7 +109,6 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Objc funcs
     @objc private func exitButtonTapped() {
-        let vc = UIApplication.getTopViewController()
         
         let alertController = UIAlertController(title: "Выйти?", message: "Вы уверены, что хотите выйти из аккаунта?", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Отмена", style: .default) { (_) in
@@ -117,6 +116,7 @@ class SettingsViewController: UIViewController {
         }
         let exitAction = UIAlertAction(title: "Выйти", style: .destructive) { (_) in
             debugPrint("EXIT")
+            APIManager.logOut()
         }
 //        alertController.addAction(okAction)
         alertController.addAction(cancelAction)

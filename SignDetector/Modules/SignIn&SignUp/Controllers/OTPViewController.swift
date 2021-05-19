@@ -11,6 +11,15 @@ import SnapKit
 
 class OTPViewController: UIViewController {
     struct AuthModel {
+        internal init(type: OTPViewController.AuthType, login: String) {
+            self.type = type
+            if login.count >  0 && login.prefix(1) == "7" {
+                self.login = login.replace(0, "8")
+            } else {
+                self.login = login
+            }
+        }
+        
         var type: AuthType
         var login: String
     }

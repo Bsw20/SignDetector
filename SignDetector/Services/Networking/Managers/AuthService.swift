@@ -86,9 +86,9 @@ struct AuthService {
             let url = model.type == .registered ? ServerAddressConstants.LOGIN_ADDRESS: ServerAddressConstants.REGISTER_ADDRESS
             print("URL + \(url)")
             let userData: [String: Any] = model.type == .registered ?
-                SignInModel(login: "89858182278", smsCode: model.smsCode).representation
+                SignInModel(login: model.login, smsCode: model.smsCode).representation
                 :
-                SignUpModel(login: "89858182278", smsCode: model.smsCode).representation
+                SignUpModel(login: model.login, smsCode: model.smsCode).representation
             print(userData)
             print(model)
             

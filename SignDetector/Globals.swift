@@ -17,4 +17,6 @@ func onMainThread(delay: TimeInterval = 0, _ block: @escaping () -> Void) {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) { block() }
 }
 
-
+func isConnectedToInternet() -> Bool {
+    return (UIApplication.shared.delegate as! AppDelegate).isConnected
+}
