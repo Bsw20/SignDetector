@@ -29,22 +29,37 @@ class SettingsViewController: UIViewController {
         return view
     }()
     
+    private var fourthSeparator: UIView = {
+       let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 0.9568627451, alpha: 1)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private var topLabel = UILabel(text: "Настройки",
                                         font: UIFont.sfUISemibold(with: 32),
                                         textColor: .black)
     
-    private var turnOnLabel = UILabel(text: "Включать запись при входе в приложение",
+    private var turnOnVideoLabel = UILabel(text: "Включать запись при входе в приложение",
                                       font: UIFont.sfUIMedium(with: 16),
                                       textColor: #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 1),
                                       textAlignment: .left,
                                       numberOfLines: 2)
     
-    private var turnOffLabel = UILabel(text: "Выключать запись при выходе из приложения",
+    private var showConfirmedSignsLabel = UILabel(text: "Показывать подтвержденные знаки",
                                        font: UIFont.sfUIMedium(with: 16),
                                        textColor: #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 1),
                                        textAlignment: .left,
                                        numberOfLines: 2,
                                        backgroundColor: .white)
+    
+    private var showUncomfirmedSignsLabel = UILabel(text: "Показывать неподтвержденные знаки",
+                                       font: UIFont.sfUIMedium(with: 16),
+                                       textColor: #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 1),
+                                       textAlignment: .left,
+                                       numberOfLines: 2,
+                                       backgroundColor: .white)
+    
     
     private var signOutButton: UIButton = {
         let button = UIButton(type: .system)
@@ -56,13 +71,19 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
-    private var topSwitch: UISwitch = {
+    private var turnOnVideoSwitch: UISwitch = {
        let sw = UISwitch()
         sw.translatesAutoresizingMaskIntoConstraints = false
         return sw
     }()
     
-    private var bottomSwitch: UISwitch = {
+    private var confirmedSignsSwitch: UISwitch = {
+       let sw = UISwitch()
+        sw.translatesAutoresizingMaskIntoConstraints = false
+        return sw
+    }()
+    
+    private var unconfirmedSignsSwitch: UISwitch = {
        let sw = UISwitch()
         sw.translatesAutoresizingMaskIntoConstraints = false
         return sw
@@ -81,13 +102,14 @@ class SettingsViewController: UIViewController {
     //MARK: - Funcs
     private func configure() {
         signOutButton.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
-        topSwitch.addTarget(self, action: #selector(turnOnSwitchTapped), for: .valueChanged)
-        bottomSwitch.addTarget(self, action: #selector(turnoOffSwitchTapped), for: .valueChanged)
+        turnOnVideoSwitch.addTarget(self, action: #selector(turnOnSwitchTapped), for: .valueChanged)
+        confirmedSignsSwitch.addTarget(self, action: #selector(confirmedSignsSwitchTapped), for: .valueChanged)
+        unconfirmedSignsSwitch.addTarget(self, action: #selector(unconfirmedSignsSwitchTapped), for: .valueChanged)
     }
     
     private func setupUI() {
         view.backgroundColor = .white
-        topSwitch.isOn = APIManager.isCameraWorkOnStart()
+        turnOnVideoSwitch.isOn = APIManager.isCameraWorkOnStart()
         
 //        self.navigationController?.navigationBar.tintColor = .black
 //        self.navigationController?.navigationBar.isTranslucent = false
@@ -125,12 +147,19 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func turnOnSwitchTapped() {
-        print(topSwitch.isOn)
-        APIManager.setIsCameraWorkOnStart(shouldWork: topSwitch.isOn)
+        print(#function)
+        print(turnOnVideoSwitch.isOn)
+        APIManager.setIsCameraWorkOnStart(shouldWork: turnOnVideoSwitch.isOn)
     }
     
-    @objc private func turnoOffSwitchTapped() {
-        print(bottomSwitch.isOn)
+    @objc private func confirmedSignsSwitchTapped() {
+        print(#function)
+        print(confirmedSignsSwitch.isOn)
+    }
+    
+    @objc private func unconfirmedSignsSwitchTapped() {
+        print(#function)
+        print(unconfirmedSignsSwitch.isOn)
     }
 }
 
@@ -141,67 +170,92 @@ extension SettingsViewController {
         let defaultLefOffset = 0.064 * screenSize.width
         let multiplyConstant = 0.9
         view.addSubview(topLabel)
-        view.addSubview(turnOnLabel)
-        view.addSubview(turnOffLabel)
-        view.addSubview(topSwitch)
-        view.addSubview(bottomSwitch)
+        view.addSubview(turnOnVideoLabel)
+        view.addSubview(showConfirmedSignsLabel)
+        view.addSubview(showUncomfirmedSignsLabel)
+        
+        view.addSubview(turnOnVideoSwitch)
+        view.addSubview(confirmedSignsSwitch)
+        view.addSubview(unconfirmedSignsSwitch)
+        
         view.addSubview(signOutButton)
         view.addSubview(firstSeparator)
         view.addSubview(secondSeparator)
         view.addSubview(thirdSeparator)
+        view.addSubview(fourthSeparator)
         
         topLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(screenSize.height * 0.1)
             make.left.equalToSuperview().offset(defaultLefOffset)
         }
         
-        turnOnLabel.snp.makeConstraints { (make) in
+        turnOnVideoLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(defaultLefOffset)
             make.width.equalTo(screenSize.width * 0.517)
             make.top.equalTo(topLabel.snp.bottom).offset(17)
-            make.right.lessThanOrEqualTo(bottomSwitch.snp.left)
+            make.right.lessThanOrEqualTo(confirmedSignsSwitch.snp.left)
         }
         
         firstSeparator.snp.makeConstraints { (make) in
-            make.top.equalTo(turnOnLabel.snp.bottom).offset(20)
+            make.top.equalTo(turnOnVideoLabel.snp.bottom).offset(20)
             make.width.equalToSuperview().multipliedBy(multiplyConstant)
             make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         
-        turnOffLabel.snp.makeConstraints { (make) in
+        showConfirmedSignsLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(defaultLefOffset)
             make.width.equalTo(screenSize.width * 0.517)
             make.top.equalTo(firstSeparator.snp.bottom).offset(17)
-            make.right.lessThanOrEqualTo(topSwitch.snp.left)
+            make.right.lessThanOrEqualTo(confirmedSignsSwitch.snp.left)
         }
         
         secondSeparator.snp.makeConstraints { (make) in
-            make.top.equalTo(turnOffLabel.snp.bottom).offset(20)
+            make.top.equalTo(showConfirmedSignsLabel.snp.bottom).offset(20)
             make.width.equalToSuperview().multipliedBy(multiplyConstant)
             make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
         
-        topSwitch.snp.makeConstraints { (make) in
-            make.top.equalTo(turnOnLabel.snp.top)
+        showUncomfirmedSignsLabel.snp.makeConstraints { (make) in
+            make.left.equalToSuperview().offset(defaultLefOffset)
+            make.width.equalTo(screenSize.width * 0.517)
+            make.top.equalTo(secondSeparator.snp.bottom).offset(17)
+            make.right.lessThanOrEqualTo(unconfirmedSignsSwitch.snp.left)
+        }
+        
+        thirdSeparator.snp.makeConstraints { (make) in
+            make.top.equalTo(showUncomfirmedSignsLabel.snp.bottom).offset(20)
+            make.width.equalToSuperview().multipliedBy(multiplyConstant)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
+        turnOnVideoSwitch.snp.makeConstraints { (make) in
+            make.top.equalTo(turnOnVideoLabel.snp.top)
             make.right.equalToSuperview().inset(screenSize.width * 0.061)
         }
         
-        bottomSwitch.snp.makeConstraints { (make) in
-            make.top.equalTo(turnOffLabel.snp.top)
+        confirmedSignsSwitch.snp.makeConstraints { (make) in
+            make.top.equalTo(showConfirmedSignsLabel.snp.top)
+            make.right.equalToSuperview().inset(screenSize.width * 0.061)
+            
+        }
+        
+        unconfirmedSignsSwitch.snp.makeConstraints { (make) in
+            make.top.equalTo(showUncomfirmedSignsLabel.snp.top)
             make.right.equalToSuperview().inset(screenSize.width * 0.061)
             
         }
         
         signOutButton.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(defaultLefOffset)
-            make.top.equalTo(secondSeparator.snp.bottom)
+            make.top.equalTo(thirdSeparator.snp.bottom)
             make.height.equalTo(63)
             make.width.equalToSuperview()
         }
         
-        thirdSeparator.snp.makeConstraints { (make) in
+        fourthSeparator.snp.makeConstraints { (make) in
             make.top.equalTo(signOutButton.snp.bottom)
             make.width.equalToSuperview().multipliedBy(multiplyConstant)
             make.centerX.equalToSuperview()

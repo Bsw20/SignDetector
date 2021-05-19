@@ -433,6 +433,7 @@ extension MainMapViewController: YMKInertiaMoveListener, YMKMapSizeChangedListen
     func onFinish(with map: YMKMap, cameraPosition: YMKCameraPosition) {
         print(#function)
     }
+    
 }
 
 //MARK: - CLLocationManagerDelegate
@@ -539,6 +540,61 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
+
+    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
+        print(#function)
+        let mapObjects = mapView.mapWindow.map.mapObjects
+//        mapObjects.clear()
+        let cv = getClusterViewWith(index: clusterNumber)
+        cv.configure(count: model.size)
+        cv.isHidden = model.size < 100
+        deletePointsIn(clusterNumber: clusterNumber)
+        deletePointsInInvisibleRegion()
+        
+        guard model.signs.count > 0 else { return }
+        for sign in model.signs {
+            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point)
+            
+            let signView = YMKCustomPointView(isVerified: Int.random(in: 1...2) == 1, image: UIImage(named: sign.type))
+            if let viewProvider = YRTViewProvider(uiView: signView) {
+                obj.setViewWithView(viewProvider)
+                pointsDict[point] = (clusterNumber, obj, sign)
+            } else {
+                mapView.mapWindow.map.mapObjects.remove(with: obj)
+            }
+            
+        }
+
+    }
+    
+    func didConnect(socket: Socket) {
+        print("did connect ViewController")
+//        createTimer()
+//        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
+//        mapView.mapWindow.map.loca
+//        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
+//                                      topRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
+//                                      filter: signsForFilter)
+        let vr = mapView.mapWindow.map.visibleRegion
+        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
+                                      topRight: vr.topRight,
+                                      topLeft: vr.topLeft,
+                                      bottomRight: vr.bottomRight,
+                                      bottomLeft: vr.bottomLeft,
+                                      filter: signsForFilter)
+    }
+    
+    func didDisconnect(socket: Socket) {
+        print("did disconnect ViewController")
+    }
+    
+    func onMessageReceived(socket: Socket, message: String) {
+        print("did receive message")
+    }
     private func getSortedKeys() {
 //        let keys = pointsDict.keys.sorted { firstPoint, secondPoint in
 //            <#code#>
@@ -571,64 +627,6 @@ extension MainMapViewController: SocketManagerDelegate {
                 print("DELETE FROM INVISIBLE AREA")
             }
         }
-    }
-    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
-        print(#function)
-        let mapObjects = mapView.mapWindow.map.mapObjects
-//        mapObjects.clear()
-        let cv = getClusterViewWith(index: clusterNumber)
-        cv.configure(count: model.size)
-        cv.isHidden = model.size < 100
-        deletePointsIn(clusterNumber: clusterNumber)
-        deletePointsInInvisibleRegion()
-        
-        guard model.signs.count > 0 else { return }
-        for sign in model.signs {
-            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
-//            pointsDict[point] = (clu)
-            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: sign.type) ?? UIImage())
-            pointsDict[point] = (clusterNumber, obj, sign)
-        }
-//        mapObjects.clear()
-//        for searchResult in response.collection.children {
-//            if let point = searchResult.obj?.geometry.first?.point {
-//                let placemark = mapObjects.addPlacemark(with: point)
-//                placemark.setIconWith(UIImage(named: "SearchResult")!)
-//            }
-//        }
-//        for sign in model.signs {
-////            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
-////            mapView.mapWindow.map.mapObjects.addPlacemark(with: point, image: UIImage(named: "1_1")!)
-//        }
-
-    }
-    
-    func didConnect(socket: Socket) {
-        print("did connect ViewController")
-//        createTimer()
-//        socket.sendCurrentCoordinates(radius: 500, lat: 55.751244, long: 37.618423, filter: [])
-//        mapView.mapWindow.map.loca
-//        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
-//                                      topRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-//                                      topLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-//                                      bottomRight: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-//                                      bottomLeft: YMKPoint(latitude: 55.751244, longitude: 37.618423),
-//                                      filter: signsForFilter)
-        let vr = mapView.mapWindow.map.visibleRegion
-        socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target,
-                                      topRight: vr.topRight,
-                                      topLeft: vr.topLeft,
-                                      bottomRight: vr.bottomRight,
-                                      bottomLeft: vr.bottomLeft,
-                                      filter: signsForFilter)
-    }
-    
-    func didDisconnect(socket: Socket) {
-        print("did disconnect ViewController")
-    }
-    
-    func onMessageReceived(socket: Socket, message: String) {
-        print("did receive message")
     }
     
     
