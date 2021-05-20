@@ -77,6 +77,29 @@ final class Socket: ObservableObject {
     }
     
     public func sendCurrentCoordinates(center: YMKPoint, topRight: YMKPoint, topLeft: YMKPoint, bottomRight: YMKPoint, bottomLeft: YMKPoint, filter: [String] ) {
+        print("SLFISDFL ")
+        print([
+            "leftDown" : [
+                "lat": bottomLeft.latitude,
+                "lon": bottomLeft.longitude
+            ],
+            "leftUp" : [
+                "lat": topLeft.latitude,
+                "lon": topLeft.longitude
+            ],
+            "rightDown" : [
+                "lat": bottomRight.latitude,
+                "lon": bottomRight.longitude
+            ],
+            "rightUp" : [
+                "lat": topRight.latitude,
+                "lon": topRight.longitude
+            ],
+            "lat": center.latitude, "lon": center.longitude, "filter" : filter,
+        "needConfirmed": APIManager.showConfirmedSignsOnMap,
+        "needUnconfirmed": APIManager.showUnconfirmedSignsOnMap
+])
+        
         socket.emit("getSigns", [
                         "leftDown" : [
                             "lat": bottomLeft.latitude,

@@ -156,7 +156,9 @@ class MainMapViewController: UIViewController {
             
             session.addInput(input)
             session.addOutput(output)
-            
+        if let videoConnection = output.connection(with: .video) {
+            videoConnection.videoOrientation = .landscapeRight
+        }
             previewLayer = AVCaptureVideoPreviewLayer(session: session)
             
             previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -244,8 +246,8 @@ class MainMapViewController: UIViewController {
         let settings = AVCapturePhotoSettings()
         let previewPixelType = settings.availablePreviewPhotoPixelFormatTypes.first
         let previewFormat = [kCVPixelBufferPixelFormatTypeKey as String: previewPixelType,
-                                     kCVPixelBufferWidthKey as String: 160,
-                                     kCVPixelBufferHeightKey as String: 160,
+                                     kCVPixelBufferWidthKey as String: 1280,
+                                     kCVPixelBufferHeightKey as String: 720,
                                      ]
         settings.previewPhotoFormat = previewFormat as [String : Any]
         self.output.capturePhoto(with: settings, delegate: self)
@@ -636,11 +638,13 @@ extension MainMapViewController: SocketManagerDelegate {
 extension MainMapViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         print("IMAGE CAPTURED")
-        print(socket == nil)
-        print(photo.fileDataRepresentation())
         guard socket != nil, let photoData = photo.fileDataRepresentation(),
               let latitude = locationManager.location?.coordinate.latitude,
-              let longitude = locationManager.location?.coordinate.longitude else { return }
+              let longitude = locationManager.location?.coordinate.longitude else {
+            print("DIDN T SEND WITH SOCKET")
+            return
+            
+        }
         print("HERE")
         if isConnectedToInternet() {
             socket.sendImage(image: photoData, lat: latitude, long: longitude, direction: locationManager.heading?.magneticHeading ?? 0) { result in
@@ -654,14 +658,6 @@ extension MainMapViewController: AVCapturePhotoCaptureDelegate {
                                                 longitude: longitude,
                                                 direction: locationManager.heading?.magneticHeading ?? 0)
         }
-
-//        socket.sendImage { <#Result<Void, Error>#> in
-//            <#code#>
-//        }
-//        if socket != nil {
-//            guard let
-//            socket.sendImage(completion: <#T##(Result<Void, Error>) -> Void#>)
-//        }
     }
 }
 
