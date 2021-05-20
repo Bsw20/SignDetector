@@ -62,10 +62,15 @@ final class Socket: ObservableObject {
 
         socket.connect()
     }
-    public func sendImage(image: Data, completion: @escaping (Result<Void, Error>) -> Void ) {
+    public func sendImage(image: Data, lat: Double, long: Double, direction: Double, completion: @escaping (Result<Void, Error>) -> Void ) {
 //        print(model.representation())
 //        let img = #imageLiteral(resourceName: "Component 1")
-        socket.emit("sendFile", ["buffer" : image]) {
+        socket.emit("sendFile", ["buffer" : image,
+                                 "lat": lat,
+                                 "lon": long,
+                                 "direction": direction
+
+        ]) {
             print("SENDSEND")
             completion(.success(Void()))
         }
@@ -89,8 +94,14 @@ final class Socket: ObservableObject {
                             "lat": topRight.latitude,
                             "lon": topRight.longitude
                         ],
-                        "lat": center.latitude, "lon": center.longitude, "filter" : filter]) {
+                        "lat": center.latitude, "lon": center.longitude, "filter" : filter,
+                    "needConfirmed": APIManager.showConfirmedSignsOnMap,
+                    "needUnconfirmed": APIManager.showUnconfirmedSignsOnMap
+        ]) {
             print(#function)
+            print(APIManager.showConfirmedSignsOnMap)
+            print(APIManager.showUnconfirmedSignsOnMap)
+            
         }
     }
     

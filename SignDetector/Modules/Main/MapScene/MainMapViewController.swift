@@ -643,7 +643,7 @@ extension MainMapViewController: AVCapturePhotoCaptureDelegate {
               let longitude = locationManager.location?.coordinate.longitude else { return }
         print("HERE")
         if isConnectedToInternet() {
-            socket.sendImage(image: photoData) { result in
+            socket.sendImage(image: photoData, lat: latitude, long: longitude, direction: locationManager.heading?.magneticHeading ?? 0) { result in
                 print("IMAGE SEND WITH SOCKET")
                 print(self.locationManager.heading?.magneticHeading)
             }
