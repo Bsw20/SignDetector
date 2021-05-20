@@ -478,7 +478,12 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
         searchSession = searchManager?.submit(with: point, zoom: zoom, searchOptions: searchOptions, responseHandler: completion)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.originalImage] as? UIImage, let data = image.pngData(),
+        
+        guard let image = info[.originalImage] as? UIImage,
+//              let data = image.resized(to: .init(width: 1280, height: 720)).pngData(),
+              let data = UIImage.resizedImage(image: image, for: .init(width: 640, height: 360))?.pngData(),
+              
+//              let data = UIImage(named: "TestPhoto")?.pngData(),
               let latitude = locationManager.location?.coordinate.latitude,
               let longitude = locationManager.location?.coordinate.longitude else {
             dismiss(animated: true, completion: nil)
@@ -491,7 +496,7 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
                                                                  longitude: longitude,
                                                                  direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
                 switch result {
-                
+
                 case .success():
                     break
                 case .failure(_):
@@ -500,42 +505,16 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
                     }
 
                 }
-                
+
             }
-//        makeAddressSearch(point: YMKPoint(latitude: latitude, longitude: longitude), zoom: nil, searchOptions: YMKSearchOptions()) { [weak self]result, error in
-//            guard let self = self else { return }
-//            if let error = error {
-//                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
-//                return
-//            }
-//            if let name = result?.collection.children.first?.obj?.name {
-//                print("jfkalsjdflk\(name)")
-//
-//                UserAPIService.shared.sendImageWithSign(model: .init(fileData: data,
-//                                                                     latitude: latitude,
-//                                                                     longitude: longitude,
-//                                                                     address: name,
-//                                                                     direction: self.locationManager.heading?.magneticHeading ?? 0)) { result in
-//                    switch result {
-//
-//                    case .success():
-//                        break
-//                    case .failure(_):
-//                        onMainThread {
-//                            UIApplication.showAlert(title: "Ошибка!", message: "Не получилось загрузить фотографию, попробуйте позже")
-//                        }
-//
-//                    }
-//
-//                }
-//            } else {
-//
-//                UIApplication.showAlert(title: "Ошибка!", message: "Не получилось определить точку, попробуйте позже")
-//            }
         }
 
         print("SIIIIZE")
-        print(image.size)
+        print(image.size.width)
+        print(image.size.height)
+        let newImage = UIImage.resizedImage(image: image, for: .init(width: 1280, height: 720))
+        print(newImage?.size.width)
+        print(newImage?.size.height)
         dismiss(animated: true, completion: nil)
     }
 }

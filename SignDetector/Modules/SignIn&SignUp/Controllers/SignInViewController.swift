@@ -110,12 +110,13 @@ class SignInViewController: UIViewController {
         print("tapped")
         print(getCurrentPhoneNumber(phoneNumber: phoneTextField.text!))
         if let text = phoneTextField.text {
-            AuthService.shared.sendSms(login: text) { [weak self] result in
+            let phoneNumber = getCurrentPhoneNumber(phoneNumber: text)
+            AuthService.shared.sendSms(login: phoneNumber) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 
                 case .success(let result):
-                    self.navigationController?.push(OTPViewController(authModel: .init(type: result, login: self.getCurrentPhoneNumber(phoneNumber: text))))
+                    self.navigationController?.push(OTPViewController(authModel: .init(type: result, login: phoneNumber)))
                 case .failure(let error):
                     UIApplication.showAlert(title: "Ошибка!", message: error.description)
                 }

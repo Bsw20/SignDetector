@@ -26,6 +26,8 @@
 		30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */; };
 		30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA3263F01AF006BBFD6 /* MapTitleView.swift */; };
 		30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */; };
+		30A1811B26571441006559F9 /* UIImagePicker + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */; };
+		30A1811D2657164F006559F9 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811C2657164F006559F9 /* UIImage + Extension.swift */; };
 		30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567226038A8900D6F81D /* AppDelegate.swift */; };
 		30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567426038A8900D6F81D /* SceneDelegate.swift */; };
 		30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567B26038A8D00D6F81D /* Assets.xcassets */; };
@@ -92,6 +94,8 @@
 		30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		30982FA3263F01AF006BBFD6 /* MapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTitleView.swift; sourceTree = "<group>"; };
 		30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModeView.swift; sourceTree = "<group>"; };
+		30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePicker + Extension.swift"; sourceTree = "<group>"; };
+		30A1811C2657164F006559F9 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -348,6 +352,8 @@
 				30D8C03F264D827500E3BCF6 /* YMKPoint + Extension.swift */,
 				30D8C041264D82C700E3BCF6 /* CoreLocationPoint + Extension.swift */,
 				30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */,
+				30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */,
+				30A1811C2657164F006559F9 /* UIImage + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -632,6 +638,7 @@
 				30AB20522636B40E00F97736 /* UIFont + Extension.swift in Sources */,
 				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
 				30D8C057264EE40500E3BCF6 /* SelectSignCell.swift in Sources */,
+				30A1811D2657164F006559F9 /* UIImage + Extension.swift in Sources */,
 				3085B7102652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift in Sources */,
 				30BE1122264489EF006FC056 /* SocketManager.swift in Sources */,
 				30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */,
@@ -656,6 +663,7 @@
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
 				3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */,
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
+				30A1811B26571441006559F9 /* UIImagePicker + Extension.swift in Sources */,
 				30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */,
 				30D8C052264EE26A00E3BCF6 /* SelectSignsViewController.swift in Sources */,
 				3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */,

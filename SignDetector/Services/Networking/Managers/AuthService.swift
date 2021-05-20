@@ -12,6 +12,15 @@ import SwiftyBeaver
 
 struct AuthService {
     struct AuthModel {
+        internal init(type: AuthService.AuthType, login: String, smsCode: String) {
+            self.type = type
+            self.login = login
+            if login.prefix(1) == "7" {
+                self.login = login.replace(0, "8")
+            }
+            self.smsCode = smsCode
+        }
+        
         var type: AuthType
         var login: String
         var smsCode: String
@@ -52,7 +61,7 @@ struct AuthService {
     func sendSms(login: String, completion: @escaping (Result<AuthType, APIError>) -> Void) {
         let url = ServerAddressConstants.SENDSMS_ADDRESS
         
-        let userData: [String: Any] = ["login": "89858182278"]
+        let userData: [String: Any] = ["login": login.prefix(1) == "7" ? login.replace(0, "8") : login]
         DispatchQueue.global(qos: .userInitiated).async {
             AF.request(url,
                        method: .post,
