@@ -631,6 +631,7 @@ extension MainMapViewController: SocketManagerDelegate {
             deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
             deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
             if isAllSectorsClear() {
+                print("ALLSECTORSCLEAR")
                 previousRegion = nil
             }
 
@@ -661,10 +662,10 @@ extension MainMapViewController: SocketManagerDelegate {
     }
     
     private func isAllSectorsClear() -> Bool {
-        return firstClusterView.isHidden &&
-            secondClusterView.isHidden &&
-            thirdClusterView.isHidden &&
-            fourthClusterView.isHidden
+        return !firstClusterView.isHidden &&
+            !secondClusterView.isHidden &&
+            !thirdClusterView.isHidden &&
+            !fourthClusterView.isHidden
     }
 
 //    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
