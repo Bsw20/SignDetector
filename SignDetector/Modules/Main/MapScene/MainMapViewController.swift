@@ -47,6 +47,14 @@ class MainMapViewController: UIViewController {
         }
     }
     
+    //MARK: Map
+    private var mapCompletelyUpdated: Bool = false
+    private var previousRegion: CGRect? = nil
+    private var clustersCollection: YMKClusterizedPlacemarkCollection!
+    private let FONT_SIZE: CGFloat = 15
+    private let MARGIN_SIZE: CGFloat = 3
+    private let STROKE_SIZE: CGFloat = 3
+    
     //MARK: - Controls
     //MARK: Clusters
     private var firstClusterView = SignsClusterView(isHidden: true)
@@ -212,6 +220,8 @@ class MainMapViewController: UIViewController {
     private func configure() {
 //        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
 //        mapView.mapWindow.map.visibleRegion.co
+//        previousRegion = mapView.mapWindow.map.visibleRegion.asCGRect()
+        clustersCollection = mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
         UserAPIService.shared.getUserPosition {[weak self] newPosition in
             self?.jobPosition = newPosition
         }
@@ -337,6 +347,88 @@ class MainMapViewController: UIViewController {
         print("TIMER CALLED \(timer?.timeInterval)")
         capturePhoto()
     }
+}
+
+//MARK: - YMKClusterizedPlacemarkCollection
+extension MainMapViewController: YMKClusterListener, YMKClusterTapListener {
+    
+    func onClusterAdded(with cluster: YMKCluster) {
+        cluster.appearance.setIconWith(clusterImage(cluster.size))
+        cluster.addClusterTapListener(with: self)
+    }
+    
+    func onClusterTap(with cluster: YMKCluster) -> Bool {
+        UIApplication.showAlert(title: "Tap", message: String(format: "Tapped cluster with %u items", cluster.size))
+        return true
+    }
+    
+    private func addPointsToClusterCollection(clusterNumber: Int, models: [SignModel]) {
+        for sign in models {
+            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+//            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point)
+            let obj = clustersCollection.addPlacemark(with: point)
+
+            let signView = YMKCustomPointView(isVerified: Int.random(in: 1...2) == 1, image: UIImage(named: sign.type))
+            if let viewProvider = YRTViewProvider(uiView: signView) {
+                obj.setViewWithView(viewProvider)
+                pointsDict[point] = (clusterNumber, obj, sign)
+            } else {
+//                mapView.mapWindow.map.mapObjects.remove(with: obj)
+                clustersCollection.remove(withPlacemark: obj)
+            }
+        }
+        print(pointsDict.count)
+        clustersCollection.clusterPlacemarks(withClusterRadius: 60, minZoom: 15)
+
+    }
+    
+    private func deletePointsFromClusterCollection(points: [YMKPoint]) {
+        for point in points {
+            if let el = pointsDict[point] {
+                clustersCollection.remove(withPlacemark: el.1)
+                pointsDict.removeValue(forKey: point)
+            }
+        }
+        clustersCollection.clusterPlacemarks(withClusterRadius: 60, minZoom: 15)
+    }
+    
+    
+    
+    private func clusterImage(_ clusterSize: UInt) -> UIImage {
+        
+        let scale = UIScreen.main.scale
+        let text = (clusterSize as NSNumber).stringValue
+        let font = UIFont.systemFont(ofSize: FONT_SIZE * scale)
+        let size = text.size(withAttributes: [NSAttributedString.Key.font: font])
+        let textRadius = sqrt(size.height * size.height + size.width * size.width) / 2
+        let internalRadius = textRadius + MARGIN_SIZE * scale
+        let externalRadius = internalRadius + STROKE_SIZE * scale
+        let iconSize = CGSize(width: externalRadius * 2, height: externalRadius * 2)
+
+        UIGraphicsBeginImageContext(iconSize)
+        let ctx = UIGraphicsGetCurrentContext()!
+
+        ctx.setFillColor(UIColor.red.cgColor)
+        ctx.fillEllipse(in: CGRect(
+            origin: .zero,
+            size: CGSize(width: 2 * externalRadius, height: 2 * externalRadius)));
+
+        ctx.setFillColor(UIColor.white.cgColor)
+        ctx.fillEllipse(in: CGRect(
+            origin: CGPoint(x: externalRadius - internalRadius, y: externalRadius - internalRadius),
+            size: CGSize(width: 2 * internalRadius, height: 2 * internalRadius)));
+
+        (text as NSString).draw(
+            in: CGRect(
+                origin: CGPoint(x: externalRadius - size.width / 2, y: externalRadius - size.height / 2),
+                size: size),
+            withAttributes: [
+                NSAttributedString.Key.font: font,
+                NSAttributedString.Key.foregroundColor: UIColor.black])
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        return image
+    }
+    
 }
 
 //MARK: - Map object tap listener
@@ -529,33 +621,77 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
-
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
-        print(#function)
-        let mapObjects = mapView.mapWindow.map.mapObjects
-//        mapObjects.clear()
+
         let cv = getClusterViewWith(index: clusterNumber)
         cv.configure(count: model.size)
-        cv.isHidden = model.size < 100
-        deletePointsIn(clusterNumber: clusterNumber)
-        deletePointsInInvisibleRegion()
-        
-        guard model.signs.count > 0 else { return }
-        for sign in model.signs {
-            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
-            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point)
-            
-            let signView = YMKCustomPointView(isVerified: Int.random(in: 1...2) == 1, image: UIImage(named: sign.type))
-            if let viewProvider = YRTViewProvider(uiView: signView) {
-                obj.setViewWithView(viewProvider)
-                pointsDict[point] = (clusterNumber, obj, sign)
-            } else {
-                mapView.mapWindow.map.mapObjects.remove(with: obj)
+        cv.isHidden = model.size < Globals.clusterMaxSignsCount
+        if model.size > Globals.clusterMaxSignsCount {
+            deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
+            deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
+            if isAllSectorsClear() {
+                previousRegion = nil
             }
-            
+
+        } else {
+            let currentRegion = mapView.mapWindow.map.visibleRegion
+
+            if let prRegion = previousRegion {
+                if prRegion.contains(currentRegion.asCGRect()) &&  !prRegion.equalTo(currentRegion.asCGRect()) {
+                    return
+                } else {
+//                    deletePointsIn(clusterNumber: clusterNumber)
+//                    deletePointsInInvisibleRegion()
+                    previousRegion = currentRegion.asCGRect()
+                    deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
+                    deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
+                    addPointsToClusterCollection(clusterNumber: clusterNumber, models: model.signs)
+
+                }
+            } else {
+                previousRegion = currentRegion.asCGRect()
+                deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
+                deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
+                addPointsToClusterCollection(clusterNumber: clusterNumber, models: model.signs)
+            }
+
         }
 
     }
+    
+    private func isAllSectorsClear() -> Bool {
+        return firstClusterView.isHidden &&
+            secondClusterView.isHidden &&
+            thirdClusterView.isHidden &&
+            fourthClusterView.isHidden
+    }
+
+//    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
+//        print(#function)
+//        let mapObjects = mapView.mapWindow.map.mapObjects
+////        mapObjects.clear()
+//        let cv = getClusterViewWith(index: clusterNumber)
+//        cv.configure(count: model.size)
+//        cv.isHidden = model.size < 100
+//        deletePointsIn(clusterNumber: clusterNumber)
+//        deletePointsInInvisibleRegion()
+//
+//        guard model.signs.count > 0 else { return }
+//        for sign in model.signs {
+//            let point = YMKPoint(latitude: sign.lat, longitude: sign.lon)
+//            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point)
+//
+//            let signView = YMKCustomPointView(isVerified: sign.correct, image: UIImage(named: sign.type))
+//            if let viewProvider = YRTViewProvider(uiView: signView) {
+//                obj.setViewWithView(viewProvider)
+//                pointsDict[point] = (clusterNumber, obj, sign)
+//            } else {
+//                mapView.mapWindow.map.mapObjects.remove(with: obj)
+//            }
+//
+//        }
+//
+//    }
     
     func didConnect(socket: Socket) {
         print("did connect ViewController")
@@ -589,6 +725,29 @@ extension MainMapViewController: SocketManagerDelegate {
 //            <#code#>
 //        }
     }
+    
+    private func getPointsIn(clusterNumber: Int) -> [YMKPoint] {
+        var points = [YMKPoint]()
+        for el in pointsDict.keys {
+            if pointsDict[el]?.0 == clusterNumber {
+                points.append(el)
+            }
+        }
+        return points
+    }
+    
+    private func getPointsInInvisibleArea() -> [YMKPoint] {
+        var points = [YMKPoint]()
+        
+        for el in pointsDict.keys {
+            if !mapView.mapWindow.map.visibleRegion.contains(el) {
+                points.append(el)
+            }
+        }
+        
+        return points
+    }
+    
     private func deletePointsIn(clusterNumber: Int) {
 //        let mapObjects = mapView.mapWindow.map.mapObjects
 //        mapObjects.remove(with: YMKPlacemarkMapObject())
