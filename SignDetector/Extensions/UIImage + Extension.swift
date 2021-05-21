@@ -28,6 +28,16 @@ extension UIImage {
         }
     }
     
+    static func removeAlpha(from inputImage: UIImage) -> UIImage {
+            let format = UIGraphicsImageRendererFormat.init()
+            format.opaque = true //Removes Alpha Channel
+            format.scale = inputImage.scale //Keeps original image scale.
+            let size = inputImage.size
+            return UIGraphicsImageRenderer(size: size, format: format).image { _ in
+                inputImage.draw(in: CGRect(origin: .zero, size: size))
+            }
+        }
+    
     static func resizedImage(image: UIImage, for size: CGSize) -> UIImage? {
 
         let renderer = UIGraphicsImageRenderer(size: size)

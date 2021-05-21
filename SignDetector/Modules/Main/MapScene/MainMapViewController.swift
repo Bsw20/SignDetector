@@ -581,7 +581,8 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
         
         guard let image = info[.originalImage] as? UIImage,
 //              let data = image.resized(to: .init(width: 1280, height: 720)).pngData(),
-              let data = UIImage.resizedImage(image: image, for: .init(width: 640, height: 360))?.pngData(),
+              let resImage = UIImage.resizedImage(image: image, for: .init(width: 640, height: 360)),
+              let data = UIImage.removeAlpha(from: resImage).pngData(),
               
 //              let data = UIImage(named: "TestPhoto")?.pngData(),
               let latitude = locationManager.location?.coordinate.latitude,
