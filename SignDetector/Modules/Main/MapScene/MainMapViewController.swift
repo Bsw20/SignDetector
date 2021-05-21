@@ -28,6 +28,12 @@ class MainMapViewController: UIViewController {
     private var output: AVCapturePhotoOutput!
     private var socket: Socket!
     var locationManager: CLLocationManager = CLLocationManager()
+//    let dragableViewWidth: CGFloat = 100 * UIScreen.main.scale
+//    dragableView.frame = CGRect(x: topInset,
+//                                y: topInset,
+//                                width: dragableViewWidth,
+//                                height: dragableViewWidth * 0.5625)
+    private var dragableViewSize: CGSize = CGSize(width: 100 * UIScreen.main.scale, height: 100 * UIScreen.main.scale * 0.5625)
     
     private let addLocationPointImageView = UIImageView(image: #imageLiteral(resourceName: "AddNewLocationVector"))
     
@@ -148,6 +154,9 @@ class MainMapViewController: UIViewController {
         }
     }
     
+    
+
+    
     private func setupSession() {
         let r = mapView.mapWindow.map.visibleRegion
 //        YMKRect.init(min: r.topLeft, max: r.bottomRight)
@@ -175,14 +184,51 @@ class MainMapViewController: UIViewController {
             previewLayer = AVCaptureVideoPreviewLayer(session: session)
             
             previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            previewLayer.connection?.videoOrientation = .portrait
+            self.previewLayer.connection?.videoOrientation = .portrait
+            if let orientation = windowInterfaceOrientation {
+                if orientation.isLandscape {
+                    // activate landscape changes
+                    self.previewLayer.connection?.videoOrientation = .landscapeRight
+                } else {
+                    // activate portrait changes
+                    self.previewLayer.connection?.videoOrientation = .portrait
+                }
+            }
+        
             dragableView.layer.addSublayer(previewLayer!)
-            previewLayer.frame = CGRect(x: 0, y: 0, width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
-        if APIManager.isCameraWorkOnStart() {
-            session.startRunning()
-            dragableView.isHidden = false
-        }
+            previewLayer.frame = CGRect(x: 0, y: 0, width: dragableViewSize.width, height: dragableViewSize.height)
+            if APIManager.isCameraWorkOnStart() {
+                session.startRunning()
+                dragableView.isHidden = false
+            }
 //            session.startRunning()
+    }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { (context) in
+            guard let windowInterfaceOrientation = self.windowInterfaceOrientation else { return }
+            let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
+            
+            if windowInterfaceOrientation.isLandscape {
+                // activate landscape changes
+                self.previewLayer.connection?.videoOrientation = .landscapeRight
+
+            } else {
+                // activate portrait changes
+                self.previewLayer.connection?.videoOrientation = .portrait
+            }
+            let newWidth = (self.dragableViewSize.width / 2)
+            self.dragableView.center.x =  newWidth + topInset
+            
+            let newHeight = (self.dragableViewSize.height / 2)
+            self.dragableView.center.y = newHeight + topInset
+        })
+    }
+    
+    private var windowInterfaceOrientation: UIInterfaceOrientation? {
+        return UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
     }
 
     private func setupUI() {
@@ -268,7 +314,8 @@ class MainMapViewController: UIViewController {
                                      kCVPixelBufferHeightKey as String: 720,
                                      ]
         settings.previewPhotoFormat = previewFormat as [String : Any]
-        self.output.capturePhoto(with: settings, delegate: self)
+        print(view.frame.width)
+//        self.output.capturePhoto(with: settings, delegate: self)
       }
     
     private func getClusterViewWith(index: Int) -> SignsClusterView {
@@ -307,38 +354,86 @@ class MainMapViewController: UIViewController {
         let screenSize = UIScreen.main.bounds
         let videoModeViewHeight = 0.0825 * screenSize.height
         
+        let tabBarHeight: CGFloat = 49
+        
         if gesture.state == .ended {
             if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2 {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
 //                    self.dragableView.center.x = self.view.layer.frame.width - 40
-                    let newWidth = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573 / 2)
-                    self.dragableView.center.x =  newWidth - defaultOffset
-                    let newHeight = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2)
-                    self.dragableView.center.y = newHeight - defaultOffset
-                    
+                    let newWidth = self.view.layer.frame.width - (self.dragableViewSize.width / 2)
+                    self.dragableView.center.x =  newWidth - topInset
+                    let newHeight = self.view.layer.frame.height - (self.dragableViewSize.height / 2)
+                    self.dragableView.center.y = newHeight - tabBarHeight
+
                 }, completion: nil)
             }else if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY < self.view.layer.frame.height/2 {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+
+                    let newWidth = self.view.layer.frame.width - (self.dragableViewSize.width / 2)
+                    self.dragableView.center.x =  newWidth - topInset
                     
-                    self.dragableView.center.x = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573/2) - defaultOffset
-                    self.dragableView.center.y = topInset +  UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
+                    let newHeight = (self.dragableViewSize.height / 2)
+                    self.dragableView.center.y = newHeight + topInset
                 }, completion: nil)
 
-                
+
             }else if self.dragableView.frame.midX < self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2  {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                    
-                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
-                    self.dragableView.center.y = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2) - defaultOffset
+
+//                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+//                    self.dragableView.center.y = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2) - defaultOffset
+                    let newWidth = (self.dragableViewSize.width / 2)
+                    self.dragableView.center.x =  newWidth + topInset
+                    let newHeight = self.view.layer.frame.height - (self.dragableViewSize.height / 2)
+                    self.dragableView.center.y = newHeight - tabBarHeight
                 }, completion: nil)
             } else {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+
+//                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+//                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
                     
-                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
-                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
+                    let newWidth = (self.dragableViewSize.width / 2)
+                    self.dragableView.center.x =  newWidth + topInset
+                    
+                    let newHeight = (self.dragableViewSize.height / 2)
+                    self.dragableView.center.y = newHeight + topInset
                 }, completion: nil)
             }
         }
+        
+//        if gesture.state == .ended {
+//            if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2 {
+//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+////                    self.dragableView.center.x = self.view.layer.frame.width - 40
+//                    let newWidth = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573 / 2)
+//                    self.dragableView.center.x =  newWidth - defaultOffset
+//                    let newHeight = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2)
+//                    self.dragableView.center.y = newHeight - defaultOffset
+//
+//                }, completion: nil)
+//            }else if self.dragableView.frame.midX >= self.view.layer.frame.width / 2 && self.dragableView.frame.midY < self.view.layer.frame.height/2 {
+//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//
+//                    self.dragableView.center.x = self.view.layer.frame.width - UIScreen.main.bounds.width * (0.3573/2) - defaultOffset
+//                    self.dragableView.center.y = topInset +  UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
+//                }, completion: nil)
+//
+//
+//            }else if self.dragableView.frame.midX < self.view.layer.frame.width / 2 && self.dragableView.frame.midY >= self.view.layer.frame.height/2  {
+//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//
+//                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+//                    self.dragableView.center.y = self.view.layer.frame.height - UIScreen.main.bounds.height * (0.235/2) - defaultOffset
+//                }, completion: nil)
+//            } else {
+//                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//
+//                    self.dragableView.center.x = UIScreen.main.bounds.width * (0.3573/2) + defaultOffset
+//                    self.dragableView.center.y = topInset + UIScreen.main.bounds.height * (0.235/2) + topViewHeight + videoModeViewHeight
+//                }, completion: nil)
+//            }
+//        }
     }
     
     
@@ -993,7 +1088,20 @@ extension MainMapViewController {
         let topInset: CGFloat = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? UIApplication.shared.statusBarFrame.size.height
         
         view.addSubview(dragableView)
-        dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 + 0.0825 * screenSize.height , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
+//        dragableView.frame = CGRect(x: screenSize.width - screenSize.width * 0.3573 - 16, y: topInset + UIScreen.main.bounds.height * 0.074 + 0.0825 * screenSize.height , width: screenSize.width * 0.3573, height: screenSize.height * 0.235)
+        
+        dragableView.backgroundColor = .red
+//        let dragableViewWidth: CGFloat = 100 * UIScreen.main.scale
+//        dragableView.frame = CGRect(x: topInset,
+//                                    y: topInset,
+//                                    width: dragableViewWidth,
+//                                    height: dragableViewWidth * 0.5625)
+        dragableView.frame = CGRect(x: topInset, y: topInset, width: dragableViewSize.width, height: dragableViewSize.height)
+//        let newWidth = (self.dragableViewSize.width / 2)
+//        self.dragableView.center.x =  newWidth + topInset
+//
+//        let newHeight = (self.dragableViewSize.height / 2)
+//        self.dragableView.center.y = newHeight + topInset
         
         view.addSubview(firstClusterView)
         view.addSubview(secondClusterView)
