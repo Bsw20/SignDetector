@@ -283,6 +283,11 @@ class MainMapViewController: UIViewController {
 //        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
 //        mapView.mapWindow.map.visibleRegion.co
 //        previousRegion = mapView.mapWindow.map.visibleRegion.asCGRect()
+        UserAPIService.shared.getSignsNumber { number in
+            onMainThread {[weak self] in
+                self?.titleView.setSignsCount(count: number)
+            }
+        }
         clustersCollection = mapView.mapWindow.map.mapObjects.addClusterizedPlacemarkCollection(with: self)
         UserAPIService.shared.getUserPosition {[weak self] newPosition in
             self?.jobPosition = newPosition
@@ -742,6 +747,8 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 extension MainMapViewController: SocketManagerDelegate {
 
     
+
+    
 //    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
 //
 //        let cv = getClusterViewWith(index: clusterNumber)
@@ -763,6 +770,12 @@ extension MainMapViewController: SocketManagerDelegate {
 //        }
 //
 //    }
+    
+    func onSignsCountChanged(socket: Socket, newCount: Int) {
+        onMainThread {[weak self] in
+            self?.titleView.setSignsCount(count: newCount)
+        }
+    }
     
     func onNewSignReceived(socket: Socket, model: SignModel) {
         if let previousRect = previousRegion {

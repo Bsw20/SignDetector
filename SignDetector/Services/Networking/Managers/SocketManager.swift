@@ -19,6 +19,7 @@ protocol SocketManagerDelegate: NSObjectProtocol {
     func onMessageReceived(socket: Socket, message: String)
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int)
     func onNewSignReceived(socket: Socket, model: SignModel)
+    func onSignsCountChanged(socket: Socket, newCount: Int)
     
 }
 final class Socket: ObservableObject {
@@ -61,6 +62,7 @@ final class Socket: ObservableObject {
         onCluster3()
         onCluster4()
         onNewSign()
+        onSignsCountChanged()
 
         socket.connect()
     }
@@ -173,6 +175,14 @@ final class Socket: ObservableObject {
     public func onCluster4() {
         socket.on("cluster4") { [weak self] data, _ in
             self?.dataToSigns(clusterNumber: 4, data: data)
+        }
+    }
+    
+    public func onSignsCountChanged() {
+        socket.on("signsNumber") { [weak self] data, _ in
+            guard let self = self else { return }
+            let json = JSON(data[0])
+            self.customDelegate?.onSignsCountChanged(socket: self, newCount: json["message"].intValue)
         }
     }
 }

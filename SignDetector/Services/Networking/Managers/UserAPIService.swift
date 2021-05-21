@@ -209,6 +209,40 @@ struct UserAPIService {
         }
     }
     
+    public func getSignsNumber(completion: @escaping (Int) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.GET_SIGNS_NUMBER
+            AF.request(url,
+                       method: .get,
+                       encoding: JSONEncoding.default,
+                       headers: self.headers)
+                .validate(statusCode: 200..<300)
+                .responseJSON { (response) in
+                    switch response.result {
+                    
+                    case .success(let data):
+                        print(data)
+                        if let json = data as? [String: Any],
+                           let str = json["message"] as? String,
+                           let number = Int(str)
+                           {
+                            completion(number)
+                            return
+                        }
+                        
+                        let error = APIErrorFabrics.serverError(code: nil)
+                        SwiftyBeaver.error(error.message)
+//                            completion(.failure(error))
+                        completion(0)
+                        
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        completion(0)
+                    }
+            }
+        }
+    }
+    
     public func getUserPosition(completion: @escaping (JobPosition) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.GETUSERINFO_ADDRESS
