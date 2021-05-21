@@ -159,6 +159,40 @@ struct UserAPIService {
         }
     }
     
+    public func getUserPosition(completion: @escaping (JobPosition) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.GETUSERINFO_ADDRESS
+            
+                AF.request(url,
+                           method: .get,
+                           encoding: JSONEncoding.default,
+                           headers: self.headers)
+                    .validate(statusCode: 200..<300)
+                    .responseJSON { (response) in
+                        switch response.result {
+                        
+                        case .success(let data):
+                            print(data)
+                            if let json = data as? [String: Any],
+                               let pos = json["role"] as? String,
+                               let role = JobPosition.init(rawValue: pos) {
+                                completion(role)
+                                return
+                            }
+                            
+                            let error = APIErrorFabrics.serverError(code: nil)
+                            SwiftyBeaver.error(error.message)
+//                            completion(.failure(error))
+                            completion(.user)
+                            
+                        case .failure(let error):
+                            SwiftyBeaver.error(error.localizedDescription)
+                            completion(.user)
+                        }
+                }
+        }
+    }
+    
     public func getUserInfo(completion: @escaping (Result<PersonalCabinetModel, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.GETUSERINFO_ADDRESS

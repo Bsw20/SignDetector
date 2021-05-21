@@ -41,6 +41,11 @@ class MainMapViewController: UIViewController {
     private var signsForFilter: [String] = []
     
     
+    private var jobPosition: JobPosition = .user {
+        didSet {
+            editSlideUpView.configure(isEditingEnable: jobPosition == .manager)
+        }
+    }
     
     //MARK: - Controls
     //MARK: Clusters
@@ -207,6 +212,9 @@ class MainMapViewController: UIViewController {
     private func configure() {
 //        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
 //        mapView.mapWindow.map.visibleRegion.co
+        UserAPIService.shared.getUserPosition {[weak self] newPosition in
+            self?.jobPosition = newPosition
+        }
         editSlideUpView.customDelegate = self
         addLocationView.customDelegate = self
         locationManager.delegate = self

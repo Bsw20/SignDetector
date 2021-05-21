@@ -47,7 +47,7 @@ class EditSignView: UIView {
     private var signImageView: WebImageView = {
         let imageView = WebImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = #colorLiteral(red: 0.8901960784, green: 0.8941176471, blue: 0.9098039216, alpha: 1)
+        imageView.backgroundColor = .white
         imageView.image = #imageLiteral(resourceName: "Icon")
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
@@ -62,6 +62,7 @@ class EditSignView: UIView {
         button.titleLabel?.font = UIFont.sfUIMedium(with: 14)
         button.setTitleColor(#colorLiteral(red: 0.9960784314, green: 0.9529411765, blue: 0.9254901961, alpha: 1), for: .normal)
         button.setTitleColor(.lightGray, for: .disabled)
+        button.isEnabled = false
         return button
     }()
     
@@ -108,6 +109,10 @@ class EditSignView: UIView {
             
             
         }
+    }
+    
+    public func configure(isEditingEnable: Bool) {
+        editButton.isEnabled = isEditingEnable
     }
     
     
