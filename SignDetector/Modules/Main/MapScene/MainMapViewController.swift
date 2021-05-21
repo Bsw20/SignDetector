@@ -368,7 +368,7 @@ extension MainMapViewController: YMKClusterListener, YMKClusterTapListener {
 //            let obj = mapView.mapWindow.map.mapObjects.addPlacemark(with: point)
             let obj = clustersCollection.addPlacemark(with: point)
 
-            let signView = YMKCustomPointView(isVerified: Int.random(in: 1...2) == 1, image: UIImage(named: sign.type))
+            let signView = YMKCustomPointView(isVerified: sign.correct, image: UIImage(named: sign.type))
             if let viewProvider = YRTViewProvider(uiView: signView) {
                 obj.setViewWithView(viewProvider)
                 pointsDict[point] = (clusterNumber, obj, sign)
@@ -812,7 +812,7 @@ extension MainMapViewController: AVCapturePhotoCaptureDelegate {
 //MARK: - YMKUserLocationObjectListener
 extension MainMapViewController: YMKUserLocationObjectListener {
     func onObjectAdded(with view: YMKUserLocationView) {
-        view.arrow.setIconWith(UIImage(named:"UserArrow")!)
+        view.arrow.setIconWith(UIImage(named:"userLocationImage")!)
         
         let pinPlacemark = view.pin.useCompositeIcon()
 
