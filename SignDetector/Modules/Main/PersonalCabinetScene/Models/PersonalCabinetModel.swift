@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum JobPosition: String, CaseIterable {
-    case manager = "manager"
+    case manager = "admin"
     case user = "user"
     
     func description() -> String {

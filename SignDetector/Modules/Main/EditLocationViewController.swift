@@ -20,6 +20,9 @@ class EditLocationViewController: UIViewController {
     //MARK: - Variables
     weak var customDelegate: EditLocationViewControllerDelegate?
     private var model: EditingSignModel
+    
+    private var oldSignType: String!
+    private var viewType: ViewType
     //MARK: - Controls
     private var topLabel: UILabel = {
         let label = UILabel()
@@ -39,19 +42,6 @@ class EditLocationViewController: UIViewController {
                                         textColor: #colorLiteral(red: 0.3921568627, green: 0.4235294118, blue: 0.5294117647, alpha: 1))
     private var saveButton = UIButton.getLittleRoundButton(text: "СОХРАНИТЬ",
                                                            isEnabled: true)
-//    private var addressButton: UIButton = {
-//        let button = UIButton.getLittleRoundButton(text: "Мельникова, 6",
-//                                                   backgroundColor: #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.9725490196, alpha: 1),
-//                                                   disabledBackgroundColor: #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.9725490196, alpha: 1),
-//                                                   textColor: #colorLiteral(red: 0.2431372549, green: 0.262745098, blue: 0.3294117647, alpha: 1),
-//                                                   image: UIImage(named: "LocationAddressVector"),
-//                                                   font: UIFont.sfUIMedium(with: 18),
-//                                                   isEnabled: false)
-//        button.contentHorizontalAlignment = .right
-//        button.titleLabel?.textAlignment = .left
-//
-//        return button
-//    }()
     private var addressButton: ImagedButton = {
        let button = ImagedButton(text: "Мельникова, 6", image: UIImage(named: "LocationAddressVector"))
         return button
@@ -61,6 +51,19 @@ class EditLocationViewController: UIViewController {
        let button = ImagedButton(text: "Выберите тип знака", image: UIImage(named: "SignTypeVector"))
         return button
     }()
+    
+    private var confirmLabel = UILabel(text: "Подтвержден",
+                                       fontSize: 18,
+                                       textColor: #colorLiteral(red: 0.2431372549, green: 0.262745098, blue: 0.3294117647, alpha: 1),
+                                       textAlignment: .left)
+    
+    
+    private var confirmedSignsSwitch: UISwitch = {
+       let sw = UISwitch()
+        sw.translatesAutoresizingMaskIntoConstraints = false
+        return sw
+    }()
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -81,6 +84,7 @@ class EditLocationViewController: UIViewController {
     
     //MARK: - Init
     init(viewType: ViewType) {
+        self.viewType = viewType
         switch viewType {
         
         case .create(model: let model):
@@ -88,6 +92,8 @@ class EditLocationViewController: UIViewController {
             topLabel.text = "Новый участок"
             addressButton.configure(text: model.address)
             signTypeButton.configure(text: "Выберите тип знака")
+            confirmLabel.isHidden = true
+            confirmedSignsSwitch.isHidden = true
         case .edit(model: let model):
             self.model = model
             topLabel.text = "Редактировать участок"
@@ -95,6 +101,8 @@ class EditLocationViewController: UIViewController {
             if let signName = model.signName {
                 signTypeButton.configure(text: LocalManager.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
             }
+            oldSignType = model.signName
+            confirmedSignsSwitch.isOn = model.confirmed
             
         }
         super.init(nibName: nil, bundle: nil)
@@ -109,6 +117,7 @@ class EditLocationViewController: UIViewController {
         addressButton.customDelegate = self
         signTypeButton.customDelegate = self
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        confirmedSignsSwitch.addTarget(self, action: #selector(confirmedSignsSwitchTapped), for: .valueChanged)
     }
     private func setupUI() {
         view.backgroundColor = .white
@@ -116,27 +125,59 @@ class EditLocationViewController: UIViewController {
     }
     
     //MARK: - objc funcs
+    @objc private func confirmedSignsSwitchTapped() {
+        print(confirmedSignsSwitch.isOn)
+    }
     @objc private func saveButtonTapped() {
         print(#function)
         guard model.signName != nil else {
             UIApplication.showAlert(title: "Ошибка!", message: "Выберите тип знака")
             return
         }
-        UserAPIService.shared.addSign(model: .init(uuid: model.uuid,lat: model.latitude, lon: model.longitude, name: model.signName!, address: model.address)) { result in
-            switch result {
-            
-            case .success():
-                onMainThread {[weak self] in
-                    guard let self = self else { return }
-                    self.customDelegate?.signWasSaved(signId: self.model.uuid)
-                    self.navigationController?.popViewController(animated: true)
+        
+        switch viewType {
+        
+        case .create(model: _):
+            UserAPIService.shared.addSign(model: .init(uuid: model.uuid,lat: model.latitude, lon: model.longitude, name: model.signName!, address: model.address)) { result in
+                switch result {
+                
+                case .success():
+                    onMainThread {[weak self] in
+                        guard let self = self else { return }
+                        self.customDelegate?.signWasSaved(signId: self.model.uuid)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                case .failure(_):
+                    onMainThread {[weak self] in
+                        UIApplication.showAlert(title: "Ошибка!", message: "Не получилось добавить знак, попробуйте позже.")
+                    }
                 }
-            case .failure(_):
-                onMainThread {[weak self] in
-                    UIApplication.showAlert(title: "Ошибка!", message: "Не получилось добавить знак, попробуйте позже.")
+            }
+        case .edit(model: _):
+            UserAPIService.shared.editSign(model: .init(uuid: model.uuid,
+                                                        oldName: oldSignType,
+                                                        lat: model.latitude,
+                                                        lon: model.longitude,
+                                                        name: model.signName!,
+                                                        address: model.address,
+                                                        confirmed: confirmedSignsSwitch.isOn)) { result in
+                switch result {
+                
+                case .success():
+                    onMainThread {[weak self] in
+                        guard let self = self else { return }
+                        self.customDelegate?.signWasSaved(signId: self.model.uuid)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                case .failure(_):
+                    onMainThread {[weak self] in
+                        UIApplication.showAlert(title: "Ошибка!", message: "Не получилось изменить знак, попробуйте позже.")
+                    }
                 }
             }
         }
+        
+
     }
 }
 //MARK: - ImagedButtonDelegate
@@ -172,6 +213,9 @@ extension EditLocationViewController {
         view.addSubview(signTypeButton)
         view.addSubview(topLabel)
         
+        view.addSubview(confirmedSignsSwitch)
+        view.addSubview(confirmLabel)
+        
         topLabel.snp.makeConstraints { make in
             make.top.equalTo(safeArea.snp.top)
             make.left.equalTo(safeArea.snp.left).offset(defaultLeftOffset)
@@ -200,6 +244,17 @@ extension EditLocationViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(screenSize.width * 0.872)
             make.height.equalTo(59)
+        }
+        
+        confirmedSignsSwitch.snp.makeConstraints { make in
+            make.right.equalTo(addressButton.snp.right)
+            make.top.equalTo(signTypeButton.snp.bottom).offset(20)
+        }
+        
+        confirmLabel.snp.makeConstraints { make in
+            make.top.equalTo(confirmedSignsSwitch.snp.top)
+            make.left.equalTo(signTypeLabel.snp.left).offset(5)
+            make.right.equalTo(confirmedSignsSwitch.snp.left).inset(20)
         }
         
         

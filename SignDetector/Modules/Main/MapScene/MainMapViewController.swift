@@ -767,9 +767,10 @@ extension MainMapViewController: EditSignViewDelegate {
         print(#function)
         guard let model = model else { return}
         let vc = EditLocationViewController(viewType: .edit(model: .init(uuid: model.uuid,
-                                                                         address: "ТУТ БУДЕТ АДРЕСС",
+                                                                         address: model.address,
                                                                          latitude: model.lat,
                                                                          longitude: model.lon,
+                                                                         confirmed: model.correct,
                                                                          signName: model.type)))
         vc.customDelegate = self
         vc.hidesBottomBarWhenPushed = true

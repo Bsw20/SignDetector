@@ -15,4 +15,5 @@ struct SignModel: Decodable {
     var lon: Double
     var type: String
     var uuid: String
+    var address: String
 }

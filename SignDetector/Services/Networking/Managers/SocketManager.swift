@@ -185,7 +185,8 @@ extension Socket {
                                lat: jsonObject["lat"].doubleValue,
                                lon: jsonObject["lon"].doubleValue,
                                type: jsonObject["type"].stringValue,
-                               uuid: jsonObject["uuid"].stringValue)
+                               uuid: jsonObject["uuid"].stringValue,
+                               address: jsonObject["address"].stringValue)
            array.append(el)
         }
         model.signs = array

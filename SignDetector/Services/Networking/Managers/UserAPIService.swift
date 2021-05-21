@@ -131,6 +131,55 @@ struct UserAPIService {
             })
     }
     
+    struct EditSignModel {
+        var uuid: String
+        var oldName: String
+        var lat: Double
+        var lon: Double
+        var name: String
+        var address: String
+        var confirmed: Bool
+        
+        public var representation: [String: Any] {
+            var rep: [String: Any] = ["lat": lat]
+            rep["oldName"] = oldName
+            rep["lon"] = lon
+            rep["name"] = name
+            rep["address"] = address
+            rep["uuid"] = uuid
+            rep["confirmed"] = confirmed
+            return rep
+        }
+    }
+    
+    public func editSign(model: EditSignModel, completion: @escaping (Result<Void, APIError>) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let url = ServerAddressConstants.EDIT_SIGN_ADDRESS
+            
+            AF.request(url,
+                       method: .post,
+                       parameters: model.representation,
+                       encoding: JSONEncoding.default,
+                       headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseJSON(completionHandler: { (response) in
+                    
+                    switch response.result {
+                    case .success(let data):
+                        onMainThread {
+                            print(data)
+                            completion(.success(Void()))
+                        }
+                    case .failure(let error):
+                        SwiftyBeaver.error(error.localizedDescription)
+                        onMainThread {
+                            completion(.failure(APIErrorFabrics.serverError(code: error.responseCode)))
+                        }
+                    }
+                })
+        }
+    }
+    
     public func addSign(model: AddSignModel, completion: @escaping (Result<Void, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.ADDSIGN_ADDRESS

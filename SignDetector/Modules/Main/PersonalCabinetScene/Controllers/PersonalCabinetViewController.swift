@@ -94,6 +94,7 @@ class PersonalCabinetViewController: UIViewController {
                 onMainThread {[weak self] in
                     guard let self = self else { return }
                     self.profileModel = model
+                    self.jobPositionLabel.text = model.role.description()
                     self.fioLabel.text = model.name
                     self.profileImageView.image = model.profileImage
                     self.tableView.reloadData()
