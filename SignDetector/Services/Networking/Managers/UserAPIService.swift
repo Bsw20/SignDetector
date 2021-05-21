@@ -183,7 +183,8 @@ struct UserAPIService {
     public func addSign(model: AddSignModel, completion: @escaping (Result<Void, APIError>) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let url = ServerAddressConstants.ADDSIGN_ADDRESS
-            
+            print("ADD SIGN MODEL")
+            print(model.representation)
             AF.request(url,
                        method: .post,
                        parameters: model.representation,

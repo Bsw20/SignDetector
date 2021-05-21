@@ -18,6 +18,7 @@ protocol SocketManagerDelegate: NSObjectProtocol {
     func didDisconnect(socket: Socket)
     func onMessageReceived(socket: Socket, message: String)
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int)
+    func onNewSignReceived(socket: Socket, model: SignModel)
     
 }
 final class Socket: ObservableObject {
@@ -59,6 +60,7 @@ final class Socket: ObservableObject {
         onCluster2()
         onCluster3()
         onCluster4()
+        onNewSign()
 
         socket.connect()
     }
@@ -75,6 +77,7 @@ final class Socket: ObservableObject {
             completion(.success(Void()))
         }
     }
+    
     
     public func sendCurrentCoordinates(center: YMKPoint, topRight: YMKPoint, topLeft: YMKPoint, bottomRight: YMKPoint, bottomLeft: YMKPoint, filter: [String] ) {
         print("SLFISDFL ")
@@ -135,6 +138,20 @@ final class Socket: ObservableObject {
         }
         
     }
+    
+    public func onNewSign() {
+        socket.on("newSign") {[weak self] data, _ in
+//            self?.dataToSigns(clusterNumber: 1, data: data)
+            print("SDFISFJOLWJEKL")
+            guard let self = self else { return }
+            
+            print(data)
+            
+            self.customDelegate?.onNewSignReceived(socket: self, model: Socket.dataToSignModel(firstData: data[0]))
+            
+        }
+    }
+    
     public func onCluster1() {
         socket.on("cluster1") {[weak self] data, _ in
             self?.dataToSigns(clusterNumber: 1, data: data)
@@ -162,6 +179,17 @@ final class Socket: ObservableObject {
 
 //MARK: - Mapping
 extension Socket {
+    static func dataToSignModel(firstData: Any) -> SignModel {
+        let json = JSON(firstData)
+        let model =  SignModel(correct: json["correct"].boolValue,
+                         lat: json["lat"].doubleValue,
+                         lon: json["lon"].doubleValue,
+                         type: json["type"].stringValue,
+                         uuid: json["uuid"].stringValue,
+                         address: json["address"].stringValue)
+        print(model.representation)
+        return model
+    }
     static func dataToSignsModel(firstData: Any) -> ClusterModel? {
         guard let data = firstData as? [String: Any] else {
             SwiftyBeaver.error("Incorrect model, it must be json")

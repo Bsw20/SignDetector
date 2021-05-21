@@ -10,6 +10,8 @@ import UIKit
 
 protocol EditLocationViewControllerDelegate: NSObjectProtocol {
     func signWasSaved(signId: String)
+    func backFromEditType()
+    func signWasEdited(controller: EditLocationViewController, oldModel: EditingSignModel, newModel: EditingSignModel )
 }
 
 class EditLocationViewController: UIViewController {
@@ -118,16 +120,33 @@ class EditLocationViewController: UIViewController {
         signTypeButton.customDelegate = self
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         confirmedSignsSwitch.addTarget(self, action: #selector(confirmedSignsSwitchTapped), for: .valueChanged)
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTapped))
     }
     private func setupUI() {
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 1)
+        
+        
     }
     
     //MARK: - objc funcs
+    @objc private func backButtonTapped() {
+        switch viewType {
+        
+        case .create(model: let model):
+            navigationController?.popViewController(animated: true)
+        case .edit(model: let model):
+            customDelegate?.backFromEditType()
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
     @objc private func confirmedSignsSwitchTapped() {
         print(confirmedSignsSwitch.isOn)
     }
+    
     @objc private func saveButtonTapped() {
         print(#function)
         guard model.signName != nil else {
@@ -147,26 +166,32 @@ class EditLocationViewController: UIViewController {
                         self.customDelegate?.signWasSaved(signId: self.model.uuid)
                         self.navigationController?.popViewController(animated: true)
                     }
-                case .failure(_):
+                case .failure(let error):
                     onMainThread {[weak self] in
+                        print(error.message)
                         UIApplication.showAlert(title: "Ошибка!", message: "Не получилось добавить знак, попробуйте позже.")
                     }
                 }
             }
-        case .edit(model: _):
+        case .edit(model: let oldModel):
             UserAPIService.shared.editSign(model: .init(uuid: model.uuid,
                                                         oldName: oldSignType,
                                                         lat: model.latitude,
                                                         lon: model.longitude,
                                                         name: model.signName!,
                                                         address: model.address,
-                                                        confirmed: confirmedSignsSwitch.isOn)) { result in
+                                                        confirmed: confirmedSignsSwitch.isOn)) { [weak self]result in
+                guard let self = self else { return }
                 switch result {
                 
                 case .success():
                     onMainThread {[weak self] in
                         guard let self = self else { return }
-                        self.customDelegate?.signWasSaved(signId: self.model.uuid)
+//                        self.customDelegate?.signWasSaved(signId: self.model.uuid)
+                        self.customDelegate?.signWasEdited(controller: self, oldModel: oldModel, newModel: .init(uuid: self.model.uuid,
+                                                                                                                 address: self.model.address, latitude: self.model.latitude,
+                                                                                                                 longitude: self.model.longitude,
+                                                                                                                 confirmed: self.confirmedSignsSwitch.isOn, signName: self.model.signName!))
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(_):

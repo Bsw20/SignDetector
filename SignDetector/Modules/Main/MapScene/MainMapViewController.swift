@@ -53,6 +53,7 @@ class MainMapViewController: UIViewController {
         }
     }
     
+    private var needToShowNavBar: Bool = false
     //MARK: Map
     private var mapCompletelyUpdated: Bool = false
     private var previousRegion: CGRect? = nil
@@ -125,6 +126,15 @@ class MainMapViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setupSession()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if needToShowNavBar {
+            self.navigationController?.setNavigationBarHidden(false, animated: false)
+            needToShowNavBar = false
+        }
+        
     }
     
     //MARK: - Funcs
@@ -221,9 +231,14 @@ class MainMapViewController: UIViewController {
             }
             let newWidth = (self.dragableViewSize.width / 2)
             self.dragableView.center.x =  newWidth + topInset
-            
+
             let newHeight = (self.dragableViewSize.height / 2)
             self.dragableView.center.y = newHeight + topInset
+//            let tabBarHeight: CGFloat = 49
+//            let newWidth = self.view.layer.frame.width - (self.dragableViewSize.width / 2)
+//            self.dragableView.center.x =  newWidth - topInset
+//            let newHeight = self.view.layer.frame.height - (self.dragableViewSize.height / 2)
+//            self.dragableView.center.y = newHeight - tabBarHeight
         })
     }
     
@@ -246,6 +261,7 @@ class MainMapViewController: UIViewController {
         
         let addPlace = UIAction(title: "Добавить участок") { [weak self]_ in
           print("add place")
+            self?.hideSlideUpView()
             self?.addLocationViewLayout()
             
         }
@@ -315,7 +331,7 @@ class MainMapViewController: UIViewController {
                                      ]
         settings.previewPhotoFormat = previewFormat as [String : Any]
         print(view.frame.width)
-//        self.output.capturePhoto(with: settings, delegate: self)
+        self.output.capturePhoto(with: settings, delegate: self)
       }
     
     private func getClusterViewWith(index: Int) -> SignsClusterView {
@@ -487,7 +503,14 @@ extension MainMapViewController: YMKClusterListener, YMKClusterTapListener {
         clustersCollection.clusterPlacemarks(withClusterRadius: 60, minZoom: 15)
     }
     
-    
+    private func replacePointModel(point: YMKPoint, model: SignModel) {
+        if let el = pointsDict[point] {
+            deletePointsFromClusterCollection(points: [point])
+            addPointsToClusterCollection(clusterNumber: el.0, models: [model])
+//            pointsDict.removeValue(forKey: old)
+//            pointsDict[new] = el
+        }
+    }
     
     private func clusterImage(_ clusterSize: UInt) -> UIImage {
         
@@ -717,6 +740,54 @@ extension MainMapViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 //MARK: - SocketManagerDelegate
 extension MainMapViewController: SocketManagerDelegate {
+
+    
+//    func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
+//
+//        let cv = getClusterViewWith(index: clusterNumber)
+//        cv.configure(count: model.size)
+//        cv.isHidden = model.size < Globals.clusterMaxSignsCount
+//        if model.size > Globals.clusterMaxSignsCount {
+//            deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
+//            deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
+//            if isAllSectorsClear() {
+//                print("ALLSECTORSCLEAR")
+//                previousRegion = nil
+//            }
+//
+//        } else {
+//            deletePointsFromClusterCollection(points: getPointsIn(clusterNumber: clusterNumber))
+//            deletePointsFromClusterCollection(points: getPointsInInvisibleArea())
+//            addPointsToClusterCollection(clusterNumber: clusterNumber, models: model.signs)
+//
+//        }
+//
+//    }
+    
+    func onNewSignReceived(socket: Socket, model: SignModel) {
+        if let previousRect = previousRegion {
+            let point = CGPoint(x: model.lon, y: model.lat)
+            if previousRect.contains(point) {
+//                let (slice, remainder) = previousRect.divided(atDistance: previousRect.width * 0.5, from: .minXEdge)
+                let centerPoint = CGPoint(x: previousRect.midX, y: previousRect.midY)
+                var clusterNumber = 0
+                if point.x <= centerPoint.x && point.y <= centerPoint.y {
+                    clusterNumber = 1
+                } else if point.x > centerPoint.x && point.y <= centerPoint.y {
+                    clusterNumber = 2
+                } else if point.x <= centerPoint.x && point.y > centerPoint.y {
+                    clusterNumber = 3
+                } else  if point.x > centerPoint.x && point.y > centerPoint.y{
+                    clusterNumber = 4
+                }
+                print("NUMBER")
+                print(clusterNumber)
+                addPointsToClusterCollection(clusterNumber: clusterNumber, models: [model])
+            }
+            
+        }
+    }
+    
     func onSignsReceived(socket: Socket, model: ClusterModel, clusterNumber: Int) {
 
         let cv = getClusterViewWith(index: clusterNumber)
@@ -1010,6 +1081,41 @@ extension MainMapViewController: FilteringViewControllerDelegate {
 
 //MARK: - EditLocationViewControllerDelegate
 extension MainMapViewController: EditLocationViewControllerDelegate {
+    func signWasEdited(controller: EditLocationViewController, oldModel: EditingSignModel, newModel: EditingSignModel) {
+        let oldSignModel = SignModel(correct: oldModel.confirmed,
+                                     lat: oldModel.latitude,
+                                     lon: oldModel.longitude,
+                                     type: oldModel.signName!,
+                                     uuid: oldModel.uuid,
+                                     address: oldModel.address)
+        let newSignModel = SignModel(correct: newModel.confirmed,
+                                     lat: newModel.latitude,
+                                     lon: newModel.longitude,
+                                     type: newModel.signName!,
+                                     uuid: newModel.uuid,
+                                     address: newModel.address)
+        for key in pointsDict.keys {
+            if pointsDict[key]?.2 == oldSignModel {
+                let clusterNumber = pointsDict[key]!.0
+                deletePointsFromClusterCollection(points: [key])
+                addPointsToClusterCollection(clusterNumber: clusterNumber, models: [newSignModel])
+                return
+            }
+        }
+        
+        self.defaultLayout()
+        needToShowNavBar = true
+    }
+    
+    func backFromEditType() {
+//        onMainThread {[weak self] in
+//            self?.defaultLayout()
+//        }
+        print("BACKBACKBACK")
+        self.defaultLayout()
+        needToShowNavBar = true
+    }
+    
     func signWasSaved(signId: String) {
         onMainThread {[weak self] in
             self?.defaultLayout()
@@ -1022,6 +1128,7 @@ extension MainMapViewController: EditSignViewDelegate {
     func editButtonTapped(view: EditSignView, model: SignModel?) {
         print(#function)
         guard let model = model else { return}
+        hideSlideUpView()
         let vc = EditLocationViewController(viewType: .edit(model: .init(uuid: model.uuid,
                                                                          address: model.address,
                                                                          latitude: model.lat,
@@ -1046,13 +1153,12 @@ extension MainMapViewController: EditSignViewDelegate {
 extension MainMapViewController {
     private func defaultLayout() {
 
-        onMainThread {[weak self] in
-            guard let self = self else { return }
-            self.videoModeView.isHidden = false
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
-            self.addLocationView.removeFromSuperview()
-            self.addLocationPointImageView.removeFromSuperview()
-        }
+        
+        self.videoModeView.isHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+//        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.addLocationView.removeFromSuperview()
+        self.addLocationPointImageView.removeFromSuperview()
 
     }
     private func addLocationViewLayout() {
@@ -1067,8 +1173,8 @@ extension MainMapViewController {
         self.addLocationPointImageView.snp.makeConstraints {[weak self] make in
             guard let self = self else { return }
             make.centerX.equalToSuperview()
-            print(self.addLocationPointImageView.frame.height)
-            make.centerY.equalToSuperview().inset(self.addLocationPointImageView.frame.height / 2)
+            print("addLocationPoint\(self.addLocationPointImageView.frame.height * UIScreen.main.scale)")
+            make.centerY.equalToSuperview().inset(self.addLocationPointImageView.frame.height * UIScreen.main.scale)
         }
     }
     private func setupConstraints() {
