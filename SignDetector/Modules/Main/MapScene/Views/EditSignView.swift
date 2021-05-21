@@ -44,12 +44,13 @@ class EditSignView: UIView {
         return view
     }()
     
-    private var signImageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
+    private var signImageView: WebImageView = {
+        let imageView = WebImageView(frame: .zero)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = #colorLiteral(red: 0.8901960784, green: 0.8941176471, blue: 0.9098039216, alpha: 1)
         imageView.image = #imageLiteral(resourceName: "Icon")
         imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -89,10 +90,21 @@ class EditSignView: UIView {
     public func configure(signModel: SignModel) {
         onMainThread {[weak self] in
             guard let self = self else { return }
+            self.signImageView.image = nil
             self.signModel = signModel
             let signDescription = LocalManager.shared.getSignNameBy(id: signModel.type)
             self.signNameLabel.text = signDescription
+            
             self.signImageView.image = UIImage(named: signModel.type)
+            self.signImageView.set(imageURL: ServerAddressConstants.GET_SIGN_PHOTO_ADDRESS + "/\(signModel.uuid)", placeholder: UIImage(named: signModel.type)) { result in
+                switch result {
+                
+                case .success(_):
+                    break
+                case .failure(_):
+                    self.signImageView.image = UIImage(named: signModel.type)
+                }
+            }
             
             
         }

@@ -28,6 +28,7 @@
 		30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */; };
 		30A1811B26571441006559F9 /* UIImagePicker + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */; };
 		30A1811D2657164F006559F9 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811C2657164F006559F9 /* UIImage + Extension.swift */; };
+		30A18120265731E4006559F9 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811F265731E4006559F9 /* WebImageView.swift */; };
 		30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567226038A8900D6F81D /* AppDelegate.swift */; };
 		30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A6567426038A8900D6F81D /* SceneDelegate.swift */; };
 		30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30A6567B26038A8D00D6F81D /* Assets.xcassets */; };
@@ -96,6 +97,7 @@
 		30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModeView.swift; sourceTree = "<group>"; };
 		30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePicker + Extension.swift"; sourceTree = "<group>"; };
 		30A1811C2657164F006559F9 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
+		30A1811F265731E4006559F9 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
 		30A6566F26038A8900D6F81D /* SignDetector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SignDetector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30A6567226038A8900D6F81D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30A6567426038A8900D6F81D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -301,6 +303,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		30A1811E265731D8006559F9 /* Kit */ = {
+			isa = PBXGroup;
+			children = (
+				30A1811F265731E4006559F9 /* WebImageView.swift */,
+			);
+			path = Kit;
+			sourceTree = "<group>";
+		};
 		30A6566626038A8900D6F81D = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +350,7 @@
 		30AB20442636B06100F97736 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				30A1811E265731D8006559F9 /* Kit */,
 				30AB20452636B09800F97736 /* UIColor + Extension.swift */,
 				30AB20512636B40E00F97736 /* UIFont + Extension.swift */,
 				30AB20542636B4FD00F97736 /* UILabel + Extension.swift */,
@@ -670,6 +681,7 @@
 				30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */,
 				30AB20992637FC5900F97736 /* UITextField + Extension.swift in Sources */,
 				30AB2081263758BE00F97736 /* OTPTextField.swift in Sources */,
+				30A18120265731E4006559F9 /* WebImageView.swift in Sources */,
 				30D8C040264D827600E3BCF6 /* YMKPoint + Extension.swift in Sources */,
 				309385402650256F00B8D6C8 /* YMKCustomPoint.swift in Sources */,
 				30A6567526038A8900D6F81D /* SceneDelegate.swift in Sources */,

@@ -15,5 +15,6 @@ target 'SignDetector' do
   pod 'SwiftyJSON'
   pod "Connectivity"
   pod 'PhoneNumberKit', '~> 3.3'
+  pod 'Kingfisher'
 
 end
