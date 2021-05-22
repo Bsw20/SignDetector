@@ -44,7 +44,7 @@ class MainMapViewController: UIViewController {
     private var pointsDict: [YMKPoint : (Int, YMKPlacemarkMapObject, SignModel)] = [:]
     
     
-    private var signsForFilter: [String] = []
+    private var signsForFilter: [String] = LocalManager.shared.getKeys()
     
     
     private var jobPosition: JobPosition = .user {
@@ -1127,6 +1127,7 @@ extension MainMapViewController: NewLocationViewDelegate {
 extension MainMapViewController: FilteringViewControllerDelegate {
     func applyButtonTapped(selectedSigns: [String]) {
         signsForFilter = selectedSigns
+        hideSlideUpView()
         updateMap()
     }
 }
