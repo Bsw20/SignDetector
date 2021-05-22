@@ -117,6 +117,7 @@ class SettingsViewController: UIViewController {
         super.viewWillDisappear(animated)
 //        NotificationCenter.default.post(name: .settingsChanged, object: nil, userInfo: [:])
         if didSettingsChanged() {
+            print("POST NOTIFICATION")
             NotificationCenter.default.post(name: .settingsChanged, object: nil)
         }
     }
@@ -124,7 +125,7 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Funcs
     private func didSettingsChanged() -> Bool{
-        return !(startConfig.showConfirmedSigns == APIManager.showUnconfirmedSignsOnMap
+        return !(startConfig.showConfirmedSigns == APIManager.showConfirmedSignsOnMap
             && startConfig.showUnconfirmedSigns == APIManager.showUnconfirmedSignsOnMap)
     }
     private func configure() {
