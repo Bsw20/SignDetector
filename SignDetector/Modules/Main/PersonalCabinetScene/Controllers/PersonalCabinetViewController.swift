@@ -119,7 +119,7 @@ extension PersonalCabinetViewController: UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -129,7 +129,7 @@ extension PersonalCabinetViewController: UITableViewDelegate, UITableViewDataSou
         case 0:
             cell.configure(topText: "НОМЕР ТЕЛЕФОНА", bottomText: profileModel.phone)
         case 1:
-            cell.configure(topText: "ЗНАКОВ ОБНАРУЖЕНО", bottomText: "\(profileModel.signsCount)")
+            cell.configure(topText: "ПОДТВЕРЖДЕННЫХ ЗНАКОВ", bottomText: "\(profileModel.signsCount)")
         case 2:
             cell.configure(topText: "ВРЕМЯ РАБОТЫ", bottomText: "00:00:00")
         default:

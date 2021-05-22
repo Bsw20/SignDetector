@@ -235,6 +235,7 @@ class MainMapViewController: UIViewController {
 
             let newHeight = (self.dragableViewSize.height / 2)
             self.dragableView.center.y = newHeight + topInset
+            self.addLocationView.layoutIfNeeded()
 //            let tabBarHeight: CGFloat = 49
 //            let newWidth = self.view.layer.frame.width - (self.dragableViewSize.width / 2)
 //            self.dragableView.center.x =  newWidth - topInset
@@ -497,7 +498,7 @@ extension MainMapViewController: YMKClusterListener, YMKClusterTapListener {
     }
     
     func onClusterTap(with cluster: YMKCluster) -> Bool {
-        UIApplication.showAlert(title: "Tap", message: String(format: "Tapped cluster with %u items", cluster.size))
+        UIApplication.showAlert(title: "Уведомление", message: String(format: "В это кластере %u знаков", cluster.size))
         return true
     }
     
@@ -1223,6 +1224,7 @@ extension MainMapViewController {
         self.view.addSubview(self.addLocationView)
         self.addLocationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide.snp.centerX)
         }
         self.view.addSubview(self.addLocationPointImageView)
         self.addLocationPointImageView.snp.makeConstraints {[weak self] make in

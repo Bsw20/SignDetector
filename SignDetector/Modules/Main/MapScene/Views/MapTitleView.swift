@@ -29,7 +29,7 @@ class MapTitleView: UIView {
     //MARK: - Funcs
     public func setSignsCount(count: Int) {
         DispatchQueue.main.async {[weak self] in
-            self?.bottomLabel.text = "Знаков за сегодня: \(count)"
+            self?.bottomLabel.text = "Обнаружено знаков: \(count)"
         }
     }
 }
