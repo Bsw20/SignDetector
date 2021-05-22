@@ -1230,7 +1230,6 @@ extension MainMapViewController {
         self.addLocationPointImageView.snp.makeConstraints {[weak self] make in
             guard let self = self else { return }
             make.centerX.equalToSuperview()
-            print("addLocationPoint\(self.addLocationPointImageView.frame.height * UIScreen.main.scale)")
             make.centerY.equalToSuperview().inset(self.addLocationPointImageView.frame.height * UIScreen.main.scale)
         }
     }
