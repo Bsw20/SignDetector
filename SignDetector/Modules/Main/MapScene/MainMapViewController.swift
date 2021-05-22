@@ -298,6 +298,7 @@ class MainMapViewController: UIViewController {
         addLocationView.customDelegate = self
         locationManager.delegate = self
         locationManager.startUpdatingHeading()
+        locationManager.startUpdatingLocation()
         
         socket = Socket.shared
         socket.customDelegate = self
@@ -307,8 +308,7 @@ class MainMapViewController: UIViewController {
         mapView.mapWindow.map.addCameraListener(with: self)
         mapView.mapWindow.map.mapObjects.addTapListener(with: self)
 //        lat: 55.751244, long: 37.618423
-        mapView.mapWindow.map.move(with:
-            YMKCameraPosition(target: YMKPoint(latitude: 55.751244, longitude: 37.618423), zoom: 14, azimuth: 0, tilt: 0))
+
         
         let scale = UIScreen.main.scale
         
@@ -325,6 +325,12 @@ class MainMapViewController: UIViewController {
 //            CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.5 * mapView.frame.size.height * scale),
 //            anchorCourse: CGPoint(x: 0.5 * mapView.frame.size.width * scale, y: 0.83 * mapView.frame.size.height * scale))
         userLocationLayer.setObjectListenerWith(self)
+        
+       
+        mapView.mapWindow.map.move(with:
+            YMKCameraPosition(target: YMKPoint(latitude: 55.751244, longitude: 37.618423), zoom: 14, azimuth: 0, tilt: 0))
+
+        
         
         videoModeView.customDelegate = self
     }
@@ -683,6 +689,20 @@ extension MainMapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
 //        print(newHeading.magneticHeading)
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let point = locationManager.location?.coordinate
+        
+        if let point = point, videoModeView.isVideoOn() {
+            if !mapView.mapWindow.map.visibleRegion.contains(point.toYMKPoint()) {
+                mapView.mapWindow.map.move(with:
+                                            YMKCameraPosition(target: YMKPoint(latitude: point.latitude, longitude: point.longitude), zoom: 14, azimuth: 0, tilt: 0))
+            }
+        }
+        
+
+    }
 }
 
 //MARK: - Timer
@@ -1036,6 +1056,7 @@ extension MainMapViewController: YMKUserLocationObjectListener {
                 tappableArea: nil))
 
         view.accuracyCircle.fillColor = #colorLiteral(red: 0.168627451, green: 0.1803921569, blue: 0.231372549, alpha: 0.1)
+       
     }
     
     func onObjectRemoved(with view: YMKUserLocationView) {}

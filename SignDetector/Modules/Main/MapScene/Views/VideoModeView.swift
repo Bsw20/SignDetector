@@ -42,6 +42,10 @@ class VideoModeView: UIView {
         modeSwitch.addTarget(self, action: #selector(switchTapped), for: .valueChanged)
     }
     
+    public func isVideoOn() -> Bool {
+        return modeSwitch.isOn
+    }
+    
     //MARK: - Objc funcs
     @objc private func switchTapped() {
         customDelegate?.modeDidChange(isOn: modeSwitch.isOn)
