@@ -29,7 +29,10 @@ class SelectSignCell: UITableViewCell {
     //MARK: - Initing
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .gray
+//        selectionStyle = .gray
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = #colorLiteral(red: 1, green: 0.7127918161, blue: 0.5473631634, alpha: 1)
+        selectedBackgroundView = bgColorView
         backgroundColor = .white
         setupConstraints()
     }
