@@ -138,6 +138,7 @@ class MainMapViewController: UIViewController {
     }
     
     //MARK: - Funcs
+
     private func showSlideUpView() {
         if !editSlideUpView.isShown {
             
@@ -283,6 +284,7 @@ class MainMapViewController: UIViewController {
 //        YMKGeometry.init(circle: .init(center: , radius: <#T##Float#>)).boundingBox.
 //        mapView.mapWindow.map.visibleRegion.co
 //        previousRegion = mapView.mapWindow.map.visibleRegion.asCGRect()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMap), name: .settingsChanged, object: nil)
         UserAPIService.shared.getSignsNumber { number in
             onMainThread {[weak self] in
                 self?.titleView.setSignsCount(count: number)
@@ -354,6 +356,21 @@ class MainMapViewController: UIViewController {
         }
     }
     //MARK: - Objc func
+    @objc private func updateMap() {
+        previousRegion = nil
+        let map = mapView.mapWindow.map
+        print("\(map.visibleRegion.bottomLeft.latitude) \(map.visibleRegion.bottomLeft.longitude)")
+        
+        let radius = getRadiusIn(region: map.visibleRegion)
+
+        let middlePoint = getMiddlePointIn(region: map.visibleRegion)
+        let visibleRegion = map.visibleRegion
+        if socket != nil {
+            socket.sendCurrentCoordinates(center: mapView.mapWindow.map.cameraPosition.target, topRight: visibleRegion.topRight, topLeft: visibleRegion.topLeft, bottomRight: visibleRegion.bottomRight, bottomLeft: visibleRegion.bottomLeft, filter: signsForFilter)
+        }
+        
+    }
+    
     @objc private func filterButtonTapped() {
         print("filter button tapped")
         let vc = FilteringViewController(signsForFilter: signsForFilter)
@@ -1089,6 +1106,7 @@ extension MainMapViewController: NewLocationViewDelegate {
 extension MainMapViewController: FilteringViewControllerDelegate {
     func applyButtonTapped(selectedSigns: [String]) {
         signsForFilter = selectedSigns
+        updateMap()
     }
 }
 
@@ -1112,12 +1130,14 @@ extension MainMapViewController: EditLocationViewControllerDelegate {
                 let clusterNumber = pointsDict[key]!.0
                 deletePointsFromClusterCollection(points: [key])
                 addPointsToClusterCollection(clusterNumber: clusterNumber, models: [newSignModel])
+                self.defaultLayout()
+                needToShowNavBar = true
                 return
             }
         }
-        
         self.defaultLayout()
         needToShowNavBar = true
+
     }
     
     func backFromEditType() {

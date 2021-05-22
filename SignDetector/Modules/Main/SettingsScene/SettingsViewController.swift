@@ -9,6 +9,13 @@ import Foundation
 import UIKit
 
 class SettingsViewController: UIViewController {
+    struct Config {
+        var showConfirmedSigns: Bool
+        var showUnconfirmedSigns: Bool
+    }
+    
+    private var startConfig = Config(showConfirmedSigns: APIManager.showConfirmedSignsOnMap,
+                                     showUnconfirmedSigns: APIManager.showUnconfirmedSignsOnMap)
     //MARK: - Controls
     private var firstSeparator: UIView = {
        let view = UIView()
@@ -89,6 +96,8 @@ class SettingsViewController: UIViewController {
         return sw
     }()
     
+    
+    
     //MARK: - Variables
     
     override func viewDidLoad() {
@@ -98,8 +107,26 @@ class SettingsViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        startConfig.showConfirmedSigns = APIManager.showConfirmedSignsOnMap
+        startConfig.showUnconfirmedSigns = APIManager.showUnconfirmedSignsOnMap
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//        NotificationCenter.default.post(name: .settingsChanged, object: nil, userInfo: [:])
+        if didSettingsChanged() {
+            NotificationCenter.default.post(name: .settingsChanged, object: nil)
+        }
+    }
+    
     
     //MARK: - Funcs
+    private func didSettingsChanged() -> Bool{
+        return !(startConfig.showConfirmedSigns == APIManager.showUnconfirmedSignsOnMap
+            && startConfig.showUnconfirmedSigns == APIManager.showUnconfirmedSignsOnMap)
+    }
     private func configure() {
         signOutButton.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
         turnOnVideoSwitch.addTarget(self, action: #selector(turnOnSwitchTapped), for: .valueChanged)

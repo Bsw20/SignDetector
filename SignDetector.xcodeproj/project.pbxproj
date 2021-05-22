@@ -26,6 +26,7 @@
 		30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */; };
 		30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA3263F01AF006BBFD6 /* MapTitleView.swift */; };
 		30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */; };
+		309D6E63265917DA00FAFC54 /* Notification + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309D6E62265917D900FAFC54 /* Notification + Extension.swift */; };
 		30A1811B26571441006559F9 /* UIImagePicker + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */; };
 		30A1811D2657164F006559F9 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811C2657164F006559F9 /* UIImage + Extension.swift */; };
 		30A18120265731E4006559F9 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A1811F265731E4006559F9 /* WebImageView.swift */; };
@@ -95,6 +96,7 @@
 		30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
 		30982FA3263F01AF006BBFD6 /* MapTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTitleView.swift; sourceTree = "<group>"; };
 		30982FA8263F0E7E006BBFD6 /* VideoModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModeView.swift; sourceTree = "<group>"; };
+		309D6E62265917D900FAFC54 /* Notification + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification + Extension.swift"; sourceTree = "<group>"; };
 		30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImagePicker + Extension.swift"; sourceTree = "<group>"; };
 		30A1811C2657164F006559F9 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
 		30A1811F265731E4006559F9 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */,
 				30A1811A26571441006559F9 /* UIImagePicker + Extension.swift */,
 				30A1811C2657164F006559F9 /* UIImage + Extension.swift */,
+				309D6E62265917D900FAFC54 /* Notification + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				30AB2085263758E500F97736 /* OTPStackView.swift in Sources */,
 				30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */,
 				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,
+				309D6E63265917DA00FAFC54 /* Notification + Extension.swift in Sources */,
 				30AB20762636CC8A00F97736 /* Globals.swift in Sources */,
 				30BE111A2644004C006FC056 /* AuthService.swift in Sources */,
 			);
