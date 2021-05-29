@@ -23,8 +23,10 @@
 * **SwiftyJSON, Decodable**
 * **Kingfisher**
 * **MVC**
-
 ## Команда разработчиков
+### Data Scientist
+* Мелехин Денис (*Python, Pytorch, Neptune.ai*)
+
 ### Backend developer
 * Лапшин Даниил (*Node.js, PostgreSQL, Express*)
 
