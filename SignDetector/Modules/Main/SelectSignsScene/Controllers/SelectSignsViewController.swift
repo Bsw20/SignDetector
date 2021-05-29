@@ -79,14 +79,12 @@ class SelectSignsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-//        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.sfUISemibold(with: 20)]
         navigationItem.title = "Тип знака"
     }
     
     //MARK: - objc funcs
     @objc private func applyButtonTapped() {
         print("APPLY BUTTON TAPPED")
-//        print(tableView.indexPathsForSelectedRows?.count)
         customDelegate?.applyButtonTapped(signName: SignsJSONHolder.shared.getSignByIndex(index: tableView.indexPathForSelectedRow?.row ?? 0)!.imageName!)
         navigationController?.popViewController(animated: true)
     }
