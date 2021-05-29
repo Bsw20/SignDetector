@@ -32,5 +32,5 @@
 ### Backend developer
 * Лапшин Даниил (*Node.js, PostgreSQL, Express*)
 
-### IOS developer
+### iOS developer
 * Карпунькин Ярослав (*Swift, UIKit*)
