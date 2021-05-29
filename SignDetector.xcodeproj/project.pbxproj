@@ -17,6 +17,9 @@
 		306773BA2662A76C0003F441 /* UDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B92662A76C0003F441 /* UDManager.swift */; };
 		306773BD2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773BB2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift */; };
 		306773BE2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773BC2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift */; };
+		306773C32662C32B0003F441 /* Main_app.gif in Resources */ = {isa = PBXBuildFile; fileRef = 306773C02662C32B0003F441 /* Main_app.gif */; };
+		306773C42662C32C0003F441 /* Neural_video.gif in Resources */ = {isa = PBXBuildFile; fileRef = 306773C12662C32B0003F441 /* Neural_video.gif */; };
+		306773C52662C32C0003F441 /* Neural_photo.gif in Resources */ = {isa = PBXBuildFile; fileRef = 306773C22662C32B0003F441 /* Neural_photo.gif */; };
 		3085B7062652C428005DC11D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7052652C428005DC11D /* CoreDataManager.swift */; };
 		3085B70A2652C5BF005DC11D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7082652C5BF005DC11D /* Model.xcdatamodeld */; };
 		3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */; };
@@ -89,6 +92,9 @@
 		306773B92662A76C0003F441 /* UDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDManager.swift; sourceTree = "<group>"; };
 		306773BB2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		306773BC2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		306773C02662C32B0003F441 /* Main_app.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Main_app.gif; sourceTree = "<group>"; };
+		306773C12662C32B0003F441 /* Neural_video.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Neural_video.gif; sourceTree = "<group>"; };
+		306773C22662C32B0003F441 /* Neural_photo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Neural_photo.gif; sourceTree = "<group>"; };
 		3085B7052652C428005DC11D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3085B7092652C5BF005DC11D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignsClusterView.swift; sourceTree = "<group>"; };
@@ -250,6 +256,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		306773BF2662C32B0003F441 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				306773C02662C32B0003F441 /* Main_app.gif */,
+				306773C12662C32B0003F441 /* Neural_video.gif */,
+				306773C22662C32B0003F441 /* Neural_photo.gif */,
+			);
+			path = Presentation;
+			sourceTree = SOURCE_ROOT;
+		};
 		3074EA72262EF75900886D58 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +382,7 @@
 		30A6567126038A8900D6F81D /* SignDetector */ = {
 			isa = PBXGroup;
 			children = (
+				306773BF2662C32B0003F441 /* Presentation */,
 				30D8C04F264EDFEF00E3BCF6 /* signsNames.json */,
 				30A6567226038A8900D6F81D /* AppDelegate.swift */,
 				30A6567426038A8900D6F81D /* SceneDelegate.swift */,
@@ -599,11 +616,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				30A6567F26038A8D00D6F81D /* LaunchScreen.storyboard in Resources */,
+				306773C42662C32C0003F441 /* Neural_video.gif in Resources */,
 				30D8C050264EDFF000E3BCF6 /* signsNames.json in Resources */,
+				306773C52662C32C0003F441 /* Neural_photo.gif in Resources */,
 				30AB20722636C65100F97736 /* ofont.ru_SFUIDisplay.ttf in Resources */,
 				30AB20922637F59200F97736 /* sf-ui-display-semibold-58646eddcae92.otf in Resources */,
 				30AB204F2636B3DC00F97736 /* sf-ui-display-medium-58646be638f96.otf in Resources */,
 				30A6567C26038A8D00D6F81D /* Assets.xcassets in Resources */,
+				306773C32662C32B0003F441 /* Main_app.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
