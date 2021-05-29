@@ -17,9 +17,9 @@
 * **GCD**
 * **SnapKit**
 * **SwiftyBeaver (logging)**
-* * **SwiftyJSON, Decodable**
-* * **Kingfisher**
-* * **MVC**
+* **SwiftyJSON, Decodable**
+* **Kingfisher**
+* **MVC**
 
 ## Команда разработчиков
 ### Backend developer
