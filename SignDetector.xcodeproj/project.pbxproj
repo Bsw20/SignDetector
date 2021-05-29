@@ -15,10 +15,10 @@
 		306773B426626ADF0003F441 /* MainMapViewController + MapExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B326626ADF0003F441 /* MainMapViewController + MapExtension.swift */; };
 		306773B626626B4F0003F441 /* MainMapViewController + VideoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B526626B4F0003F441 /* MainMapViewController + VideoExtension.swift */; };
 		306773BA2662A76C0003F441 /* UDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B92662A76C0003F441 /* UDManager.swift */; };
+		306773BD2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773BB2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift */; };
+		306773BE2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773BC2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift */; };
 		3085B7062652C428005DC11D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7052652C428005DC11D /* CoreDataManager.swift */; };
 		3085B70A2652C5BF005DC11D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7082652C5BF005DC11D /* Model.xcdatamodeld */; };
-		3085B70F2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B70D2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift */; };
-		3085B7102652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B70E2652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift */; };
 		3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */; };
 		309385402650256F00B8D6C8 /* YMKCustomPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */; };
 		30938542265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */; };
@@ -87,10 +87,10 @@
 		306773B326626ADF0003F441 /* MainMapViewController + MapExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainMapViewController + MapExtension.swift"; sourceTree = "<group>"; };
 		306773B526626B4F0003F441 /* MainMapViewController + VideoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainMapViewController + VideoExtension.swift"; sourceTree = "<group>"; };
 		306773B92662A76C0003F441 /* UDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDManager.swift; sourceTree = "<group>"; };
+		306773BB2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		306773BC2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3085B7052652C428005DC11D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3085B7092652C5BF005DC11D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		3085B70D2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		3085B70E2652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		3093853D26500F0E00B8D6C8 /* SignsClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignsClusterView.swift; sourceTree = "<group>"; };
 		3093853F2650256F00B8D6C8 /* YMKCustomPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YMKCustomPoint.swift; sourceTree = "<group>"; };
 		30938541265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YMKVisibleRegion + Extension.swift"; sourceTree = "<group>"; };
@@ -281,8 +281,8 @@
 		3085B7072652C4DC005DC11D /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				3085B70D2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift */,
-				3085B70E2652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift */,
+				306773BB2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift */,
+				306773BC2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift */,
 				3085B7052652C428005DC11D /* CoreDataManager.swift */,
 				3085B7082652C5BF005DC11D /* Model.xcdatamodeld */,
 			);
@@ -683,7 +683,6 @@
 				30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */,
 				30D8C057264EE40500E3BCF6 /* SelectSignCell.swift in Sources */,
 				30A1811D2657164F006559F9 /* UIImage + Extension.swift in Sources */,
-				3085B7102652C912005DC11D /* SignPhotoModel+CoreDataProperties.swift in Sources */,
 				30BE1122264489EF006FC056 /* SocketManager.swift in Sources */,
 				30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */,
 				30D8C049264EBB6900E3BCF6 /* ImagedButton.swift in Sources */,
@@ -708,6 +707,7 @@
 				30AB20552636B4FD00F97736 /* UILabel + Extension.swift in Sources */,
 				30A6567326038A8900D6F81D /* AppDelegate.swift in Sources */,
 				3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */,
+				306773BE2662BA210003F441 /* SignPhotoModel+CoreDataProperties.swift in Sources */,
 				30AB204A2636B13E00F97736 /* SignInViewController.swift in Sources */,
 				30A1811B26571441006559F9 /* UIImagePicker + Extension.swift in Sources */,
 				30982FA9263F0E7E006BBFD6 /* VideoModeView.swift in Sources */,
@@ -724,7 +724,6 @@
 				30BE111E264405D0006FC056 /* APIError.swift in Sources */,
 				3085B70A2652C5BF005DC11D /* Model.xcdatamodeld in Sources */,
 				30938545265112C700B8D6C8 /* FilteringViewController.swift in Sources */,
-				3085B70F2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift in Sources */,
 				3064FECA2638885100E11394 /* PersonalCabinetModel.swift in Sources */,
 				3093854B26511C0E00B8D6C8 /* FilterSignsCell.swift in Sources */,
 				3085B7062652C428005DC11D /* CoreDataManager.swift in Sources */,
@@ -732,6 +731,7 @@
 				30982F86263DAC17006BBFD6 /* UIApplication + Extension.swift in Sources */,
 				30AB20582636B7AF00F97736 /* UIButton + Extension.swift in Sources */,
 				309D6E63265917DA00FAFC54 /* Notification + Extension.swift in Sources */,
+				306773BD2662BA210003F441 /* SignPhotoModel+CoreDataClass.swift in Sources */,
 				30AB20762636CC8A00F97736 /* Globals.swift in Sources */,
 				30BE111A2644004C006FC056 /* AuthService.swift in Sources */,
 			);
