@@ -1,5 +1,5 @@
 //
-//  LocalManager.swift
+//  SignsJSONHolder.swift
 //  SignDetector
 //
 //  Created by Ярослав Карпунькин on 14.05.2021.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class LocalManager {
+class SignsJSONHolder {
     struct LocalManagerSignModel {
         var name: String
         var imageName: String?
@@ -27,8 +27,10 @@ class LocalManager {
         }
         return localSigns!
     }
-    public static var shared = LocalManager()
-    
+    public static var shared = SignsJSONHolder()
+    public static func build() {
+        shared.signs
+    }
     public func getKeys() -> [String] {
         initData()
         return keys!

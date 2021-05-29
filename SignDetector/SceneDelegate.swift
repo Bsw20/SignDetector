@@ -25,7 +25,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         
         if APIManager.isAuthorized() {
-            if APIManager.needToSetName() {
+            if UDManager.needToSetName() {
                 window?.rootViewController = UINavigationController(rootViewController: PersonalDataViewController())
             } else {
                 window?.rootViewController = MainTabBarController()
@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             startSignIn()
         }
         
-        LocalManager.shared.signs
+        SignsJSONHolder.build()
     }
     
     func startSignIn() {

@@ -115,7 +115,7 @@ struct AuthService {
                     case .success(let data):
                         if let token = (data as? [String: Any])?["token"] as? String, let hasName = (data as? [String: Any])?["hasName"] as? Bool{
                             APIManager.setToken(token: token)
-                            APIManager.setNeedToSetNameStatus(status: !hasName)
+                            UDManager.setNeedToSetNameStatus(status: !hasName)
                             completion(.success(Void()))
                             return
                         }
@@ -148,7 +148,7 @@ struct AuthService {
                     switch response.result {
                     
                     case .success(_):
-                        APIManager.setNeedToSetNameStatus(status: false)
+                        UDManager.setNeedToSetNameStatus(status: false)
                         completion(.success(Void()))
                     case .failure(let error):
                         SwiftyBeaver.error(error.localizedDescription)

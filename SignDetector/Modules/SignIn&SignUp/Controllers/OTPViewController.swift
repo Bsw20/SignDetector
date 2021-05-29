@@ -82,7 +82,7 @@ extension OTPViewController: OTPDelegate {
         switch authModel.type {
         
         case .registered:
-            if APIManager.needToSetName() {
+            if UDManager.needToSetName() {
                 navigationController?.push(PersonalDataViewController(), completion: {
                     
                 })

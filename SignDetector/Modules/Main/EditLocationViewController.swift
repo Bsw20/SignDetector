@@ -101,7 +101,7 @@ class EditLocationViewController: UIViewController {
             topLabel.text = "Редактировать участок"
             addressButton.configure(text: model.address)
             if let signName = model.signName {
-                signTypeButton.configure(text: LocalManager.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
+                signTypeButton.configure(text: SignsJSONHolder.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
             }
             oldSignType = model.signName
             confirmedSignsSwitch.isOn = model.confirmed
@@ -221,7 +221,7 @@ extension EditLocationViewController: SelectSignsViewControllerDelegate {
     func applyButtonTapped(signName: String) {
         self.model.signName = signName
 //        let model = LocalManager.shared.getSignByIndex(index: indexPath.item)
-        signTypeButton.configure(text: LocalManager.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
+        signTypeButton.configure(text: SignsJSONHolder.shared.getSignNameBy(id: signName), image: UIImage(named: signName))
     }
 }
 //MARK: - Constraintts

@@ -37,7 +37,7 @@ class SelectSignsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
-        tableView.selectRow(at: IndexPath(row: LocalManager.shared.getIndexBy(name: signName), section: 0), animated: true, scrollPosition: .top)
+        tableView.selectRow(at: IndexPath(row: SignsJSONHolder.shared.getIndexBy(name: signName), section: 0), animated: true, scrollPosition: .top)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -49,7 +49,7 @@ class SelectSignsViewController: UIViewController {
         switch viewModel {
         
         case .create:
-            self.signName = LocalManager.shared.getSignByIndex(index: 0)!.name
+            self.signName = SignsJSONHolder.shared.getSignByIndex(index: 0)!.name
         case .edit(signName: let signName):
             self.signName = signName
         }
@@ -87,7 +87,7 @@ class SelectSignsViewController: UIViewController {
     @objc private func applyButtonTapped() {
         print("APPLY BUTTON TAPPED")
 //        print(tableView.indexPathsForSelectedRows?.count)
-        customDelegate?.applyButtonTapped(signName: LocalManager.shared.getSignByIndex(index: tableView.indexPathForSelectedRow?.row ?? 0)!.imageName!)
+        customDelegate?.applyButtonTapped(signName: SignsJSONHolder.shared.getSignByIndex(index: tableView.indexPathForSelectedRow?.row ?? 0)!.imageName!)
         navigationController?.popViewController(animated: true)
     }
 }
@@ -98,12 +98,12 @@ extension SelectSignsViewController: UITableViewDelegate, UITableViewDataSource 
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return LocalManager.shared.signs.count
+        return SignsJSONHolder.shared.signs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SelectSignCell.reuseId, for: indexPath) as! SelectSignCell
-        let model = LocalManager.shared.getSignByIndex(index: indexPath.item)
+        let model = SignsJSONHolder.shared.getSignByIndex(index: indexPath.item)
         guard let model = model else {
             fatalError("Неверное количество знаков")
         }

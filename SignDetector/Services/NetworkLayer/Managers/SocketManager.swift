@@ -101,8 +101,8 @@ final class Socket: ObservableObject {
                 "lon": topRight.longitude
             ],
             "lat": center.latitude, "lon": center.longitude, "filter" : filter,
-        "needConfirmed": APIManager.showConfirmedSignsOnMap,
-        "needUnconfirmed": APIManager.showUnconfirmedSignsOnMap
+        "needConfirmed": UDManager.showConfirmedSignsOnMap,
+        "needUnconfirmed": UDManager.showUnconfirmedSignsOnMap
 ])
         
         socket.emit("getSigns", [
@@ -123,13 +123,12 @@ final class Socket: ObservableObject {
                             "lon": topRight.longitude
                         ],
                         "lat": center.latitude, "lon": center.longitude, "filter" : filter,
-                    "needConfirmed": APIManager.showConfirmedSignsOnMap,
-                    "needUnconfirmed": APIManager.showUnconfirmedSignsOnMap
+                    "needConfirmed": UDManager.showConfirmedSignsOnMap,
+                    "needUnconfirmed": UDManager.showUnconfirmedSignsOnMap
         ]) {
             print(#function)
-            print(APIManager.showConfirmedSignsOnMap)
-            print(APIManager.showUnconfirmedSignsOnMap)
-            
+            print(UDManager.showConfirmedSignsOnMap)
+            print(UDManager.showUnconfirmedSignsOnMap)
         }
     }
     

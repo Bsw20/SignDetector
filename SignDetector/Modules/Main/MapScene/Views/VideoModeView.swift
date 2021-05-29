@@ -29,7 +29,7 @@ class VideoModeView: UIView {
     init() {
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
-        modeSwitch.isOn = APIManager.isCameraWorkOnStart()
+        modeSwitch.isOn = UDManager.isCameraWorkOnStart()
         configure()
         setupConstraints()
     }

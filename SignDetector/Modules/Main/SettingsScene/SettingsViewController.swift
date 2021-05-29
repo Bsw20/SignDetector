@@ -14,8 +14,8 @@ class SettingsViewController: UIViewController {
         var showUnconfirmedSigns: Bool
     }
     
-    private var startConfig = Config(showConfirmedSigns: APIManager.showConfirmedSignsOnMap,
-                                     showUnconfirmedSigns: APIManager.showUnconfirmedSignsOnMap)
+    private var startConfig = Config(showConfirmedSigns: UDManager.showConfirmedSignsOnMap,
+                                     showUnconfirmedSigns: UDManager.showUnconfirmedSignsOnMap)
     //MARK: - Controls
     private var firstSeparator: UIView = {
        let view = UIView()
@@ -109,8 +109,8 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startConfig.showConfirmedSigns = APIManager.showConfirmedSignsOnMap
-        startConfig.showUnconfirmedSigns = APIManager.showUnconfirmedSignsOnMap
+        startConfig.showConfirmedSigns = UDManager.showConfirmedSignsOnMap
+        startConfig.showUnconfirmedSigns = UDManager.showUnconfirmedSignsOnMap
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,8 +125,8 @@ class SettingsViewController: UIViewController {
     
     //MARK: - Funcs
     private func didSettingsChanged() -> Bool{
-        return !(startConfig.showConfirmedSigns == APIManager.showConfirmedSignsOnMap
-            && startConfig.showUnconfirmedSigns == APIManager.showUnconfirmedSignsOnMap)
+        return !(startConfig.showConfirmedSigns == UDManager.showConfirmedSignsOnMap
+            && startConfig.showUnconfirmedSigns == UDManager.showUnconfirmedSignsOnMap)
     }
     private func configure() {
         signOutButton.addTarget(self, action: #selector(exitButtonTapped), for: .touchUpInside)
@@ -137,9 +137,9 @@ class SettingsViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
-        turnOnVideoSwitch.isOn = APIManager.isCameraWorkOnStart()
-        confirmedSignsSwitch.isOn = APIManager.showConfirmedSignsOnMap
-        unconfirmedSignsSwitch.isOn = APIManager.showUnconfirmedSignsOnMap
+        turnOnVideoSwitch.isOn = UDManager.isCameraWorkOnStart()
+        confirmedSignsSwitch.isOn = UDManager.showConfirmedSignsOnMap
+        unconfirmedSignsSwitch.isOn = UDManager.showUnconfirmedSignsOnMap
         
 //        self.navigationController?.navigationBar.tintColor = .black
 //        self.navigationController?.navigationBar.isTranslucent = false
@@ -179,19 +179,19 @@ class SettingsViewController: UIViewController {
     @objc private func turnOnSwitchTapped() {
         print(#function)
         print(turnOnVideoSwitch.isOn)
-        APIManager.setIsCameraWorkOnStart(shouldWork: turnOnVideoSwitch.isOn)
+        UDManager.setIsCameraWorkOnStart(shouldWork: turnOnVideoSwitch.isOn)
     }
     
     @objc private func confirmedSignsSwitchTapped() {
         print(#function)
         print(confirmedSignsSwitch.isOn)
-        APIManager.showConfirmedSignsOnMap = confirmedSignsSwitch.isOn
+        UDManager.showConfirmedSignsOnMap = confirmedSignsSwitch.isOn
     }
     
     @objc private func unconfirmedSignsSwitchTapped() {
         print(#function)
         print(unconfirmedSignsSwitch.isOn)
-        APIManager.showUnconfirmedSignsOnMap = unconfirmedSignsSwitch.isOn
+        UDManager.showUnconfirmedSignsOnMap = unconfirmedSignsSwitch.isOn
     }
 }
 

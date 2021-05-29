@@ -12,6 +12,9 @@
 		3064FECD26388F1900E11394 /* MyProfileInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FECC26388F1900E11394 /* MyProfileInfoTableViewCell.swift */; };
 		3064FED02638920F00E11394 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FECF2638920F00E11394 /* String + Extension.swift */; };
 		3064FED7263B0DFF00E11394 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3064FED6263B0DFE00E11394 /* SettingsViewController.swift */; };
+		306773B426626ADF0003F441 /* MainMapViewController + MapExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B326626ADF0003F441 /* MainMapViewController + MapExtension.swift */; };
+		306773B626626B4F0003F441 /* MainMapViewController + VideoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B526626B4F0003F441 /* MainMapViewController + VideoExtension.swift */; };
+		306773BA2662A76C0003F441 /* UDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306773B92662A76C0003F441 /* UDManager.swift */; };
 		3085B7062652C428005DC11D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7052652C428005DC11D /* CoreDataManager.swift */; };
 		3085B70A2652C5BF005DC11D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3085B7082652C5BF005DC11D /* Model.xcdatamodeld */; };
 		3085B70F2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3085B70D2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift */; };
@@ -58,7 +61,6 @@
 		30BE112026441680006FC056 /* NetworkingGlobalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */; };
 		30BE1122264489EF006FC056 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE1121264489EF006FC056 /* SocketManager.swift */; };
 		30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11232645A57D006FC056 /* MainTabBarController.swift */; };
-		30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11252645B246006FC056 /* GlobalConfig.swift */; };
 		30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BE11272646B3B1006FC056 /* UserAPIService.swift */; };
 		30D8C03A264C3CA300E3BCF6 /* SignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C039264C3CA300E3BCF6 /* SignModel.swift */; };
 		30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */; };
@@ -68,7 +70,7 @@
 		30D8C045264E9CB000E3BCF6 /* EditLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C044264E9CB000E3BCF6 /* EditLocationViewController.swift */; };
 		30D8C049264EBB6900E3BCF6 /* ImagedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C048264EBB6900E3BCF6 /* ImagedButton.swift */; };
 		30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C04B264ECBCA00E3BCF6 /* EditingSignModel.swift */; };
-		30D8C04E264EDB9E00E3BCF6 /* LocalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C04D264EDB9E00E3BCF6 /* LocalManager.swift */; };
+		30D8C04E264EDB9E00E3BCF6 /* SignsJSONHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C04D264EDB9E00E3BCF6 /* SignsJSONHolder.swift */; };
 		30D8C050264EDFF000E3BCF6 /* signsNames.json in Resources */ = {isa = PBXBuildFile; fileRef = 30D8C04F264EDFEF00E3BCF6 /* signsNames.json */; };
 		30D8C052264EE26A00E3BCF6 /* SelectSignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C051264EE26A00E3BCF6 /* SelectSignsViewController.swift */; };
 		30D8C057264EE40500E3BCF6 /* SelectSignCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30D8C056264EE40500E3BCF6 /* SelectSignCell.swift */; };
@@ -82,6 +84,9 @@
 		3064FECC26388F1900E11394 /* MyProfileInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileInfoTableViewCell.swift; sourceTree = "<group>"; };
 		3064FECF2638920F00E11394 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		3064FED6263B0DFE00E11394 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		306773B326626ADF0003F441 /* MainMapViewController + MapExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainMapViewController + MapExtension.swift"; sourceTree = "<group>"; };
+		306773B526626B4F0003F441 /* MainMapViewController + VideoExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainMapViewController + VideoExtension.swift"; sourceTree = "<group>"; };
+		306773B92662A76C0003F441 /* UDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDManager.swift; sourceTree = "<group>"; };
 		3085B7052652C428005DC11D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		3085B7092652C5BF005DC11D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3085B70D2652C912005DC11D /* SignPhotoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SignPhotoModel+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
@@ -131,7 +136,6 @@
 		30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingGlobalModels.swift; sourceTree = "<group>"; };
 		30BE1121264489EF006FC056 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		30BE11232645A57D006FC056 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		30BE11252645B246006FC056 /* GlobalConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConfig.swift; sourceTree = "<group>"; };
 		30BE11272646B3B1006FC056 /* UserAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPIService.swift; sourceTree = "<group>"; };
 		30D8C039264C3CA300E3BCF6 /* SignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignModel.swift; sourceTree = "<group>"; };
 		30D8C03B264C3DD400E3BCF6 /* ClusterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterModel.swift; sourceTree = "<group>"; };
@@ -141,7 +145,7 @@
 		30D8C044264E9CB000E3BCF6 /* EditLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationViewController.swift; sourceTree = "<group>"; };
 		30D8C048264EBB6900E3BCF6 /* ImagedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagedButton.swift; sourceTree = "<group>"; };
 		30D8C04B264ECBCA00E3BCF6 /* EditingSignModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingSignModel.swift; sourceTree = "<group>"; };
-		30D8C04D264EDB9E00E3BCF6 /* LocalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalManager.swift; sourceTree = "<group>"; };
+		30D8C04D264EDB9E00E3BCF6 /* SignsJSONHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignsJSONHolder.swift; sourceTree = "<group>"; };
 		30D8C04F264EDFEF00E3BCF6 /* signsNames.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = signsNames.json; sourceTree = "<group>"; };
 		30D8C051264EE26A00E3BCF6 /* SelectSignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSignsViewController.swift; sourceTree = "<group>"; };
 		30D8C056264EE40500E3BCF6 /* SelectSignCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectSignCell.swift; sourceTree = "<group>"; };
@@ -212,9 +216,38 @@
 			isa = PBXGroup;
 			children = (
 				3064FED6263B0DFE00E11394 /* SettingsViewController.swift */,
-				30BE11252645B246006FC056 /* GlobalConfig.swift */,
 			);
 			path = SettingsScene;
+			sourceTree = "<group>";
+		};
+		306773B226626A7B0003F441 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */,
+				306773B326626ADF0003F441 /* MainMapViewController + MapExtension.swift */,
+				306773B526626B4F0003F441 /* MainMapViewController + VideoExtension.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		306773B72662A4D60003F441 /* LocalServices */ = {
+			isa = PBXGroup;
+			children = (
+				30D8C04D264EDB9E00E3BCF6 /* SignsJSONHolder.swift */,
+				30BE111B26440088006FC056 /* APIManager.swift */,
+				306773B92662A76C0003F441 /* UDManager.swift */,
+			);
+			path = LocalServices;
+			sourceTree = "<group>";
+		};
+		306773B82662A5A20003F441 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */,
+				30BE11162643FD6C006FC056 /* ServerAddressConstants.swift */,
+				30BE111D264405D0006FC056 /* APIError.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		3074EA72262EF75900886D58 /* Modules */ = {
@@ -238,9 +271,8 @@
 		3085B7042652C418005DC11D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				30D8C04D264EDB9E00E3BCF6 /* LocalManager.swift */,
-				30BE111B26440088006FC056 /* APIManager.swift */,
-				30BE11152643FD4E006FC056 /* Networking */,
+				306773B72662A4D60003F441 /* LocalServices */,
+				30BE11152643FD4E006FC056 /* NetworkLayer */,
 				3085B7072652C4DC005DC11D /* CoreData */,
 			);
 			path = Services;
@@ -287,7 +319,7 @@
 			children = (
 				30D8C038264C3C8E00E3BCF6 /* Models */,
 				30982FA2263F01A2006BBFD6 /* Views */,
-				30982F89263EEFCE006BBFD6 /* MainMapViewController.swift */,
+				306773B226626A7B0003F441 /* Controllers */,
 			);
 			path = MapScene;
 			sourceTree = "<group>";
@@ -402,15 +434,13 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		30BE11152643FD4E006FC056 /* Networking */ = {
+		30BE11152643FD4E006FC056 /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				306773B82662A5A20003F441 /* Models */,
 				30BE11182643FE73006FC056 /* Managers */,
-				30BE11162643FD6C006FC056 /* ServerAddressConstants.swift */,
-				30BE111D264405D0006FC056 /* APIError.swift */,
-				30BE111F26441680006FC056 /* NetworkingGlobalModels.swift */,
 			);
-			path = Networking;
+			path = NetworkLayer;
 			sourceTree = "<group>";
 		};
 		30BE11182643FE73006FC056 /* Managers */ = {
@@ -645,7 +675,7 @@
 			files = (
 				30982F8A263EEFCE006BBFD6 /* MainMapViewController.swift in Sources */,
 				30982FA4263F01AF006BBFD6 /* MapTitleView.swift in Sources */,
-				30BE11262645B246006FC056 /* GlobalConfig.swift in Sources */,
+				306773B626626B4F0003F441 /* MainMapViewController + VideoExtension.swift in Sources */,
 				30BE11172643FD6C006FC056 /* ServerAddressConstants.swift in Sources */,
 				30AB2079263756D600F97736 /* OTPViewController.swift in Sources */,
 				30BE11282646B3B1006FC056 /* UserAPIService.swift in Sources */,
@@ -658,6 +688,7 @@
 				30D8C04C264ECBCB00E3BCF6 /* EditingSignModel.swift in Sources */,
 				30D8C049264EBB6900E3BCF6 /* ImagedButton.swift in Sources */,
 				30BE111C26440088006FC056 /* APIManager.swift in Sources */,
+				306773BA2662A76C0003F441 /* UDManager.swift in Sources */,
 				30D8C045264E9CB000E3BCF6 /* EditLocationViewController.swift in Sources */,
 				30D8C03C264C3DD400E3BCF6 /* ClusterModel.swift in Sources */,
 				3064FED02638920F00E11394 /* String + Extension.swift in Sources */,
@@ -666,8 +697,9 @@
 				30AB20962637FB6C00F97736 /* TextFieldView.swift in Sources */,
 				30BE11242645A57D006FC056 /* MainTabBarController.swift in Sources */,
 				3064FEC52638874D00E11394 /* PersonalCabinetViewController.swift in Sources */,
-				30D8C04E264EDB9E00E3BCF6 /* LocalManager.swift in Sources */,
+				30D8C04E264EDB9E00E3BCF6 /* SignsJSONHolder.swift in Sources */,
 				3093853E26500F0E00B8D6C8 /* SignsClusterView.swift in Sources */,
+				306773B426626ADF0003F441 /* MainMapViewController + MapExtension.swift in Sources */,
 				30AB208C26375C5300F97736 /* NavigationController + Extension.swift in Sources */,
 				30938542265033DD00B8D6C8 /* YMKVisibleRegion + Extension.swift in Sources */,
 				3093854D265183AB00B8D6C8 /* EditSignView.swift in Sources */,

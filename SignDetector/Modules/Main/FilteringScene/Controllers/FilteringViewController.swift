@@ -15,7 +15,7 @@ protocol FilteringViewControllerDelegate: NSObjectProtocol {
 class FilteringViewController: UIViewController {
     //MARK: - Variables
     weak var customDelegate: FilteringViewControllerDelegate?
-    private var allKeys = LocalManager.shared.getKeys()
+    private var allKeys = SignsJSONHolder.shared.getKeys()
     private var selectedKeys: [String] = []
     
     //MARK: - Controls
@@ -77,7 +77,7 @@ class FilteringViewController: UIViewController {
             print(selectedKeys.count)
             tableView.reloadSections(IndexSet(integersIn: 0...1), with: .automatic)
         case 1:
-            let signName = LocalManager.shared.getSignByIndex(index: indexPath.row)!.imageName!
+            let signName = SignsJSONHolder.shared.getSignByIndex(index: indexPath.row)!.imageName!
             if selectedKeys.contains(signName) {
                 selectedKeys.removeAll { $0.elementsEqual(signName)}
             } else {
@@ -122,7 +122,7 @@ extension FilteringViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             cell.configure(text: "Все", isSelected: selectedKeys.count == allKeys.count, signImageName: nil)
         case 1:
-            let signModel = LocalManager.shared.getSignByIndex(index: indexPath.row)!
+            let signModel = SignsJSONHolder.shared.getSignByIndex(index: indexPath.row)!
             cell.configure(text: signModel.name, isSelected: selectedKeys.contains(signModel.imageName!), signImageName: signModel.imageName)
         default:
             fatalError("Unknown section")

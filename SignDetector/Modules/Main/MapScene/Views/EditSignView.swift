@@ -31,7 +31,7 @@ class EditSignView: UIView {
         return view
     }()
     
-    private var signNameLabel = UILabel(text: LocalManager.shared.getSignByIndex(index: 0)!.name,
+    private var signNameLabel = UILabel(text: SignsJSONHolder.shared.getSignByIndex(index: 0)!.name,
                                         fontSize: 18,
                                         textColor: .baseGrayTextColor(),
                                         textAlignment: .left,
@@ -93,7 +93,7 @@ class EditSignView: UIView {
             guard let self = self else { return }
             self.signImageView.image = nil
             self.signModel = signModel
-            let signDescription = LocalManager.shared.getSignNameBy(id: signModel.type)
+            let signDescription = SignsJSONHolder.shared.getSignNameBy(id: signModel.type)
             self.signNameLabel.text = signDescription
             
             self.signImageView.image = UIImage(named: signModel.type)
