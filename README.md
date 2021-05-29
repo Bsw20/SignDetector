@@ -23,7 +23,7 @@
 * **SwiftyJSON, Decodable**
 * **Kingfisher**
 * **MVC**
-<img src="./Demo/SignDetector_image.gif"/>   
+<img src="./Demo/SignDetector_image.png"/>   
 ## Команда разработчиков
 ### Data Scientist
 * Мелехин Денис (*Python, Pytorch, Neptune.ai*)
