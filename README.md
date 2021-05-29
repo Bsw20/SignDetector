@@ -13,6 +13,8 @@
 * Возможность добавить знак вручную, без фотографии
 * Возможность редактировать знаки и фильтровать их
 * Кластеризация знаков(Yandex API + кастомная)
+<img src="./Demo/SignDetector_image.png" width="500" height="300" /> 
+
 ## **Стек технологий**
 * **YandexMapsMobile, CoreLocation**
 * **SocketIO, Alamofire**
@@ -23,8 +25,6 @@
 * **SwiftyJSON, Decodable**
 * **Kingfisher**
 * **MVC**
-<img src="./Demo/SignDetector_image.png" width="500" height="300" /> 
-
 ## Команда разработчиков
 ### Data Scientist
 * Мелехин Денис (*Python, Pytorch, Neptune.ai*)
